@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Base;
+using Domain.Entities.User;
 using Domain.Interfaces.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.DbContext
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces.Data;
+using Application.Interfaces.User.Role;
+using Application.Services.User.Role;
 using Infrastructure.Data.Repository;
 
 namespace TechnoSewa.Startup
@@ -10,6 +12,7 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<IRoleServices, RoleServices>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentityServices();
