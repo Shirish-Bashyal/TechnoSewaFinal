@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces.Data;
+using Application.Interfaces.User.Auth;
 using Application.Interfaces.User.Role;
+using Application.Services.User.Auth;
 using Application.Services.User.Role;
 using Infrastructure.Data.Repository;
 
@@ -13,6 +15,8 @@ namespace TechnoSewa.Startup
         )
         {
             services.AddScoped<IRoleServices, RoleServices>();
+
+            services.AddScoped<IAuthServices, AuthServices>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentityServices();
