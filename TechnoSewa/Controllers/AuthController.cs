@@ -1,5 +1,6 @@
 ﻿using Application.DTO.User.Auth;
 using Application.Interfaces.User.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,9 +37,9 @@ namespace TechnoSewa.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("sendOtp")]
-        public async Task<IActionResult> SendOtp([FromQuery] string phoneNumber)
+        public async Task<IActionResult> SendOtp([FromBody] string phoneNumber)
         {
             //generate a otp
             //save the number and otp in cache
@@ -77,6 +78,25 @@ namespace TechnoSewa.Controllers
             {
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, result.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("signOut")]
+        [Authorize]
+        public async Task<IActionResult> SignOut()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true, // Only transmit over HTTPS in production
+                SameSite = SameSiteMode.Strict
+            };
+
+            // Remove the user's JWT cookie
+            Response.Cookies.Append("MyAuthValue", string.Empty, cookieOptions);
+
+            return Ok();
         }
     }
 }
