@@ -12,10 +12,11 @@ namespace Application.Interfaces.User.Auth
     {
         //signin
 
-        Task<ServiceResponse<object>> SignIn(SignInDTO SignInModel);
+        Task<ServiceResponse<object>> SignIn(SignInDTO signInModel);
 
         //register
 
+        Task<ServiceResponse<object>> Register(RegisterUserDTO registerModel);
 
         //forget password
 
