@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TechnoSewaMaui.Views.Auth.SignIn.SigninPage"
+             xmlns:viewmodel="clr-namespace:TechnoSewaMaui.ViewModel.Auth.SignIn"
+ x:DataType="viewmodel:SigninPageViewModel"
+ xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+ NavigationPage.HasNavigationBar="False"
+  x:Name="LoginPage">
+
+    <Grid RowDefinitions="auto,*,auto" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+        <Grid Grid.Row="0" RowDefinitions="auto,auto">
+
+            <Label Grid.Row="0" Padding="0,80,0,0" VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand"
+            Text="Login to your" 
+            TextColor="#145DA0" FontSize="30"
+            FontAutoScalingEnabled="False"
+             FontAttributes="Bold" 
+         />
+
+            <Label Grid.Row="1" VerticalOptions="CenterAndExpand"
+             HorizontalOptions="CenterAndExpand"
+             Text="account !" 
+             TextColor="#145DA0" FontSize="30"
+             FontAutoScalingEnabled="False"
+              FontAttributes="Bold"
+         />
+
+        </Grid>
+
+        <Grid Grid.Row="1" RowDefinitions="auto,auto,auto" Padding="20" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,20,0,0">
+
+            <Frame Grid.Row="0"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="telephone.png" WidthRequest="35" HeightRequest="35"
+                        HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry  Grid.Column="1" Placeholder="PhoneNumber" 
+                          Text="{Binding PhoneNumber}"
+                         
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference SigninPassword}" ReturnType="Next" 
+                         
+                        FontSize="18" PlaceholderColor="Black" HorizontalOptions="Start"
+                         WidthRequest="{OnIdiom Phone=220, Tablet=400}"   />
+
+
+                </Grid>
+            </Frame>
+
+
+            <Frame Grid.Row="1"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="secure.png" WidthRequest="35" HeightRequest="35"
+             HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry x:Name="SigninPassword"  Grid.Column="1" Placeholder="Password" 
+                          Text="{Binding Password}" IsPassword="true" 
+                         
+                        
+             FontSize="18" PlaceholderColor="Black" HorizontalOptions="Start"
+              WidthRequest="{OnIdiom Phone=220, Tablet=400}"   >
+
+
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="Completed" Command="{Binding OnSignInTapped}"></toolkit:EventToCommandBehavior>
+                        </Entry.Behaviors>
+
+
+                    </Entry>
+
+
+                </Grid>
+            </Frame>
+
+            <Grid Margin="30,15,30,0" Grid.Row="2" ColumnSpacing="0" ColumnDefinitions="*,auto" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                <Button Command="{Binding OnSignInTapped}" Grid.Column="0" Text="Sign In" BackgroundColor="#145DA0" WidthRequest="240" HorizontalOptions="Start"  />
+
+
+                <Border HorizontalOptions="End" HeightRequest="42" Background="Transparent"
+                       WidthRequest="45" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1" 
+                             >
+
+                    <Frame Background="Transparent" Grid.Column="1" BorderColor="Transparent" >
+                        <Image Source="fingerprint.png" HeightRequest="32" WidthRequest="32" >
+
+
+                        </Image>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer  Command="{Binding OnFingerPrintTapped}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </Border>
+
+
+
+            </Grid>
+
+
+
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnSpacing="10" ColumnDefinitions="auto,*" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="10"
+           >
+            <Label HorizontalOptions="Start"
+                VerticalOptions="Center" FontSize="15"
+                Grid.Column="0" Text="Don't have an account?" FontAutoScalingEnabled="False"></Label>
+
+            <Label Grid.Column="1" Text="Register" FontSize="15" FontAutoScalingEnabled="False"  TextColor="Blue">
+
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OnRegisterTapped}"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+
+
+
+
+
+
+        </Grid>
+
+
+
+    </Grid>
+</ContentPage>
