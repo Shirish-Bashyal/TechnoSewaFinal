@@ -4,7 +4,7 @@ namespace TechnoSewaMaui.Views.Auth.SignIn;
 
 public partial class SigninPage : ContentPage
 {
-    public SigninPage(SigninPageViewModel vm)
+    public SigninPage(SignInViewModel vm)
     {
         InitializeComponent();
         BindingContext = vm;

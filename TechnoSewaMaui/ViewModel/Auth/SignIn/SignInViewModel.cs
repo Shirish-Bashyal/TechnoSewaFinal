@@ -8,10 +8,11 @@ using CommunityToolkit.Maui.Alerts;
 using IntelliJ.Lang.Annotations;
 using Plugin.Maui.Biometric;
 using TechnoSewaMaui.ViewModel.Base;
+using TechnoSewaMaui.Views.Auth.Register;
 
 namespace TechnoSewaMaui.ViewModel.Auth.SignIn
 {
-    public partial class SigninPageViewModel : BaseViewModel
+    public partial class SignInViewModel : BaseViewModel
     {
         private string _phoneNumber;
         public string PhoneNumber
@@ -41,7 +42,7 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
         public Command OnRegisterTapped { get; }
         public Command OnFingerPrintTapped { get; }
 
-        public SigninPageViewModel()
+        public SignInViewModel()
         {
             // _userServices = userServices;
             OnSignInTapped = new Command(async () => await SignInTapped());
@@ -94,7 +95,7 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
 
         public async Task RegisterTapped()
         {
-            await Shell.Current.GoToAsync(nameof(MainPage));
+            await Shell.Current.GoToAsync(nameof(PhoneNumberPage));
         }
 
         public async Task SignInTapped()

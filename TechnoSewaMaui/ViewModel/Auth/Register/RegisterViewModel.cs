@@ -7,5 +7,5 @@ using TechnoSewaMaui.ViewModel.Base;
 
 namespace TechnoSewaMaui.ViewModel.Auth.Register
 {
-    public partial class RegisterPageViewModel : BaseViewModel { }
+    public partial class RegisterViewModel : BaseViewModel { }
 }

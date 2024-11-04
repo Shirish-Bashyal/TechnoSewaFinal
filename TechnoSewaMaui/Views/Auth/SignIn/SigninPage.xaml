@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TechnoSewaMaui.Views.Auth.SignIn.SigninPage"
              xmlns:viewmodel="clr-namespace:TechnoSewaMaui.ViewModel.Auth.SignIn"
- x:DataType="viewmodel:SigninPageViewModel"
+ x:DataType="viewmodel:SignInViewModel"
  xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
  NavigationPage.HasNavigationBar="False"
   x:Name="LoginPage">
@@ -41,6 +41,7 @@
 
                     <Entry  Grid.Column="1" Placeholder="PhoneNumber" 
                           Text="{Binding PhoneNumber}"
+                            Keyboard="Numeric"
                          
                          toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference SigninPassword}" ReturnType="Next" 
                          

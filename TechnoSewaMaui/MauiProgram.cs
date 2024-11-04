@@ -22,16 +22,16 @@ namespace TechnoSewaMaui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddTransient<SigninPageViewModel>();
+            builder.Services.AddTransient<SignInViewModel>();
             builder.Services.AddTransient<SigninPage>();
 
             builder.Services.AddTransient<OtpPage>();
-            builder.Services.AddTransient<OtpPageViewModel>();
+            builder.Services.AddTransient<OtpViewModel>();
 
             builder.Services.AddTransient<PhoneNumberPage>();
-            builder.Services.AddTransient<PhoneNumberPageViewModel>();
+            builder.Services.AddTransient<PhoneNumberViewModel>();
 
-            builder.Services.AddTransient<RegisterPageViewModel>();
+            builder.Services.AddTransient<RegisterViewModel>();
             builder.Services.AddTransient<RegisterPage>();
 
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
