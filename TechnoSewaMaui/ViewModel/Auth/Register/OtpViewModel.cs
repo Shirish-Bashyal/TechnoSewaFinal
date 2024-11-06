@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechnoSewaMaui.ViewModel.Base;
+using TechnoSewaMaui.Views.Auth.Register;
 
 namespace TechnoSewaMaui.ViewModel.Auth.Register
 {
@@ -35,18 +36,30 @@ namespace TechnoSewaMaui.ViewModel.Auth.Register
 
         public Command OnNextButtonClicked { get; }
 
+        public Command OnResendButtonClicked { get; }
+
         public OtpViewModel()
         {
             OnNextButtonClicked = new Command(async () => await NextButtonClicked());
+            OnResendButtonClicked = new Command(async () => await ResendButtonClicked());
         }
 
         public async Task NextButtonClicked()
         {
-            //Shell.Current.GoToAsync(nameof(OtpPage));
+            if ((string.IsNullOrWhiteSpace(PhoneNumber)) || (string.IsNullOrWhiteSpace(Otp)))
+            {
+                await Shell.Current.DisplayAlert("Error", "Please Enter Otp", "ok");
+            }
+            else
+            {
+                await Shell.Current.GoToAsync($"{nameof(RegisterPage)}?phoneNumber={PhoneNumber}");
+            }
+        }
 
+        public async Task ResendButtonClicked()
+        {
+            //send a local notification
             await Shell.Current.DisplayAlert("clicked", "yes its clicked", "ok");
-
-            //await Shell.Current.GoToAsync($"{nameof(RegisterPage)}?phoneNumber={PhoneNumber}");
         }
     }
 }
