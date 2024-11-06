@@ -8,10 +8,207 @@ x:DataType="viewmodel:RegisterViewModel"
 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 NavigationPage.HasNavigationBar="False"
  >
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+   
+    <Grid RowDefinitions="auto,*" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+        <Grid Grid.Row="0" RowDefinitions="auto,auto">
+
+            <Label Grid.Row="0" Padding="0,20,0,0" VerticalOptions="CenterAndExpand"
+         HorizontalOptions="CenterAndExpand"
+         Text="PLease Enter Your" 
+         TextColor="#145DA0" FontSize="30"
+         FontAutoScalingEnabled="False"
+          FontAttributes="Bold" 
+      />
+
+            <Label Grid.Row="1" VerticalOptions="CenterAndExpand"
+          HorizontalOptions="CenterAndExpand"
+          Text="details" 
+          TextColor="#145DA0" FontSize="30"
+          FontAutoScalingEnabled="False"
+           FontAttributes="Bold"
+      />
+
+        </Grid>
+
+      
+        <Grid Grid.Row="1" RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto" Padding="20" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,20,0,0">
+
+            <Frame Grid.Row="0"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="telephone.png" WidthRequest="32" HeightRequest="32"
+           HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry x:Name="FullName" Grid.Column="1" Placeholder="FullName" 
+             Text="{Binding FullName}"
+               
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Email}" ReturnType="Next" 
+            
+            
+           FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+            WidthRequest="{OnIdiom Phone=220, Tablet=400}"   />
+
+
+                </Grid>
+            </Frame>
+            
+            <Frame Grid.Row="1"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="telephone.png" WidthRequest="32" HeightRequest="32"
+                     HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry  x:Name="Email"  Grid.Column="1" Placeholder="Email" 
+                       Text="{Binding Email}"
+                         
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference City}" ReturnType="Next" 
+                      
+                      
+                     FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+                      WidthRequest="{OnIdiom Phone=220, Tablet=400}"   />
+
+
+                </Grid>
+            </Frame>
+            <Frame Grid.Row="2" Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0" Source="telephone.png" WidthRequest="32" HeightRequest="32"
+               HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <!-- Replace Entry with Picker -->
+                    <Picker x:Name="City" Grid.Column="1" Title="Select City" 
+                FontSize="15" 
+                TextColor="Black" 
+                HorizontalOptions="Start"
+                WidthRequest="{OnIdiom Phone=220, Tablet=400}" 
+                VerticalOptions="Center"
+                              SelectedItem="{Binding City}">
+                        
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Tansen</x:String>
+                                <x:String>Butwal</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+
+                </Grid>
+            </Frame>
+
+            <Frame Grid.Row="3"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="telephone.png" WidthRequest="32" HeightRequest="32"
+          HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry  x:Name="WardNo" Grid.Column="1" Placeholder="WardNo" 
+            Text="{Binding WardNo}"
+              Keyboard="Numeric"
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference ToleName}" ReturnType="Next" 
+                            
+           
+           
+          FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+           WidthRequest="{OnIdiom Phone=220, Tablet=400}"   />
+
+
+                </Grid>
+            </Frame>
+            <Frame Grid.Row="4"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="telephone.png" WidthRequest="32" HeightRequest="32"
+          HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry  x:Name="ToleName"  Grid.Column="1" Placeholder="ToleName" 
+            Text="{Binding ToleName}"
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Password}" ReturnType="Next" 
+              
+           
+           
+          FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+           WidthRequest="{OnIdiom Phone=220, Tablet=400}"   />
+
+
+                </Grid>
+            </Frame>
+            <Frame Grid.Row="5"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="secure.png" WidthRequest="32" HeightRequest="32"
+HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry  x:Name="Password"   Grid.Column="1" Placeholder="Password" 
+             Text="{Binding Password}" IsPassword="true" 
+            
+           
+FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+ WidthRequest="{OnIdiom Phone=220, Tablet=400}"  
+                         toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference ConfirmPassword}" ReturnType="Next" 
+                            >
+
+
+                       
+
+
+                    </Entry>
+
+
+                </Grid>
+            </Frame>
+
+            <Frame Grid.Row="6"  Margin="30,10,30,0" BackgroundColor="#f7f7f7" BorderColor="Black" Padding="0">
+
+                <Grid ColumnDefinitions="auto,*" Padding="3" ColumnSpacing="15" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+
+                    <Image Margin="10,0,0,0" Grid.Column="0"  Source="secure.png" WidthRequest="32" HeightRequest="32"
+          HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                    <Entry x:Name="ConfirmPassword"   Grid.Column="1" Placeholder="ConfirmPassword" 
+                       Text="{Binding ConfirmPassword}" IsPassword="true" 
+                      
+                     
+          FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
+           WidthRequest="{OnIdiom Phone=220, Tablet=400}"   >
+
+
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="Completed" Command="{Binding RegisterButtonCLickedCommand}"></toolkit:EventToCommandBehavior>
+                        </Entry.Behaviors>
+
+
+                    </Entry>
+
+
+                </Grid>
+            </Frame>
+
+            <Grid Margin="30,15,30,0" Grid.Row="8" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                <Button   Text="Register" BackgroundColor="#145DA0" Command="{Binding RegisterButtonCLickedCommand}"  />
+
+
+
+
+
+
+            </Grid>
+
+
+
+        </Grid>
+
+       
+
+
+
+    </Grid>
+    
 </ContentPage>
