@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using IntelliJ.Lang.Annotations;
 using Plugin.Maui.Biometric;
+using TechnoSewaMaui.Model;
+using TechnoSewaMaui.Services.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Base;
 using TechnoSewaMaui.Views.Auth.Register;
 
@@ -42,12 +44,15 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
         public Command OnRegisterTapped { get; }
         public Command OnFingerPrintTapped { get; }
 
-        public SignInViewModel()
+        private readonly SignInService _signInService;
+
+        public SignInViewModel(SignInService signInService)
         {
             // _userServices = userServices;
             OnSignInTapped = new Command(async () => await SignInTapped());
             OnRegisterTapped = new Command(async () => await RegisterTapped());
             OnFingerPrintTapped = new Command(async () => await FingerPrintTapped());
+            _signInService = signInService;
         }
 
         public async Task FingerPrintTapped()
@@ -103,19 +108,37 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
             IsBusy = true;
             if (!string.IsNullOrWhiteSpace(PhoneNumber) && !string.IsNullOrWhiteSpace(Password))
             {
-                await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
-                //var requestModel = new UserLoginRequest { PhoneNumber = PhoneNumber, Password = Password, };
-
-                //var request = await _userServices.LoginUser(requestModel);
-                //if (request == true)
-                //{
-                //    await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
-                //}
-                //else
-                //{
-                //    await Shell.Current.DisplayAlert("Error", "Invalid Credential!!", "Ok!");
-                //}
+                if (PhoneNumber.Length != 10)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Please Enter valid number", "Ok!");
+                }
+                else if (Password.Length < 5)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Please Enter valid Password", "Ok!");
+                }
+                else
+                {
+                    var model = new UserSignInRequest
+                    {
+                        PhoneNumber = PhoneNumber,
+                        Password = Password
+                    };
+                    var result = await _signInService.SignInUser(model);
+                    if (result)
+                    {
+                        await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Invalid Credential", "Ok!");
+                    }
+                }
             }
+            else
+            {
+                await Shell.Current.DisplayAlert("Error", "Please Enter valid details", "Ok!");
+            }
+            IsBusy = false;
         }
     }
 }

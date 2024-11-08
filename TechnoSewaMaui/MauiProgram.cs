@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Biometric;
+using TechnoSewaMaui.Services.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Auth.Register;
 using TechnoSewaMaui.ViewModel.Auth.SignIn;
 using TechnoSewaMaui.Views.Auth.Register;
@@ -24,6 +25,7 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<SignInViewModel>();
             builder.Services.AddTransient<SigninPage>();
+            builder.Services.AddTransient<SignInService>();
 
             builder.Services.AddTransient<OtpPage>();
             builder.Services.AddTransient<OtpViewModel>();
@@ -35,7 +37,7 @@ namespace TechnoSewaMaui
             builder.Services.AddTransient<RegisterPage>();
 
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
-
+            builder.Services.AddSingleton<HttpClient>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

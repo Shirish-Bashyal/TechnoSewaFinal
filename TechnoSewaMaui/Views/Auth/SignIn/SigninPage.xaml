@@ -107,7 +107,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="2" ColumnSpacing="10" ColumnDefinitions="auto,*" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="10"
+        <!--<Grid Grid.Row="2" ColumnSpacing="10" ColumnDefinitions="auto,*" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="10"
            >
             <Label HorizontalOptions="Start"
                 VerticalOptions="Center" FontSize="15"
@@ -126,6 +126,37 @@
 
 
 
+        </Grid>-->
+        <Grid Grid.Row="2" RowDefinitions="*,Auto">
+            <Grid Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                <Frame HeightRequest="75" 
+                BackgroundColor="Transparent" 
+                BorderColor="Transparent"
+    >
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                       IsVisible="{Binding IsBusy}"
+                                       Color="Black" />
+
+
+                </Frame>
+
+            </Grid>
+
+
+            <Grid Grid.Row="1" ColumnSpacing="15" ColumnDefinitions="Auto,*" Padding="10" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                <Label Grid.Column="0" Text="Don't have an account?" FontAutoScalingEnabled="False"
+                  FontSize="15" VerticalOptions="Center"
+                  />
+                <Label Grid.Column="1" Text="Register"   FontSize="15" FontAutoScalingEnabled="False"
+                TextColor="#385897">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnRegisterTapped}" />
+                    </Label.GestureRecognizers>
+
+
+                </Label>
+            </Grid>
         </Grid>
 
 
