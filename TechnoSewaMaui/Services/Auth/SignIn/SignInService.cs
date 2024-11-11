@@ -19,11 +19,13 @@ namespace TechnoSewaMaui.Services.Auth.SignIn
             _httpClient = httpClient;
         }
 
-        public async Task<bool> SignInUser(UserSignInRequest model)
+        public async Task<UserSignInResponse> SignInUser(UserSignInRequest model)
         {
             try
             {
-                var url = $"{App.Settings.ApiBaseUrl}/api/Auth/signIn";
+                // var url = $"{App.Settings.ApiBaseUrl}/api/Auth/signIn";
+                var url = App.Settings.ApiBaseUrl + "/api/Auth/signIn";
+
                 var json = JsonConvert.SerializeObject(model);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(url, content);
@@ -34,18 +36,23 @@ namespace TechnoSewaMaui.Services.Auth.SignIn
                     if (result.Success)
                     {
                         await SecureStorage.SetAsync("token", result.Data);
-                        return true;
+                        return result;
                     }
                     else
                     {
-                        return false;
+                        return result;
                     }
                 }
-                return false;
+                else
+                {
+                    var result = await response.Content.ReadFromJsonAsync<UserSignInResponse>();
+
+                    return result;
+                }
             }
             catch
             {
-                return false;
+                return new UserSignInResponse { Success = false };
             }
         }
     }

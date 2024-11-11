@@ -110,11 +110,11 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
             {
                 if (PhoneNumber.Length != 10)
                 {
-                    await Shell.Current.DisplayAlert("Error", "Please Enter valid number", "Ok!");
+                    await Shell.Current.DisplayAlert("Error", "Invalid Number", "Ok!");
                 }
                 else if (Password.Length < 5)
                 {
-                    await Shell.Current.DisplayAlert("Error", "Please Enter valid Password", "Ok!");
+                    await Shell.Current.DisplayAlert("Error", "Invalid Password", "Ok!");
                 }
                 else
                 {
@@ -124,13 +124,20 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
                         Password = Password
                     };
                     var result = await _signInService.SignInUser(model);
-                    if (result)
+                    if (result.Success)
                     {
                         await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("Error", "Invalid Credential", "Ok!");
+                        if (result.Message != null)
+                        {
+                            await Shell.Current.DisplayAlert("Error", $"{result.Message}", "Ok!");
+                        }
+                        else
+                        {
+                            await Shell.Current.DisplayAlert("Error", "Invalid Credential", "Ok!");
+                        }
                     }
                 }
             }
