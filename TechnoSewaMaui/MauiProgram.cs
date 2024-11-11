@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Plugin.LocalNotification;
 using Plugin.Maui.Biometric;
+using TechnoSewaMaui.Services.Auth.Register;
 using TechnoSewaMaui.Services.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Auth.Register;
 using TechnoSewaMaui.ViewModel.Auth.SignIn;
@@ -16,6 +18,7 @@ namespace TechnoSewaMaui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
@@ -35,6 +38,7 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<RegisterViewModel>();
             builder.Services.AddTransient<RegisterPage>();
+            builder.Services.AddTransient<RegisterServices>();
 
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
             builder.Services.AddSingleton<HttpClient>();

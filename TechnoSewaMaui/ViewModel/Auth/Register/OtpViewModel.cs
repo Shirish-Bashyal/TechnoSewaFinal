@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.LocalNotification;
 using TechnoSewaMaui.ViewModel.Base;
 using TechnoSewaMaui.Views.Auth.Register;
 
@@ -52,14 +53,31 @@ namespace TechnoSewaMaui.ViewModel.Auth.Register
             }
             else
             {
-                await Shell.Current.GoToAsync($"{nameof(RegisterPage)}?phoneNumber={PhoneNumber}");
+                if (Otp == "1234")
+                {
+                    await Shell.Current.GoToAsync(
+                        $"{nameof(RegisterPage)}?phoneNumber={PhoneNumber}"
+                    );
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Error", "Invalid Otp", "Retry");
+                }
             }
         }
 
         public async Task ResendButtonClicked()
         {
-            //send a local notification
-            await Shell.Current.DisplayAlert("clicked", "yes its clicked", "ok");
+            var request = new NotificationRequest
+            {
+                NotificationId = 1,
+                Title = "OTP",
+                Subtitle = "Otp for TechnoSewa ",
+                Description = "Your otp is 1234 ",
+                BadgeNumber = 42,
+            };
+            await LocalNotificationCenter.Current.Show(request);
+            await Shell.Current.DisplayAlert("Success", "Otp is sent", "ok");
         }
     }
 }

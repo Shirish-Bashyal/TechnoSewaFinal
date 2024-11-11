@@ -42,7 +42,7 @@ NavigationPage.HasNavigationBar="False"
            HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry x:Name="FullName" Grid.Column="1" Placeholder="FullName" 
-             Text="{Binding FullName}"
+             Text="{Binding RegistrationData.FullName}"
                
                          toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Email}" ReturnType="Next" 
             
@@ -62,7 +62,7 @@ NavigationPage.HasNavigationBar="False"
                      HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry  x:Name="Email"  Grid.Column="1" Placeholder="Email" 
-                       Text="{Binding Email}"
+                       Text="{Binding RegistrationData.Email}"
                          
                          toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference City}" ReturnType="Next" 
                       
@@ -86,7 +86,7 @@ NavigationPage.HasNavigationBar="False"
                 HorizontalOptions="Start"
                 WidthRequest="{OnIdiom Phone=220, Tablet=400}" 
                 VerticalOptions="Center"
-                              SelectedItem="{Binding City}">
+                              SelectedItem="{Binding RegistrationData.City}">
                         
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -107,7 +107,7 @@ NavigationPage.HasNavigationBar="False"
           HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry  x:Name="WardNo" Grid.Column="1" Placeholder="WardNo" 
-            Text="{Binding WardNo}"
+            Text="{Binding RegistrationData.WardNo}"
               Keyboard="Numeric"
                          toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference ToleName}" ReturnType="Next" 
                             
@@ -127,7 +127,7 @@ NavigationPage.HasNavigationBar="False"
           HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry  x:Name="ToleName"  Grid.Column="1" Placeholder="ToleName" 
-            Text="{Binding ToleName}"
+            Text="{Binding RegistrationData.ToleName}"
                          toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Password}" ReturnType="Next" 
               
            
@@ -146,7 +146,7 @@ NavigationPage.HasNavigationBar="False"
 HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry  x:Name="Password"   Grid.Column="1" Placeholder="Password" 
-             Text="{Binding Password}" IsPassword="true" 
+             Text="{Binding RegistrationData.Password}" IsPassword="true" 
             
            
 FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
@@ -172,7 +172,7 @@ FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"
           HorizontalOptions="Start" VerticalOptions="Center"/>
 
                     <Entry x:Name="ConfirmPassword"   Grid.Column="1" Placeholder="ConfirmPassword" 
-                       Text="{Binding ConfirmPassword}" IsPassword="true" 
+                       Text="{Binding RegistrationData.ConfirmPassword}" IsPassword="true" 
                       
                      
           FontSize="15" PlaceholderColor="Black" HorizontalOptions="Start"

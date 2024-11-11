@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.LocalNotification;
 using TechnoSewaMaui.ViewModel.Base;
 using TechnoSewaMaui.Views.Auth.Register;
 using TechnoSewaMaui.Views.Auth.SignIn;
@@ -49,6 +50,15 @@ namespace TechnoSewaMaui.ViewModel.Auth.Register
             }
             else
             {
+                var request = new NotificationRequest
+                {
+                    NotificationId = 1,
+                    Title = "OTP",
+                    Subtitle = "Otp for TechnoSewa ",
+                    Description = "Your otp is 1234 ",
+                    BadgeNumber = 42,
+                };
+                LocalNotificationCenter.Current.Show(request);
                 await Shell.Current.GoToAsync($"{nameof(OtpPage)}?phoneNumber={PhoneNumber}");
             }
         }
