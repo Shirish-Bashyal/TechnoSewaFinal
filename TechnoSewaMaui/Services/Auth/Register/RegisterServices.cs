@@ -23,7 +23,7 @@ namespace TechnoSewaMaui.Services.Auth.Register
 
         public async Task VerifyOtp(string model) { }
 
-        public async Task<bool> RegisterUser(UserRegisterRequest UserRequest)
+        public async Task<UserRegisterResponse> RegisterUser(UserRegisterRequest UserRequest)
         {
             try
             {
@@ -34,16 +34,20 @@ namespace TechnoSewaMaui.Services.Auth.Register
                 var response = await _httpClient.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    var result = await response.Content.ReadFromJsonAsync<UserRegisterResponse>();
+
+                    return result;
                 }
                 else
                 {
-                    return false;
+                    var result = await response.Content.ReadFromJsonAsync<UserRegisterResponse>();
+
+                    return result;
                 }
             }
             catch
             {
-                return false;
+                return new UserRegisterResponse { Success = false };
             }
         }
     }

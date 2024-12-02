@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace TechnoSewaMaui.Response
 {
-    public class UserSignInResponse : SuccessResponse<string?> { }
+    public class FailedResponse { }
 }

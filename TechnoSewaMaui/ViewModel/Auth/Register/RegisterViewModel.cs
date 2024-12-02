@@ -71,13 +71,14 @@ namespace TechnoSewaMaui.ViewModel.Auth.Register
                 else
                 {
                     var result = await _registerService.RegisterUser(RegistrationData);
-                    if (result)
+                    if (result.Success)
                     {
-                        await Shell.Current.DisplayAlert("Success", "Data registered", "Ok");
+                        await Shell.Current.DisplayAlert("Success", result.Message, "Ok");
+                        //navigate to next page
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("Error", "failed", "Retry");
+                        await Shell.Current.DisplayAlert("Error", result.Message, "Retry");
                     }
                 }
             }

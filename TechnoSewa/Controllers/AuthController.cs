@@ -72,11 +72,11 @@ namespace TechnoSewa.Controllers
 
             if (result.Success)
             {
-                return StatusCode(StatusCodes.Status201Created, result.Message);
+                return StatusCode(StatusCodes.Status201Created, result);
             }
             else
             {
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, result.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, result);
             }
         }
 
