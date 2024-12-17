@@ -12,5 +12,7 @@ namespace Application.Interfaces.User.Role
     public interface IRoleServices
     {
         Task<ServiceResponse<object>> CreateRole(string roleName);
+
+        Task<ServiceResponse<object>> ChangeRole(string userId, string roleName);
     }
 }
