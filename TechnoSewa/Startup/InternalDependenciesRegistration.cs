@@ -16,6 +16,7 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<IPostService, PostService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IRoleServices, RoleServices>();
 
