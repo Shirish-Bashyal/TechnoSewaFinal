@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Application.DTO.User.Consumer;
+using Application.DTO.User.Post;
 using Application.Interfaces.Data;
 using Application.Interfaces.User.Consumer;
 using Application.Response;
@@ -13,6 +14,7 @@ using Domain.Entities.User.PostDetails;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Services.User.Consumer
 {
@@ -156,22 +158,88 @@ namespace Application.Services.User.Consumer
             }
         }
 
-        public Task<ServiceResponse<object>> DeletePost(string PostId)
+        public async Task<ServiceResponse<object>> GetPost(int PostId)
+        {
+            var includes = new Expression<Func<Post, object>>[]
+            {
+                s => s.User,
+                s => s.Category,
+                s => s.Photos,
+            };
+            var post = await _uow.AsyncRepositories<Post>()
+                .GetWithIncludeAndFilter(includes, x => x.Id == PostId);
+            if (post != null)
+            {
+                var images = new List<string>();
+                var baseUrl = "https://localhost:7206";
+                foreach (var pic in post.Photos)
+                {
+                    images.Add($"{baseUrl}/Resourses/{pic.Path}");
+                }
+                var result = new PostResponseDTO
+                {
+                    Title = post.Title,
+                    Description = post.Description,
+                    Category = post.Category.Name,
+                    CreationDate = post.AddedDate,
+                    Lattitude = post.Lattitude,
+                    Longitude = post.Longitude,
+                    UserName = post.User.UserName,
+                    ImageUrl = images,
+                };
+                return new ServiceResponse<object> { Success = true, Data = result, };
+            }
+            else
+            {
+                return new ServiceResponse<object> { Success = false, Message = "Operation error" };
+            }
+        }
+
+        public async Task<ServiceResponse<object>> GetAllPosts(string UserId)
+        {
+            var includes = new Expression<Func<Post, object>>[]
+            {
+                s => s.User,
+                s => s.Category,
+                s => s.Photos,
+            };
+            var posts = await _uow.AsyncRepositories<Post>()
+                .GetListWithIncludeAndFilter(includes, x => x.User.Id == UserId);
+            if (posts == null)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message = "User have not posted anything"
+                };
+            }
+
+            var baseUrl = "https://localhost:7206";
+
+            var result = posts
+                .Select(post => new PostResponseDTO
+                {
+                    Title = post.Title,
+                    Description = post.Description,
+                    Category = post.Category.Name,
+                    CreationDate = post.AddedDate,
+                    Lattitude = post.Lattitude,
+                    Longitude = post.Longitude,
+                    UserName = post.User.UserName,
+                    ImageUrl = post.Photos.Select(photo => $"{baseUrl}/Resources/{photo.Path}")
+                        .ToList()
+                })
+                .ToList();
+
+            return new ServiceResponse<object> { Success = true, Data = result };
+        }
+
+        public Task<ServiceResponse<object>> DeletePost(int PostId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<object>> GetAllPosts(string UserId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceResponse<object>> GetPost(string PostId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceResponse<object>> UpdatePost(string PostId)
+        public Task<ServiceResponse<object>> UpdatePost(int PostId)
         {
             throw new NotImplementedException();
         }

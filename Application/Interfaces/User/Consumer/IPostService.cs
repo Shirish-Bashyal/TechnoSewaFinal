@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.DTO.User.Consumer;
+using Application.DTO.User.Post;
 using Application.Response;
 
 namespace Application.Interfaces.User.Consumer
@@ -12,11 +12,11 @@ namespace Application.Interfaces.User.Consumer
     {
         Task<ServiceResponse<object>> CreatePost(CreatePostDTO model, string userId);
 
-        Task<ServiceResponse<object>> GetPost(string PostId);
+        Task<ServiceResponse<object>> GetPost(int PostId);
         Task<ServiceResponse<object>> GetAllPosts(string UserId);
 
-        Task<ServiceResponse<object>> DeletePost(string PostId);
+        Task<ServiceResponse<object>> DeletePost(int PostId);
 
-        Task<ServiceResponse<object>> UpdatePost(string PostId);
+        Task<ServiceResponse<object>> UpdatePost(int PostId);
     }
 }

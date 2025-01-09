@@ -8,7 +8,7 @@ using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.DTO.User.Consumer
+namespace Application.DTO.User.Post
 {
     public class CreatePostDTO
     {
@@ -20,8 +20,8 @@ namespace Application.DTO.User.Consumer
 
         public List<IFormFile>? ImageFiles { get; set; }
 
-        public Double Lattitude { get; set; }
+        public double Lattitude { get; set; }
 
-        public Double Longitude { get; set; }
+        public double Longitude { get; set; }
     }
 }
