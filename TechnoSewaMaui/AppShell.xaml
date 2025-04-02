@@ -4,12 +4,46 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TechnoSewaMaui.Views.Auth.SignIn"
+    xmlns:home="clr-namespace:TechnoSewaMaui.Views.Home"
+     xmlns:booking="clr-namespace:TechnoSewaMaui.Views.Bookings"
+   
+    xmlns:search="clr-namespace:TechnoSewaMaui.Views.Search"
+    xmlns:profile="clr-namespace:TechnoSewaMaui.Views.Profile"
     Shell.FlyoutBehavior="Disabled"
-    Title="TechnoSewaMaui">
+    Padding="0">
+    
 
-    <ShellContent
-       
+    <!-- Initial SignIn Page (no navbar) -->
+    <ShellContent 
         ContentTemplate="{DataTemplate local:SigninPage}"
-        Route="SignInPage" />
+        Route="SignInPage"
+        Shell.TabBarIsVisible="False"/>
 
+    <!-- Main App Tabs (with navbar) -->
+    <TabBar>
+        <Tab   Title="Home" Icon="dotnet_bot.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate home:HomePage}"
+                Route="HomePage"/>
+        </Tab>
+
+
+
+        <Tab Icon="dotnet_bot.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate search:SearchPage}"
+                Route="SearchPage"/>
+        </Tab>
+        <Tab  Icon="dotnet_bot.png">
+            <ShellContent
+        ContentTemplate="{DataTemplate booking:BookingsPage}"
+        Route="BookingsPage"/>
+        </Tab>
+
+        <Tab  Icon="dotnet_bot.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate profile:ProfilePage}"
+                Route="ProfilePage"/>
+        </Tab>
+    </TabBar>
 </Shell>

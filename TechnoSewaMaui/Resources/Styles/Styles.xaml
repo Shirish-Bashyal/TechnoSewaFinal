@@ -7,6 +7,19 @@
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>
+  
+
+    <Style TargetType="TabBar">
+        <Setter Property="Shell.TabBarBackgroundColor"
+                Value="#5C6BC0"/>
+
+        <Setter Property="Shell.TabBarForegroundColor"
+                Value="White"></Setter>
+        <Setter Property="Shell.TabBarUnselectedColor"
+                Value="Black"/>
+        
+
+    </Style>
 
     <Style TargetType="IndicatorView">
         <Setter Property="IndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}"/>

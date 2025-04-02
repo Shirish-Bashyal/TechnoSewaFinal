@@ -11,6 +11,7 @@ using TechnoSewaMaui.Model;
 using TechnoSewaMaui.Services.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Base;
 using TechnoSewaMaui.Views.Auth.Register;
+using TechnoSewaMaui.Views.Home;
 
 namespace TechnoSewaMaui.ViewModel.Auth.SignIn
 {
@@ -69,12 +70,13 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
             //var status = BiometricHwStatus.LockedOut;
             if (result.Status == BiometricResponseStatus.Success)
             {
-                await Shell.Current.DisplayAlert(
-                    "Success",
-                    "Fingerprint authenticated successfully",
-                    "Ok!"
-                );
-                //await Shell.Current.GoToAsync("//HomePage");
+                //await Shell.Current.DisplayAlert(
+                //    "Success",
+                //    "Fingerprint authenticated successfully",
+                //    "Ok!"
+                //);
+                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+
                 // await Navigation.PushAsync(new HomePage());
                 //Microsoft.Maui.Controls.Application.Current.MainPage = new HomePage();
             }
@@ -126,7 +128,10 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
                     var result = await _signInService.SignInUser(model);
                     if (result.Success)
                     {
-                        await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
+                        await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+                        ; // Triple slash for absolute route
+
+                        // await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
                     }
                     else
                     {
