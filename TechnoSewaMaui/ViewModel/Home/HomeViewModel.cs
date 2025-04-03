@@ -16,9 +16,14 @@ namespace TechnoSewaMaui.ViewModel.Home
     {
         public Command OnNotificationTapped { get; }
         public Command OnPersonnelTapped { get; }
+        public Command OnLocationTapped { get; }
+        public string[] Locations { get; } = { "Kathmandu", "Pokhara", "Biratnagar" };
 
         [ObservableProperty]
         private ObservableCollection<string> imageList = [];
+
+        [ObservableProperty]
+        public string selectedLocation;
 
         [ObservableProperty]
         private int currentIndex;
@@ -30,11 +35,32 @@ namespace TechnoSewaMaui.ViewModel.Home
             Task.Run(async () => await ImageCarousel());
             OnNotificationTapped = new Command(async () => await NotificationTapped());
             OnPersonnelTapped = new Command(async () => await PersonnelTapped());
+            OnLocationTapped = new Command(async () => await LocationTapped());
         }
 
         public async Task NotificationTapped()
         {
             await Shell.Current.GoToAsync($"{nameof(NotificationPage)}");
+        }
+
+        public async Task LocationTapped()
+        {
+            var result = await Shell.Current.DisplayActionSheet(
+                "Select Location",
+                "Cancel",
+                null,
+                Locations
+            );
+
+            if (!string.IsNullOrWhiteSpace(result) && result != "Cancel")
+            {
+                SelectedLocation = result;
+            }
+        }
+
+        public Color GetLocationColor(string location)
+        {
+            return location == SelectedLocation ? Colors.LightBlue : Colors.Transparent;
         }
 
         public async Task PersonnelTapped()

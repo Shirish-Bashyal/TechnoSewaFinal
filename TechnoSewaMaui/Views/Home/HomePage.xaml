@@ -48,17 +48,21 @@
                             <TapGestureRecognizer Command="{Binding OnNotificationTapped}" />
                         </Frame.GestureRecognizers>
                     </Frame>
+                    
                     <Frame Grid.Column="1" 
-                           CornerRadius="25" 
-                           HeightRequest="50" 
-                           WidthRequest="50"
-                           Padding="0"
-                           BackgroundColor="#5C6BC0"
-                           HasShadow="False">
+       CornerRadius="25" 
+       HeightRequest="50" 
+       WidthRequest="50"
+       Padding="0"
+       BackgroundColor="#5C6BC0"
+       HasShadow="False">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OnLocationTapped}"/>
+                        </Frame.GestureRecognizers>
                         <Image Source="location.png" 
-                               Aspect="AspectFit" 
-                               HeightRequest="40" 
-                               WidthRequest="40"/>
+           Aspect="AspectFit" 
+           HeightRequest="40" 
+           WidthRequest="40"/>
                     </Frame>
                 </Grid>
             </Grid>

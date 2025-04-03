@@ -7,5 +7,10 @@ using TechnoSewaMaui.ViewModel.Base;
 
 namespace TechnoSewaMaui.ViewModel.Profile
 {
-    public partial class ProfileViewModel : BaseViewModel { }
+    public partial class ProfileViewModel : BaseViewModel
+    {
+        public string UserName { get; set; } = "John Doe";
+        public string PhoneNumber { get; set; } = "+977 98XXXXXXXX";
+        public string Email { get; set; } = "john@example.com";
+    }
 }
