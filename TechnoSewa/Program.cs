@@ -1,5 +1,6 @@
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Serilog;
 using TechnoSewa.Configurations;
 using TechnoSewa.Startup;
@@ -31,6 +32,14 @@ builder.Host.UseSerilog();
 builder.Services.AddInternalDependencies(builder.Configuration);
 
 var app = builder.Build();
+var contentPath = app.Environment.ContentRootPath;
+var uploadsPath = Path.Combine(contentPath, "Uploads");
+
+// Ensure the directory exists before configuring the middleware
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
 
 // Configure the HTTP request pipeline.
 
@@ -42,6 +51,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles();
+
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(builder.Environment.ContentRootPath, "Uploads")
+        ),
+        RequestPath = "/Resources"
+    }
+);
 
 app.UseSerilogRequestLogging();
 

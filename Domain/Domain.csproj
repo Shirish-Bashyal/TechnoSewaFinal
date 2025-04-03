@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Application\" />
     <Folder Include="Views\" />
   </ItemGroup>
 
