@@ -4,7 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Android.App;
 using CommunityToolkit.Mvvm.ComponentModel;
+using TechnoSewaMaui.Services.Home;
 using TechnoSewaMaui.ViewModel.Base;
 using TechnoSewaMaui.Views.Home;
 using TechnoSewaMaui.Views.Notification;
@@ -15,6 +18,8 @@ namespace TechnoSewaMaui.ViewModel.Home
     public partial class HomeViewModel : BaseViewModel
     {
         public Command OnNotificationTapped { get; }
+
+        public Command OnPageMount { get; }
         public Command OnPersonnelTapped { get; }
         public Command OnLocationTapped { get; }
         public string[] Locations { get; } = { "Kathmandu", "Pokhara", "Biratnagar" };
@@ -29,13 +34,20 @@ namespace TechnoSewaMaui.ViewModel.Home
         private int currentIndex;
 
         private System.Timers.Timer _timer;
+        private readonly ProfileService _profileService = ProfileService.Instance;
 
         public HomeViewModel()
         {
+            OnPageMount = new Command(async () => await PageMount());
             Task.Run(async () => await ImageCarousel());
             OnNotificationTapped = new Command(async () => await NotificationTapped());
             OnPersonnelTapped = new Command(async () => await PersonnelTapped());
             OnLocationTapped = new Command(async () => await LocationTapped());
+        }
+
+        public async Task PageMount()
+        {
+            await _profileService.GetUserProfile();
         }
 
         public async Task NotificationTapped()

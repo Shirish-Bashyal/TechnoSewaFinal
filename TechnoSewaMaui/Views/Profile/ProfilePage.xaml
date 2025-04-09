@@ -57,18 +57,18 @@
                       VerticalOptions="Center">
 
                     <Label Grid.Row="0"
-                           Text="John Doe"
+                           Text="{Binding UserName}"
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="#385897"/>
 
                     <Label Grid.Row="1"
-                           Text="+977 9841234567"
+                           Text="{Binding PhoneNumber}"
                            FontSize="16"
                            TextColor="#666666"/>
 
                     <Label Grid.Row="2"
-                           Text="john.doe@example.com"
+                            Text="{Binding Email}"
                            FontSize="16"
                            TextColor="#666666"/>
                     <Label Grid.Row="3"

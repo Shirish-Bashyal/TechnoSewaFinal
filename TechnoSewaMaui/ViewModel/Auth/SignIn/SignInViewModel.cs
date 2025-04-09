@@ -70,15 +70,7 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
             //var status = BiometricHwStatus.LockedOut;
             if (result.Status == BiometricResponseStatus.Success)
             {
-                //await Shell.Current.DisplayAlert(
-                //    "Success",
-                //    "Fingerprint authenticated successfully",
-                //    "Ok!"
-                //);
-                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
-
-                // await Navigation.PushAsync(new HomePage());
-                //Microsoft.Maui.Controls.Application.Current.MainPage = new HomePage();
+                await Shell.Current.GoToAsync($"//{nameof(HomePage)}"); //use of // removes previous page from stack and uses homepage as root
             }
             else
             {
@@ -129,9 +121,6 @@ namespace TechnoSewaMaui.ViewModel.Auth.SignIn
                     if (result.Success)
                     {
                         await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
-                        ; // Triple slash for absolute route
-
-                        // await Shell.Current.DisplayAlert("Success", "User login successful", "Ok!");
                     }
                     else
                     {

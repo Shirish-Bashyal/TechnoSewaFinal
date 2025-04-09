@@ -4,6 +4,7 @@ using Plugin.LocalNotification;
 using Plugin.Maui.Biometric;
 using TechnoSewaMaui.Services.Auth.Register;
 using TechnoSewaMaui.Services.Auth.SignIn;
+using TechnoSewaMaui.Services.Home;
 using TechnoSewaMaui.ViewModel.Auth.Register;
 using TechnoSewaMaui.ViewModel.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Bookings;
@@ -66,6 +67,7 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<ProfileViewModel>();
+            builder.Services.AddSingleton(ProfileService.Instance);
 
             builder.Services.AddTransient<SearchPage>();
             builder.Services.AddTransient<SearchViewModel>();

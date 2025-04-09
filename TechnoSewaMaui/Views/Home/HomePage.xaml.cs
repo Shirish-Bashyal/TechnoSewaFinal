@@ -10,12 +10,18 @@ public partial class HomePage : ContentPage
         BindingContext = vm;
     }
 
+    private bool _isFirstLoad = true;
+
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (Navigation != null && Navigation.NavigationStack.Count > 0)
+        if (_isFirstLoad && BindingContext is HomeViewModel viewModel)
         {
-            NavigationPage.SetHasNavigationBar(this, false);
+            _isFirstLoad = false;
+            if (viewModel.OnPageMount.CanExecute(null))
+            {
+                viewModel.OnPageMount.Execute(null);
+            }
         }
     }
 }
