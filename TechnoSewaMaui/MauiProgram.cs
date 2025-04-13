@@ -5,6 +5,7 @@ using Plugin.Maui.Biometric;
 using TechnoSewaMaui.Services.Auth.Register;
 using TechnoSewaMaui.Services.Auth.SignIn;
 using TechnoSewaMaui.Services.Home;
+using TechnoSewaMaui.Services.PostProblem;
 using TechnoSewaMaui.ViewModel.Auth.Register;
 using TechnoSewaMaui.ViewModel.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Bookings;
@@ -64,6 +65,7 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<PostProblemPage>();
             builder.Services.AddTransient<PostProblemViewModel>();
+            builder.Services.AddTransient<PostProblemService>();
 
             builder.Services.AddTransient<ProfilePage>();
             builder.Services.AddTransient<ProfileViewModel>();

@@ -6,10 +6,10 @@
              x:Class="TechnoSewaMaui.Views.PostProblem.PostProblemPage"
              x:DataType="viewmodel:PostProblemViewModel"
              Shell.TabBarIsVisible="False"
-              Shell.NavBarIsVisible="False"
-              Shell.PresentationMode="Modal"
-             BackgroundColor="#F5F7FA"
-            >
+             Shell.NavBarIsVisible="False"
+             Shell.PresentationMode="Modal"
+             BackgroundColor="#F5F7FA">
+
     <ContentPage.Resources>
         <Style x:Key="InvalidEntryStyle" TargetType="Entry">
             <Setter Property="TextColor" Value="Red" />
@@ -17,7 +17,7 @@
         <Style x:Key="ValidEntryStyle" TargetType="Entry">
             <Setter Property="TextColor" Value="Black" />
         </Style>
-   
+
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="Poppins"/>
             <Setter Property="TextColor" Value="#333333"/>
@@ -33,10 +33,10 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <Grid RowDefinitions="*,Auto" RowSpacing="25" Padding="20">
+        <Grid RowDefinitions="*,Auto,Auto" RowSpacing="15" Padding="20">
 
             <!-- Main Components (Row 0) -->
-            <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="15">
+            <Grid Grid.Row="0" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="15">
 
                 <!-- Header (Row 0) -->
                 <Frame Grid.Row="0" BackgroundColor="Transparent" Padding="0" HasShadow="False">
@@ -48,86 +48,103 @@
                 </Frame>
 
                 <!-- Category (Row 1) -->
+                <!-- Category (Row 1) -->
                 <Frame Grid.Row="1">
                     <VerticalStackLayout Spacing="8">
                         <Label Text="Category"
-                               FontAttributes="Bold"
-                               TextColor="#385897"/>
+               FontAttributes="Bold"
+               TextColor="#385897"/>    
 
-                        <Picker Title="Select Category"
-                                
-                                TextColor="Black">
+                        <Picker x:Name="CategoryPicker"
+                Title="Select Category"
+                ItemsSource="{Binding Categories}"
+                SelectedItem="{Binding SelectedCategory}"
+                TextColor="Black">
+                           
                         </Picker>
                     </VerticalStackLayout>
                 </Frame>
-
-                <!-- Description (Row 2) -->
+                <!-- Title (Row 2) -->
                 <Frame Grid.Row="2">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Description"
+                        <Label Text="{Binding Title }"
                                FontAttributes="Bold"
                                TextColor="#385897"/>
-
-                        <Editor Placeholder="Enter a description of the problem"
-                              
-                               AutoSize="TextChanges"
-                               MinimumHeightRequest="100"/>
+                        <Entry 
+                               Placeholder="Enter a title for your problem"
+                               TextColor="Black"
+                               ReturnType="Next"
+                               toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Description}">
+                            <Entry.Behaviors>
+                                <toolkit:CharactersValidationBehavior 
+                                    InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                    ValidStyle="{StaticResource ValidEntryStyle}"
+                                    Flags="ValidateOnValueChanged"
+                                    CharacterType="Alphanumeric"
+                                    MinimumCharacterTypeCount="5"/>
+                            </Entry.Behaviors>
+                        </Entry>
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Location (Row 3) -->
+                <!-- Description (Row 3) -->
                 <Frame Grid.Row="3">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Location"
+                        <Label Text="{Binding Description}"
                                FontAttributes="Bold"
                                TextColor="#385897"/>
 
-                        <Entry Placeholder="Enter the location"
-                               Text="ahh"/>
-                    </VerticalStackLayout>
-                </Frame>
-
-                <!-- Photos (Row 4) -->
-                <Frame Grid.Row="4">
-                    <VerticalStackLayout Spacing="8">
-                        <Label Text="Photos"
-                               FontAttributes="Bold"
-                               TextColor="#385897"/>
-
-                        <Label Text="Upload up to 4 photos"
-                               FontSize="14"
-                               TextColor="#666666"/>
-
-                        <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
-                            <!-- Image Slots -->
-                            <Frame Grid.Column="0" Padding="0" HeightRequest="80">
-                                
-                            </Frame>
-
-                            <!-- Repeat for columns 1-3 -->
-
-                            <!-- Add Button -->
-                            <ImageButton Grid.Column="3"
-                                         Source="add_photo.png"
-                                         BackgroundColor="Transparent"
-                                         HeightRequest="80"
-                                         WidthRequest="80"
-                                         />
-                        </Grid>
+                        <Editor x:Name="Description"
+                               Placeholder="Enter a description of the problem"
+                               AutoSize="TextChanges"
+                               MinimumHeightRequest="100"
+                               >
+                            <Editor.Behaviors>
+                                <toolkit:CharactersValidationBehavior 
+                                    InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                    ValidStyle="{StaticResource ValidEntryStyle}"
+                                    Flags="ValidateOnValueChanged"
+                                    CharacterType="Alphanumeric"
+                                    MinimumCharacterTypeCount="10"/>
+                            </Editor.Behaviors>
+                        </Editor>
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
 
-            <!-- Submit Button (Row 1) -->
-            <Button Grid.Row="1"
+            <!-- Action Icons (Row 1) -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="20" Padding="0,10">
+                <Frame Grid.Column="0">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Image Source="location.png" HeightRequest="24" WidthRequest="24"/>
+                        <Label Text="Location" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnLocationTapped}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <Frame Grid.Column="1">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Image Source="plus.png" HeightRequest="24" WidthRequest="24"/>
+                        <Label Text="Add Photo" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnAddPhotosTapped}"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+            </Grid>
+
+            <!-- Submit Button (Row 2) -->
+            <Button Grid.Row="2"
                     Text="SUBMIT"
-                  
                     BackgroundColor="#385897"
                     TextColor="White"
                     FontAttributes="Bold"
                     CornerRadius="10"
                     HeightRequest="50"
-                    Margin="0,10,0,0"/>
+                    Margin="0,10,0,0"
+                    Command="{Binding OnSubmitTapped}"/>
         </Grid>
     </ScrollView>
 </ContentPage>

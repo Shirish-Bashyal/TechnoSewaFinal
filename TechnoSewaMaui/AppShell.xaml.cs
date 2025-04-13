@@ -11,13 +11,11 @@ namespace TechnoSewaMaui
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(SigninPage), typeof(SigninPage));
-            Routing.RegisterRoute(nameof(PhoneNumberPage), typeof(PhoneNumberPage));
-            Routing.RegisterRoute(nameof(OtpPage), typeof(OtpPage));
-            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
-            Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-            Routing.RegisterRoute(nameof(NotificationPage), typeof(NotificationPage));
+            Routing.RegisterRoute(nameof(MapPage), typeof(MapPage));
             Routing.RegisterRoute(nameof(PostProblemPage), typeof(PostProblemPage));
+
+            // If you have other modal pages:
+            Routing.RegisterRoute(nameof(NotificationPage), typeof(NotificationPage));
         }
     }
 }
