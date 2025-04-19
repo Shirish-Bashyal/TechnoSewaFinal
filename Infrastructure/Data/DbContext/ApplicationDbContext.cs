@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application;
 using Domain.Entities.Base;
+using Domain.Entities.Chatbot;
 using Domain.Entities.User;
 using Domain.Entities.User.AddressDetails;
 using Domain.Entities.User.PostDetails;
@@ -29,6 +30,7 @@ namespace Infrastructure.Data.DbContext
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public DbSet<QuestionResponse> QuestionResponse { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Post> Posts { get; set; }
