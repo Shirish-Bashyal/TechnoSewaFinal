@@ -20,7 +20,8 @@ namespace TechnoSewa.Controllers
             _responseService = responseService;
         }
 
-        [HttpPost("/postQuestions")]
+        [HttpPost]
+        [Route("postQuestions")]
         public async Task<IActionResult> PostChat([FromBody] MessageDto question)
         {
             if (ModelState.IsValid)
@@ -30,7 +31,8 @@ namespace TechnoSewa.Controllers
             }
             else { return BadRequest(); }
         }
-        [HttpPost("/postAudio")]
+        [HttpPost]
+        [Route("postAudio")]
         public async Task<IActionResult> PostAudio([FromForm] AudioDto audio)
         {
             if (ModelState.IsValid)
@@ -41,7 +43,8 @@ namespace TechnoSewa.Controllers
             else { return BadRequest(); }
         }
 
-        [HttpPost("/tokenizer")]
+        [HttpPost]
+        [Route("tokenizer")]
         public async Task<IActionResult> TextTokenizer([FromBody] MessageDto question)
         {
             if (ModelState.IsValid)
@@ -52,7 +55,8 @@ namespace TechnoSewa.Controllers
             else { return BadRequest(); }
         }
 
-        [HttpPost("/addKeywordAndResponse")]
+        [HttpPost]
+        [Route("addKeywordAndResponse")]
         public async Task<IActionResult> AddKeywordAndResponse(AddDbResponseDto request)
         {
 

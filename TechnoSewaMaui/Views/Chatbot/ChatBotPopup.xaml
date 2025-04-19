@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+   xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="TechnoSewaMaui.Views.Chatbot.ChatBotPopup"
+xmlns:viewmodel="clr-namespace:TechnoSewaMaui.ViewModel.Chatbot"
+x:DataType="viewmodel:ChatbotPopupViewModel"
+                xmlns:models="clr-namespace:TechnoSewaMaui.Model"
+               
+               >
+
+    <Grid RowDefinitions="Auto,*,Auto" >
+
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" BackgroundColor="MediumPurple" Padding="2" HeightRequest="46" >
+            <Label Grid.Column="0" Text="Techno Bot"  TextColor="White" Padding="5" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold" FontAutoScalingEnabled="False" />
+            <!--<ImageButton Grid.Column="1" HorizontalOptions="End" VerticalOptions="End" Source="cancel.png" Clicked="OnNoButtonClicked"/>-->
+        </Grid>
+
+        <ScrollView Grid.Row="1" Padding="10">
+
+            <VerticalStackLayout Padding="10"  >
+                    <CollectionView ItemsSource="{Binding Messages}">
+                        <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ChatMessageModel">
+                            <Frame HorizontalOptions="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
+                               BackgroundColor="Transparent" BorderColor="Transparent"
+                               CornerRadius="15"
+                               Padding="10"
+                               HasShadow="False"
+                               MaximumWidthRequest="250">
+                                <Border  BackgroundColor="{Binding IsSentByUser, Converter={StaticResource BoolToColorConverter}}" Padding="3,3,3,1" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1.2" StrokeDashOffset="15" >
+                                    <Editor Text="{Binding Question}" FontSize="15"
+                          BackgroundColor="Transparent" Margin="5,0,0,-10" HorizontalTextAlignment="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
+                                 TextColor="Black"/>
+                                </Border>
+                            </Frame>
+                        </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+        </ScrollView>
+
+        <Grid Grid.Row="2"  Padding="10" BackgroundColor="Transparent" >
+            <Frame Padding="4" BackgroundColor="#f0f0f0">
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                    <Entry Text="{Binding MessageText}" Placeholder="Type a message..." VerticalOptions="Center"/>
+                    <ImageButton Source="mic.png" Grid.Column="1"  Command="{Binding SendCommand}" VerticalOptions="Center" HeightRequest="34" WidthRequest="34"/>
+                    <ImageButton Source="send.png" Grid.Column="2"  Command="{Binding SendCommand}" VerticalOptions="Center"  HeightRequest="34" WidthRequest="34"/>
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
+
+</toolkit:Popup>

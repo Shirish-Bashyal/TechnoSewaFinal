@@ -4,11 +4,13 @@ using Plugin.LocalNotification;
 using Plugin.Maui.Biometric;
 using TechnoSewaMaui.Services.Auth.Register;
 using TechnoSewaMaui.Services.Auth.SignIn;
+using TechnoSewaMaui.Services.Chatbot;
 using TechnoSewaMaui.Services.Home;
 using TechnoSewaMaui.Services.PostProblem;
 using TechnoSewaMaui.ViewModel.Auth.Register;
 using TechnoSewaMaui.ViewModel.Auth.SignIn;
 using TechnoSewaMaui.ViewModel.Bookings;
+using TechnoSewaMaui.ViewModel.Chatbot;
 using TechnoSewaMaui.ViewModel.Home;
 using TechnoSewaMaui.ViewModel.Notification;
 using TechnoSewaMaui.ViewModel.PostProblem;
@@ -17,6 +19,7 @@ using TechnoSewaMaui.ViewModel.Search;
 using TechnoSewaMaui.Views.Auth.Register;
 using TechnoSewaMaui.Views.Auth.SignIn;
 using TechnoSewaMaui.Views.Bookings;
+using TechnoSewaMaui.Views.Chatbot;
 using TechnoSewaMaui.Views.Home;
 using TechnoSewaMaui.Views.Notification;
 using TechnoSewaMaui.Views.PostProblem;
@@ -34,6 +37,10 @@ namespace TechnoSewaMaui
                 .UseMauiApp<App>()
                 .UseLocalNotification()
                 .UseMauiCommunityToolkit()
+                //.ConfigureMauiHandlers(handlers =>
+                //{
+                //    handlers.AddHandler<ChatBotPopup, CommunityToolkit.Maui.Views.Popup>();
+                //})
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -56,6 +63,9 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<HomePage>();
             builder.Services.AddTransient<HomeViewModel>();
+
+            builder .Services.AddTransientPopup<ChatBotPopup,ChatbotPopupViewModel>();
+            builder.Services.AddTransient<ChatbotService>();
 
             builder.Services.AddTransient<BookingsPage>();
             builder.Services.AddTransient<BookingsViewModel>();
