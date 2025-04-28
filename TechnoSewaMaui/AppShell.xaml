@@ -9,6 +9,8 @@
    
     xmlns:search="clr-namespace:TechnoSewaMaui.Views.Search"
     xmlns:profile="clr-namespace:TechnoSewaMaui.Views.Profile"
+     xmlns:Technician="clr-namespace:TechnoSewaMaui.Views.Technician"
+    
     Shell.FlyoutBehavior="Disabled"
     Padding="0">
     
@@ -20,7 +22,7 @@
         Shell.TabBarIsVisible="False"/>
 
     <!-- Main App Tabs (with navbar) -->
-    <TabBar>
+    <TabBar x:Name="ConsumerTabbar" IsVisible="False" >
         <Tab   Title="Home" Icon="dotnet_bot.png">
             <ShellContent
                 ContentTemplate="{DataTemplate home:HomePage}"
@@ -44,6 +46,23 @@
             <ShellContent
                 ContentTemplate="{DataTemplate profile:ProfilePage}"
                 Route="ProfilePage"/>
+        </Tab>
+    </TabBar>
+    <TabBar x:Name="TechnicianTabbar" IsVisible="False">
+        <Tab   Title="Home" Icon="dotnet_bot.png">
+            <ShellContent
+             ContentTemplate="{DataTemplate Technician:LandingPage}"
+             Route="LandingPage"/>
+        </Tab>
+
+
+
+      
+
+        <Tab  Icon="dotnet_bot.png">
+            <ShellContent
+             ContentTemplate="{DataTemplate profile:ProfilePage}"
+             Route="ProfilePage"/>
         </Tab>
     </TabBar>
 </Shell>
