@@ -78,7 +78,7 @@ namespace Application.Services.User.Consumer
                         Description = model.Description,
                         Lattitude = model.Lattitude,
                         Longitude = model.Longitude,
-                        Status = 0,
+                        // Status = 0,
                         User = user,
                         Category = category,
                     };

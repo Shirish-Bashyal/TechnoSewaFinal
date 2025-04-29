@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application;
+using Domain.Entities.Application.Bookings;
 using Domain.Entities.Base;
 using Domain.Entities.User;
 using Domain.Entities.User.AddressDetails;
@@ -30,10 +31,20 @@ namespace Infrastructure.Data.DbContext
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
 
         public DbSet<Post> Posts { get; set; }
 
-        public DbSet<PhotoPath> Photos { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+
+        public DbSet<PostBid> PostBids { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<TimeFrame> TimeFrames { get; set; }
+
+        public DbSet<Technician> Technicians { get; set; }
+
+        public DbSet<SubCategoryBooking> SubCategoryBookings { get; set; }
 
         public override int SaveChanges()
         {
