@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using Plugin.Maui.Audio;
 using Plugin.Maui.Biometric;
 using TechnoSewaMaui.Services.Auth.Register;
 using TechnoSewaMaui.Services.Auth.SignIn;
@@ -46,6 +47,7 @@ namespace TechnoSewaMaui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            builder.Services.AddSingleton(AudioManager.Current);
 
             builder.Services.AddTransient<SignInViewModel>();
             builder.Services.AddTransient<SigninPage>();

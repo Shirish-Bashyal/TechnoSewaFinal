@@ -1,18 +1,23 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Plugin.Maui.Audio;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechnoSewaMaui.Model;
 using TechnoSewaMaui.Services.Chatbot;
 using TechnoSewaMaui.ViewModel.Base;
+using Xamarin.KotlinX.Coroutines.Stream;
+using AudioManager = Plugin.Maui.Audio.AudioManager;
 
 namespace TechnoSewaMaui.ViewModel.Chatbot
 {
-   public partial class ChatbotPopupViewModel : BaseViewModel
+    public partial class ChatbotPopupViewModel : BaseViewModel
     {
         [ObservableProperty]
         private string messageText;
@@ -27,13 +32,130 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
         string imageName = null;
         [ObservableProperty]
         bool isMsgWithImageSent = false;
+        [ObservableProperty]
+        private IAudioSource? recordedAudioSource;
+        [ObservableProperty]
+        private bool isRecordingMode = false;
+        [ObservableProperty]
+        private bool isAudioPreviewVisible = false;
+        [ObservableProperty]
+        private bool isAudioPlaying = false;
+        [ObservableProperty]
+        string audioFileName;
+    
 
         private readonly ChatbotService _chatbotService;
+        private readonly IAudioManager _audioManager;
+        private readonly IAudioRecorder _audioRecorder;
 
         public ObservableCollection<ChatMessageModel> Messages { get; } = new();
-        public ChatbotPopupViewModel(ChatbotService chatbotService)
+        public ChatbotPopupViewModel(ChatbotService chatbotService, IAudioManager audioManager)
         {
             _chatbotService = chatbotService;
+            _audioManager = audioManager;
+            _audioRecorder = audioManager.CreateRecorder();
+        }
+
+        [RelayCommand]
+        public async Task SelectAudio()
+        {
+            
+        var result = await Shell.Current.DisplayActionSheet("ActionSheet: AUDIO?", "Cancel", null, "Upload", "Record");
+        if (result != null)
+        {
+            if (result == "Upload")
+            {
+                await UploadAudio();
+            }
+            else
+            {
+                await RecordAudio();
+            }
+        }
+           
+        }
+
+        [RelayCommand]
+        public async Task RecordAudio()
+        {
+            IsRecordingMode = false;
+
+            if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+            {
+                // TODO Inform your user
+                return;
+            }
+
+            if (!_audioRecorder.IsRecording)
+            {
+                IsRecordingMode = true;
+               
+                await _audioRecorder.StartAsync();
+            }
+            else
+            {
+                var recordedAudio = await _audioRecorder.StopAsync();
+                //var audioStream = recordedAudio.GetAudioStream();
+                AudioFileName = "recordings.wav";
+                RecordedAudioSource = recordedAudio;
+                IsRecordingMode = false;
+                IsAudioPreviewVisible = true;
+
+                var player = AudioManager.Current.CreatePlayer(recordedAudio.GetAudioStream());
+                player.Play();
+            }
+        }
+
+        public async Task UploadAudio()
+        {
+            // customn file type for audios
+            var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+            {
+            { DevicePlatform.iOS, new[] { "public.audio" } },     
+            { DevicePlatform.Android, new[] { "audio/*" } },      
+            { DevicePlatform.WinUI, new[] { ".mp3", ".wav" } },  
+            { DevicePlatform.MacCatalyst, new[] { "public.audio" } }
+            });
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Pick Audio",
+                FileTypes = customFileType
+            });
+            if (result != null)
+            {
+                IsAudioPreviewVisible = true;
+                var stream = await result.OpenReadAsync();
+                if (stream != null)
+                {
+                    RecordedAudioSource = new FileAudioSource(result.FullPath);
+
+                 
+                    AudioFileName = Path.GetFileName(result.FullPath);
+                }
+            }
+           
+        }
+
+        [RelayCommand]
+        public async Task PlayAudio()
+        {
+            IsAudioPlaying = true;
+            if (RecordedAudioSource != null)
+            {
+                var player = AudioManager.Current.CreatePlayer(RecordedAudioSource.GetAudioStream());
+                player.Play();
+            }
+            IsAudioPlaying = false;
+        }
+
+        [RelayCommand]
+        public async Task ClearAudio()
+        {
+            if (RecordedAudioSource != null)
+            {
+                RecordedAudioSource = null;
+                IsAudioPreviewVisible = false;
+            }
         }
 
         public async Task SendMessage(SendMessageModel message)
@@ -141,7 +263,28 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
         }
 
 
+        [RelayCommand]
+        public async Task SendAudio()
+        {
+            if (RecordedAudioSource != null && AudioFileName != null)
+            {
 
+
+                var audioStream = RecordedAudioSource.GetAudioStream(); // Assuming GetAudioStream() is available
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    await  audioStream.CopyToAsync(memoryStream);
+                    byte[] audioBytes = memoryStream.ToArray();
+
+                    var result =await _chatbotService.FormatAudioService(audioBytes, AudioFileName);
+                    if (result != null)
+                    { 
+                        
+                    }
+                }
+             
+            }
+        }
 
         [RelayCommand]
         public async void Send()

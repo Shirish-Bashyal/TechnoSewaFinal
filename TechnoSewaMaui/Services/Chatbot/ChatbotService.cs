@@ -58,6 +58,59 @@ namespace TechnoSewaMaui.Services.Chatbot
             }
         }
 
+
+        public async Task<string> FormatAudioService(byte[] audio, string audioFileName)
+        {
+            try
+            {
+               
+                var url = App.Settings.ApiBaseUrl + "/api/Chatbot/postAudio";
+
+
+                using (var formData = new MultipartFormDataContent())
+                {
+                  
+
+
+
+                    if (audio != null)
+                    {
+                        var fileContent = new ByteArrayContent(audio);
+
+                        formData.Add(fileContent, "Audio", audioFileName);
+                    }
+
+
+
+                    var response = await _httpClient.PostAsync(url, formData);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        if (result != null)
+                        {
+
+                            return result;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+
+
+                        return null;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
         public async Task<string> FormatMessageWithImageService(SendMessageWithImageModel request)
         {
             try
