@@ -42,7 +42,7 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
         private bool isAudioPlaying = false;
         [ObservableProperty]
         string audioFileName;
-    
+ 
 
         private readonly ChatbotService _chatbotService;
         private readonly IAudioManager _audioManager;
@@ -137,14 +137,23 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
         }
 
         [RelayCommand]
+        public async Task PlayChatAudio(IAudioSource audioSource)
+        {
+          
+
+            var player = AudioManager.Current.CreatePlayer(audioSource.GetAudioStream());
+            player.Play();
+
+            
+        }
+        [RelayCommand]
         public async Task PlayAudio()
         {
             IsAudioPlaying = true;
-            if (RecordedAudioSource != null)
-            {
+          
                 var player = AudioManager.Current.CreatePlayer(RecordedAudioSource.GetAudioStream());
                 player.Play();
-            }
+      
             IsAudioPlaying = false;
         }
 
@@ -172,6 +181,7 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                         {
                             Question =  request,
                             IsSentByUser = false,
+                            IsChat = true
 
                         });
                     }
@@ -179,7 +189,8 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                         Messages.Add(new ChatMessageModel
                         {
                             Question = "Oops! Something went wrong",
-                            IsSentByUser = false
+                            IsSentByUser = false,
+                            IsChat = true
                         });
                     }
                 }
@@ -203,6 +214,7 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                         {
                             Question = response,
                             IsSentByUser = false,
+                            IsChat = true
 
                         });
                         //PickedImage = null;
@@ -214,7 +226,8 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                         Messages.Add(new ChatMessageModel
                         {
                             Question = "Oops! Something went wrong",
-                            IsSentByUser = false
+                            IsSentByUser = false,
+                            IsChat = true
                         });
                     }
                 }
@@ -269,7 +282,16 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
             if (RecordedAudioSource != null && AudioFileName != null)
             {
 
-
+             
+                var userMessage = new ChatMessageModel
+                {
+                    AudioFile = RecordedAudioSource,
+                    IsSentByUser = true,
+                    IsChat = false,
+                };
+                Messages.Add(userMessage);
+               userMessage = null;
+                Console.WriteLine($"Messages count before: {Messages.Count}");
                 var audioStream = RecordedAudioSource.GetAudioStream(); // Assuming GetAudioStream() is available
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
@@ -278,8 +300,16 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
 
                     var result =await _chatbotService.FormatAudioService(audioBytes, AudioFileName);
                     if (result != null)
-                    { 
-                        
+                    {
+                       
+                        userMessage = new ChatMessageModel()
+                        {
+                            IsSentByUser = false,
+                            Question = result,
+                            IsChat = true
+                        };
+                        Messages.Add(userMessage);
+                        Console.WriteLine($"Messages count before: {Messages.Count}");
                     }
                 }
              
@@ -303,7 +333,8 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                     var userMessage = new ChatMessageModel
                     {
                         Question = MessageText,
-                        IsSentByUser = true
+                        IsSentByUser = true,
+                        IsChat = true
                     };
                     IsMsgWithImageSent = false;
                     Messages.Add(userMessage);
@@ -322,6 +353,7 @@ namespace TechnoSewaMaui.ViewModel.Chatbot
                         Question = MessageText,
                         IsSentByUser = true,
                         ImageSource = PickedImage,
+                        IsChat = true
                     };
                     IsMsgWithImageSent = true;
                     Messages.Add(userMessage);

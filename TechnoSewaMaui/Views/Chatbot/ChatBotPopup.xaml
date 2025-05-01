@@ -28,12 +28,22 @@ x:DataType="viewmodel:ChatbotPopupViewModel"
                                Padding="10"
                                HasShadow="False"
                                MaximumWidthRequest="250">
-                                <Grid RowDefinitions="*,Auto">
+                              
+                                <Grid RowDefinitions="*,Auto,Auto">
                                     <Border Grid.Row="0" BackgroundColor="{Binding IsSentByUser, Converter={StaticResource BoolToColorConverter}}" Padding="3,3,3,1" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1.2" StrokeDashOffset="15" >
-                                        <Editor Text="{Binding Question}" FontSize="15"
+
+                                        <Editor Text="{Binding Question}" FontSize="15" IsVisible="{Binding IsChat}"
                           BackgroundColor="Transparent" Margin="5,0,0,-10" HorizontalTextAlignment="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
                                  TextColor="Black"/>
                                     </Border>
+                                    <Grid Grid.Row="0" Padding="0,0,15,5" VerticalOptions="Center" IsVisible="{Binding IsChat, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}">
+                                        <ImageButton Margin="5,0,0,-10" IsVisible="{Binding IsChat, Converter={StaticResource InverseBoolConverter}}"
+                                            Source="audio.png" 
+                                            HeightRequest="24" WidthRequest="24"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=PlayChatAudioCommand}"
+                                            CommandParameter="{Binding AudioFile}"/>
+                                       
+                                    </Grid>
                                     <Grid Grid.Row="1" 
                                           
                                           IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent}" 

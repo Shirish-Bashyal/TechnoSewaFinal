@@ -56,6 +56,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\audio.png" />
 	  <None Remove="Resources\Images\bot.png" />
 	  <None Remove="Resources\Images\cancel.png" />
 	  <None Remove="Resources\Images\fingerprint.png" />

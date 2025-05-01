@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Maui.Audio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,10 @@ namespace TechnoSewaMaui.Model
 {
     public class ChatMessageModel
     {
-        public string Question { get; set;}
-        public ImageSource ImageSource { get; set;}
+        public string? Question { get; set;}
+        public ImageSource? ImageSource { get; set;}
         public bool IsSentByUser { get; set;}
+        public IAudioSource? AudioFile { get; set; }
+        public bool IsChat { get; set; }
     }
 }
