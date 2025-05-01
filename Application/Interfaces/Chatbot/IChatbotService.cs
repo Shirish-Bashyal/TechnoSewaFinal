@@ -11,5 +11,6 @@ namespace Application.Interfaces.Chatbot
     {
         Task<string> SendMessage(MessageDto request);
         Task<string> SendAudio(AudioDto request);
+        Task<string> SendImage(ImageDto request);
     }
 }

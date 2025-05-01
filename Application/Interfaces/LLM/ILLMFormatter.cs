@@ -13,6 +13,7 @@ namespace Application.Interfaces.LLM
         Task<string> FormatMessage(StringBuilder prompt);
         Task<string> TranscribeAudio(IFormFile audio);
 
+        Task<string> InterpertImage(string jsonStructure);
         
     }
 }

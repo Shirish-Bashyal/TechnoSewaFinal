@@ -45,6 +45,17 @@ namespace TechnoSewa.Controllers
             }
             else { return BadRequest(); }
         }
+        [HttpPost]
+        [Route("postImage")]
+        public async Task<IActionResult> PostImage([FromForm] ImageDto image)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _chatbotService.SendImage(image);
+                return Ok(result);
+            }
+            else { return BadRequest(); }
+        }
 
         [HttpPost]
         [Route("tokenizer")]

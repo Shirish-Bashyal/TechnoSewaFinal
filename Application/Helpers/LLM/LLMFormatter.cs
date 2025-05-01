@@ -36,22 +36,52 @@ namespace Application.Helpers.LLM
                .SetTopP(1) //
                .SetStop("NONE"); // tells the model when to stop
             var response = await groqClient.CreateChatCompletionAsync(
-             new Message
-             {
-                 Role = MessageRoleType.System,
-                 Content =
-                     "You are a helpful assistant designed to help customers to solve their problem and answer to any of their queries related to any technical issues in their daily life like broken pipes or gas stove and others"
-             },
-             new Message
-             {
-                 Role = MessageRoleType.Assistant,
-                 Content =
-                     "Based on the provided question give meaningful instruction to user to solve their problem.If the question has matched strings and database response give solution based on the database response combined with the user question. If the question doesn't have any matched strings and database response give answer based on your understanding. The answers should be short but meaningful.If the question is not related to electrical , plumbing or any mechanical issue please don't give any solution , give some answer like sorry i'm not trained for that but only for solving electrial and mechanical problems  and give response in a single sentence but not a whole paragraph in such case"
-             },
+                new Message
+                {
+                    Role = MessageRoleType.System,
+                    Content =
+                         "You are a helpful assistant designed to help customers to solve their problem and answer to any of their queries related to any technical issues in their daily life like broken pipes or gas stove and others.If the question has matched strings and database response give solution based on the database response combined with the user question. If the question doesn't have any matched strings and database response give answer based on your understanding. The answers should be short but meaningful.If the question is not related to electrical , plumbing or any mechanical issue please don't give any solution , give some answer like sorry i'm not trained for that but only for solving electrial and mechanical problems  and give response in a single sentence but not a whole paragraph in such case."
+                },
+                 new Message
+                 {
+                     Role = MessageRoleType.Assistant,
+                     Content =
+                         "Based on the provided question give meaningful instruction to user to solve their problem."
+                 },
              new Message { Role = MessageRoleType.User, Content = prompt.ToString() }
          );
 
             return response;
+        }
+
+        public async Task<string> InterpertImage(string jsonStructure)
+        {
+            var apiKey = _configuration["LLM:ApiKey"];
+            var apiModel = _configuration["LLM:ApiModelVision"];
+            IGroqClient groqClient = new GroqClient(apiKey, apiModel)
+            .SetTemperature(0.2)  // randomness of response   0 = more deterministic , 1= random
+            .SetMaxTokens(256) 
+            .SetTopP(1) 
+            .SetStop("NONE");
+
+            var response = await groqClient.CreateChatCompletionAsync(
+                 new Message
+                 {
+                     Role = MessageRoleType.System,
+                     Content =
+                         "You are a helpful assistant designed to help customers to solve their problem and answer to any of their queries related to any technical issues in their daily life like broken pipes or gas stove and others.If the question has matched strings and database response give solution based on the database response combined with the user question. If the question doesn't have any matched strings and database response give answer based on your understanding. The answers should be short but meaningful.If the question is not related to electrical , plumbing or any mechanical issue please don't give any solution , give some answer like sorry i'm not trained for that but only for solving electrial and mechanical problems  and give response in a single sentence but not a whole paragraph in such case.Also accept if the image is given and check what the image is about and help to analyese and solve if the image has above problems "
+                 },
+                 new Message
+                 {
+                     Role = MessageRoleType.Assistant,
+                     Content =
+                         "Based on the provided question give meaningful instruction to user to solve their problem."
+                 },
+                 new Message { Role = MessageRoleType.User, Content = $"{jsonStructure}" }
+                   );
+
+            return response;
+
         }
 
         public async Task<string> TranscribeAudio(IFormFile audio)
