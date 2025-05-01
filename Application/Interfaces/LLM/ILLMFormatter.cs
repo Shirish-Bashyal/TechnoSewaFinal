@@ -10,9 +10,9 @@ namespace Application.Interfaces.LLM
 {
     public interface ILLMFormatter
     {
-        Task<string> FormatMessage(MessageDto request);
-
-        Task<string> FormatAudio(AudioDto request);
+        Task<string> FormatMessage(StringBuilder prompt);
         Task<string> TranscribeAudio(IFormFile audio);
+
+        
     }
 }

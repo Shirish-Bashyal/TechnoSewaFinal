@@ -25,24 +25,7 @@ namespace Application.Helpers.LLM
             _textTokenizer = textTokenizer;
         }
 
-        public async Task<string> FormatAudio(AudioDto request)
-        {
-
-            var question = await TranscribeAudio(request.Audio);
-            var requestModel = new MessageDto()
-            { Question = question };
-            var response = await FormatMessage(requestModel);
-            if (response != null)
-            {
-                return response;
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
-
-        public async Task<string> FormatMessage(MessageDto request)
+        public async Task<string> FormatMessage(StringBuilder prompt)
         {
             var apiKey = _configuration["LLM:ApiKey"];
             var apiModel = _configuration["LLM:ApiModelChat"];
@@ -51,14 +34,7 @@ namespace Application.Helpers.LLM
                .SetTemperature(0.2)  // randomness of response   0 = more deterministic , 1= random
                .SetMaxTokens(256) // limits the output length
                .SetTopP(1) //
-               .SetStop("NONE"); // tells the model when to stop 
-            var dbResponse = await _textTokenizer.GetFinalResponse(request);
-            var matchedKeywords = await _textTokenizer.GetMatchedStrings(request);
-            var prompt = new StringBuilder();
-            var question = request.Question;
-            prompt.AppendLine($"User's Question: {question}");
-            prompt.AppendLine($"Matched Strings: {matchedKeywords}");
-            prompt.AppendLine($"Database Response: {dbResponse}");
+               .SetStop("NONE"); // tells the model when to stop
             var response = await groqClient.CreateChatCompletionAsync(
              new Message
              {

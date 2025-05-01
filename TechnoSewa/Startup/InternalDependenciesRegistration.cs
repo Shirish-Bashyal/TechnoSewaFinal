@@ -1,4 +1,5 @@
 ﻿using Application.Helpers.LLM;
+using Application.Interfaces.Chatbot;
 using Application.Interfaces.Data;
 using Application.Interfaces.LLM;
 using Application.Interfaces.User.Auth;
@@ -22,6 +23,8 @@ namespace TechnoSewa.Startup
             services.AddScoped<IQuestionResponseService, QuestionResponseService>();
             services.AddScoped<ILLMFormatter, LLMFormatter>();
             services.AddScoped<ITextTokenizer, TextTokenizer>();
+            services.AddScoped<IChatbotService, ChatbotService>();
+
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IRoleServices, RoleServices>();

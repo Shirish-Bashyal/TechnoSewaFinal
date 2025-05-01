@@ -1,6 +1,6 @@
 ﻿using Application.DTO.Chatbot;
+using Application.Interfaces.Chatbot;
 using Application.Interfaces.Data;
-using Application.Interfaces.LLM;
 using Application.Response;
 using Domain.Entities.Chatbot;
 using System;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.LLM
+namespace Application.Interfaces.Chatbot
 {
     public interface IQuestionResponseService
     {

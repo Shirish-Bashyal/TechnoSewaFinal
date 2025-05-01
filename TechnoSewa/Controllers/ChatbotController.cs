@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Chatbot;
+using Application.Interfaces.Chatbot;
 using Application.Interfaces.LLM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +10,17 @@ namespace TechnoSewa.Controllers
     [ApiController]
     public class ChatbotController : ControllerBase
     {
-        public readonly ILLMFormatter _llmFormatter;
+        
         private readonly ITextTokenizer _tokenizer;
         private readonly IQuestionResponseService _responseService;
+        private readonly IChatbotService _chatbotService;
 
-        public ChatbotController(ILLMFormatter llmFormatter, ITextTokenizer tokenizer, IQuestionResponseService responseService)
+        public ChatbotController(IChatbotService chatbotService, ITextTokenizer tokenizer, IQuestionResponseService responseService)
         {
-            _llmFormatter = llmFormatter;
+   
             _tokenizer = tokenizer;
             _responseService = responseService;
+            _chatbotService = chatbotService;
         }
 
         [HttpPost]
@@ -26,7 +29,7 @@ namespace TechnoSewa.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _llmFormatter.FormatMessage(question);
+                var result = await _chatbotService.SendMessage(question);
                 return Ok(result);
             }
             else { return BadRequest(); }
@@ -37,7 +40,7 @@ namespace TechnoSewa.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _llmFormatter.FormatAudio(audio);
+                var result = await _chatbotService.SendAudio(audio);
                 return Ok(result);
             }
             else { return BadRequest(); }

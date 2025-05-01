@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Chatbot;
+using Application.Interfaces.Chatbot;
 using Application.Interfaces.LLM;
 using FuzzySharp;
 using Microsoft.EntityFrameworkCore;
