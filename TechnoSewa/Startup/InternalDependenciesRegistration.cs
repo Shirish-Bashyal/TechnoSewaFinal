@@ -1,7 +1,9 @@
-﻿using Application.Interfaces.Data;
+﻿using Application.Interfaces;
+using Application.Interfaces.Data;
 using Application.Interfaces.User.Auth;
 using Application.Interfaces.User.Consumer;
 using Application.Interfaces.User.Role;
+using Application.Services;
 using Application.Services.User.Auth;
 using Application.Services.User.Consumer;
 using Application.Services.User.Role;
@@ -16,6 +18,8 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<ICategoryServices, CategoryServices>();
+
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IRoleServices, RoleServices>();
