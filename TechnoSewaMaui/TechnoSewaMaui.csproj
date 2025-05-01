@@ -59,6 +59,7 @@
 	  <None Remove="Resources\Images\bot.png" />
 	  <None Remove="Resources\Images\cancel.png" />
 	  <None Remove="Resources\Images\fingerprint.png" />
+	  <None Remove="Resources\Images\gallery.png" />
 	  <None Remove="Resources\Images\key.png" />
 	  <None Remove="Resources\Images\mic.png" />
 	  <None Remove="Resources\Images\secure.png" />

@@ -9,6 +9,7 @@ namespace TechnoSewaMaui.Model
     public class ChatMessageModel
     {
         public string Question { get; set;}
+        public ImageSource ImageSource { get; set;}
         public bool IsSentByUser { get; set;}
     }
 }

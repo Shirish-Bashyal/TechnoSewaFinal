@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TechnoSewaMaui.Model
 {
-    public class SendMessageModel
+   public class SendMessageWithImageModel
     {
         public string Question { get; set; }
-       
+        public byte[] ImageFile { get; set; }
+        public string ImageName { get; set; }
     }
 }

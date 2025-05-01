@@ -28,11 +28,28 @@ x:DataType="viewmodel:ChatbotPopupViewModel"
                                Padding="10"
                                HasShadow="False"
                                MaximumWidthRequest="250">
-                                <Border  BackgroundColor="{Binding IsSentByUser, Converter={StaticResource BoolToColorConverter}}" Padding="3,3,3,1" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1.2" StrokeDashOffset="15" >
-                                    <Editor Text="{Binding Question}" FontSize="15"
+                                <Grid RowDefinitions="*,Auto">
+                                    <Border Grid.Row="0" BackgroundColor="{Binding IsSentByUser, Converter={StaticResource BoolToColorConverter}}" Padding="3,3,3,1" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1.2" StrokeDashOffset="15" >
+                                        <Editor Text="{Binding Question}" FontSize="15"
                           BackgroundColor="Transparent" Margin="5,0,0,-10" HorizontalTextAlignment="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
                                  TextColor="Black"/>
-                                </Border>
+                                    </Border>
+                                    <Grid Grid.Row="1" 
+                                          
+                                          IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent}" 
+                                          >
+                                        <Image Source="{Binding ImageSource}"
+                                WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent, Converter={StaticResource BoolToSizeConverter}}"
+                                HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent, Converter={StaticResource BoolToSizeConverter}}"
+                                VerticalOptions="End"
+                                HorizontalOptions="End"
+                                   Margin="5"
+                                BackgroundColor="Transparent"
+   
+                                Aspect="AspectFill"
+                                 />
+                                    </Grid>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -41,14 +58,25 @@ x:DataType="viewmodel:ChatbotPopupViewModel"
 
         </ScrollView>
 
-        <Grid Grid.Row="2"  Padding="10" BackgroundColor="Transparent" >
-            <Frame Padding="4" BackgroundColor="#f0f0f0">
-                <Grid ColumnDefinitions="*,Auto,Auto">
+        <Grid Grid.Row="2" RowDefinitions="Auto,*"  Padding="10" BackgroundColor="Transparent" >
+            <Frame Grid.Row="1" Padding="4" BackgroundColor="#f0f0f0">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto">
                     <Entry Text="{Binding MessageText}" Placeholder="Type a message..." VerticalOptions="Center"/>
                     <ImageButton Source="mic.png" Grid.Column="1"  Command="{Binding SendCommand}" VerticalOptions="Center" HeightRequest="34" WidthRequest="34"/>
-                    <ImageButton Source="send.png" Grid.Column="2"  Command="{Binding SendCommand}" VerticalOptions="Center"  HeightRequest="34" WidthRequest="34"/>
+                    <ImageButton Source="gallery.png" Grid.Column="2"  Command="{Binding PickImageCommand}" VerticalOptions="Center" HeightRequest="34" WidthRequest="34"/>
+                    <ImageButton Source="send.png" Grid.Column="3"  Command="{Binding SendCommand}" VerticalOptions="Center"  HeightRequest="34" WidthRequest="34"/>
                 </Grid>
             </Frame>
+            <Image Grid.Row="0" Source="{Binding PickedImage}"
+           WidthRequest="64"
+           HeightRequest="64"
+           VerticalOptions="End"
+           HorizontalOptions="End"
+          
+           BackgroundColor="White"
+          
+           Aspect="AspectFill"
+           IsVisible="{Binding IsImagePicked}" />
         </Grid>
     </Grid>
 

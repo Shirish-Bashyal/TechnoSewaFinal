@@ -9,6 +9,7 @@
             <converters:BoolToAlignmentConverter x:Key="BoolToAlignmentConverter"/>
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
             <converters:BoolToColumnConverter x:Key="BoolToColumnConverter"/>
+            <converters:BoolToSizeConverter x:Key="BoolToSizeConverter" TrueSize="200" FalseSize="0" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

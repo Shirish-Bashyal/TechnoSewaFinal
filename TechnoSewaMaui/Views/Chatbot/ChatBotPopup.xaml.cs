@@ -15,4 +15,6 @@ public partial class ChatBotPopup : Popup
         var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
         await CloseAsync(false, cts.Token);
     }
+
+  
 }
