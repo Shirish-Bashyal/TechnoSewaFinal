@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ namespace Domain.Entities.User
 {
     public class Technician : DateAuditedEntity<int>
     {
+        public string UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; }
 
         public string SecondPhoneNumber { get; set; }

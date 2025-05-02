@@ -1,6 +1,7 @@
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using TechnoSewa.Configurations;
 using TechnoSewa.Startup;
@@ -13,7 +14,10 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.MapType<DateOnly>(() => new OpenApiSchema { Type = "string", Format = "date" });
+});
 
 //adding DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
