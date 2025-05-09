@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTO.Booking;
+using Application.DTO.Technician;
+using Application.Response;
 
 namespace Application.Interfaces.Bookings
 {
-    public interface IBookingService { }
+    public interface IBookingService
+    {
+        Task<ServiceResponse<object>> SubCategoryBooking(
+            SubCategoryBookingDTO Model,
+            string ConsumerId
+        );
+
+        Task<ServiceResponse<object>> BidBooking(int BidId, string ConsumerId);
+
+        //get bookings for a user,
+    }
 }

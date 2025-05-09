@@ -11,9 +11,9 @@ namespace Domain.Entities.Application
     public class Review : DateAuditedEntity<int>
     {
         public Booking Booking { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
-        public int Rating { get; set; }
+        public double Rating { get; set; }
 
         public bool ByConsumer { get; set; }
     }

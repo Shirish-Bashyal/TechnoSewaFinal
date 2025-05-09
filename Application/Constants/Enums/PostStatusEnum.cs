@@ -10,6 +10,9 @@ namespace Application.Constants.Enums
     {
         Pending = 0,
         Booked = 1,
-        Completed = 2
+        Completed = 2,
+        BidLost = 3,
+        Deleted = 4,
+        Canceled = 5,
     }
 }

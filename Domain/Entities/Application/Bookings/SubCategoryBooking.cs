@@ -29,7 +29,7 @@ namespace Domain.Entities.Application.Bookings
         public int TechnicianId { get; set; }
         public Technician Technician { get; set; }
 
-        public int BookingId { get; set; }
-        public Booking Booking { get; set; }
+        //public int BookingId { get; set; }
+        //public Booking Booking { get; set; }
     }
 }
