@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Constants.Enums;
 using Application.DTO.User.Post;
 using Application.Interfaces.Data;
 using Application.Interfaces.User.Consumer;
@@ -78,7 +79,7 @@ namespace Application.Services.User.Consumer
                         Description = model.Description,
                         Lattitude = model.Lattitude,
                         Longitude = model.Longitude,
-                        // Status = 0,
+                        Status = (int)PostStatusEnum.Pending,
                         User = user,
                         Category = category,
                     };
@@ -240,6 +241,11 @@ namespace Application.Services.User.Consumer
         }
 
         public Task<ServiceResponse<object>> UpdatePost(int PostId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdatePostStatus(int postId, int status)
         {
             throw new NotImplementedException();
         }

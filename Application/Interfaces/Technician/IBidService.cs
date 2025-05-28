@@ -20,5 +20,6 @@ namespace Application.Interfaces.Technician
         Task<ServiceResponse<object>> GetAllForTechnician(string TechnicianUserId);
 
         Task<ServiceResponse<object>> DeleteBid(int BidId);
+        Task UpdateOtherBidsStatusAsLostAsync(int postId, int winningBidId);
     }
 }

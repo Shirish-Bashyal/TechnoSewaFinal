@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Constants.Enums;
 using Application.DTO.Technician;
 using Application.DTO.User.Consumer;
 using Application.DTO.User.Post;
@@ -67,6 +68,7 @@ namespace Application.Services.Technician
                         SolutionDescription = Model.SolutionDescription,
                         Post = post,
                         Technician = technician,
+                        Status = (int)PostStatusEnum.Pending,
                         ServiceDate = Model.ServiceDate
                     };
 
@@ -217,6 +219,18 @@ namespace Application.Services.Technician
                         Message = "No Bid Found"
                     };
                 }
+            }
+        }
+
+        public async Task UpdateOtherBidsStatusAsLostAsync(int postId, int winningBidId)
+        {
+            var otherBids = await _uow.AsyncRepositories<PostBid>()
+                .GetListBySpec(x => x.Post.Id == postId && x.Id != winningBidId);
+
+            foreach (var bid in otherBids)
+            {
+                bid.Status = (int)PostStatusEnum.BidLost;
+                await _uow.AsyncRepositories<PostBid>().UpdateAsync(bid);
             }
         }
     }

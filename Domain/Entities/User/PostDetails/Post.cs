@@ -27,6 +27,6 @@ namespace Domain.Entities.User.PostDetails
 
         public ICollection<PostBid> Bids { get; set; }
 
-        // public int Status { get; set; }
+        public int Status { get; set; }
     }
 }

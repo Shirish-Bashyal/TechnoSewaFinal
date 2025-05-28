@@ -20,7 +20,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("create/technician")]
+        [Route("create")]
         [Authorize]
         public async Task<IActionResult> BecomeTechnician([FromBody] BecomeTechnicianDTO model)
         {

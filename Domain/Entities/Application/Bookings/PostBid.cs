@@ -17,5 +17,6 @@ namespace Domain.Entities.Application.Bookings
 
         public Post Post { get; set; }
         public Technician Technician { get; set; }
+        public int Status { get; set; }
     }
 }

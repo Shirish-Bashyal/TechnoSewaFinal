@@ -2,7 +2,6 @@
 using Application.DTO.Technician;
 using Application.Interfaces.Technician;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechnoSewa.Controllers
@@ -19,7 +18,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("create/Bid")]
+        [Route("create")]
         [Authorize]
         public async Task<IActionResult> CreateBid([FromBody] CreateBidDTO model)
         {
@@ -64,7 +63,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpGet]
-        [Route("get/bids/technician")]
+        [Route("get/bytechnician")]
         [Authorize]
         public async Task<IActionResult> GetAllForTechnician()
         {

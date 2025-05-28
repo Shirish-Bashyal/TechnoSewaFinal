@@ -18,5 +18,6 @@ namespace Application.Interfaces.User.Consumer
         Task<ServiceResponse<object>> DeletePost(int PostId);
 
         Task<ServiceResponse<object>> UpdatePost(int PostId);
+        Task UpdatePostStatus(int postId, int status);
     }
 }

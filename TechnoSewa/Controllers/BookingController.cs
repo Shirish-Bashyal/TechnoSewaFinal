@@ -18,9 +18,9 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("create/booking/subcategory")]
+        [Route("create/subcategoryBooking")]
         [Authorize]
-        public async Task<IActionResult> PostProblem([FromBody] SubCategoryBookingDTO model)
+        public async Task<IActionResult> SubCategoryBooking([FromBody] SubCategoryBookingDTO model)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
@@ -43,6 +43,22 @@ namespace TechnoSewa.Controllers
             else
             {
                 return Unauthorized();
+            }
+        }
+
+        [HttpPost]
+        [Route("create/bidBooking")]
+        [Authorize]
+        public async Task<IActionResult> BidBooking(int bidId)
+        {
+            var result = await _bookingService.BidBooking(bidId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return StatusCode(500, result);
             }
         }
     }
