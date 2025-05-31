@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import PhoneInput from "react-native-phone-input";
-import CountryPicker from "react-native-country-picker-modal";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {  SafeAreaView } from "react-native-safe-area-context";
 
 const phone = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -24,7 +23,7 @@ const phone = () => {
     setCountryPickerVisible(!countryPickerVisible);
   };
   return (
-    <SafeAreaProvider className="h-full bg-white">
+    <SafeAreaView className="h-full bg-white">
       <View className="mt-7 ml-7 text-xl font-rubik-bold">Join us via Phone Number</View>
       <View className="mt-1 ml-7 font-rubik-light">We'll text a code to verify your phone</View>
     <View style={styles.container}>
@@ -48,7 +47,7 @@ const phone = () => {
                   </View></TouchableOpacity>
     </View>
    
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 };
 
