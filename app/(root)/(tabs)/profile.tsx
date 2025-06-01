@@ -27,7 +27,7 @@ const SettingsItem = ({
   >
     <View className="flex flex-row items-center gap-3">
       <Entypo name={icon} size={20} color="black" />
-      <Text className={`text-lg font-rubik-light text-black-300 ${textStyle}`}>
+      <Text className={`text-lg font-rubik-light text-black-300 ${textStyle}`} style={{fontFamily:'rubik'}}>
         {title}
       </Text>
     </View>
@@ -46,7 +46,7 @@ const Profile = () => {
         contentContainerClassName="pb-32 px-7"
       >
         <View className="flex flex-row items-center justify-between rounded-lg  mt-5 p-2 bg-[#E6E6FA] w-full h-12 ">
-          <Text className="text-xl font-rubik-bold ">Profile</Text>
+          <Text className="text-xl font-rubik-bold " style={{fontFamily:'rubik-bold'}}>Profile</Text>
         </View>
         <View className="flex-row gap-10 flex mt-5">
           <View className="flex flex-col items-center relative mt-5">
@@ -57,12 +57,12 @@ const Profile = () => {
             <TouchableOpacity className="absolute bottom-11 right-2">
               <FontAwesome6 name="edit" size={20} color="black" />
             </TouchableOpacity>
-            <Text className="text-2l font-rubik-bold mt-2">Adrian Taxi</Text>
+            <Text className="text-2l font-rubik-bold mt-2" style={{fontFamily:'rubik-bold'}}>Adrian Taxi</Text>
           </View>
           <View className="mt-14 ">
-            <Text className="font-rubik-bold text-base">Username</Text>
-            <Text className="font-outfit-medium">+9779800000000</Text>
-            <Text className="font-outfit-medium">user@gmail.com</Text>
+            <Text className="font-rubik-bold text-base" style={{fontFamily:'rubik-bold'}}>Username</Text>
+            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>+9779800000000</Text>
+            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>user@gmail.com</Text>
           </View>
         </View>
         <View className="flex flex-col mt-10 ">
@@ -87,7 +87,7 @@ const Profile = () => {
          <TouchableOpacity className="mt-2">
         <View className="flex flex-row mt-3 border-t pt-2 border-gray-100 gap-2 ">
           <MaterialIcons name="delete" size={24} color="red" />
-          <Text className="text-lg font-rubik-light text-danger">Delete Account</Text>
+          <Text className="text-lg font-rubik-light text-danger" style={{fontFamily:'rubik'}}>Delete Account</Text>
         </View>
         </TouchableOpacity>
       </ScrollView>

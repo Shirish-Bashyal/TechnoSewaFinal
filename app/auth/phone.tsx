@@ -42,7 +42,7 @@ const phone = () => {
       />
        <TouchableOpacity className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-8 mx-2 "
                >
-                 <View className="text-lg font-rubik-bold text-white text-center">
+                 <View className="text-lg font-rubik-bold text-white text-center" >
                   Next
                   </View></TouchableOpacity>
     </View>

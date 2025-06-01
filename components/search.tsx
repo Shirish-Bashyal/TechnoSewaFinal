@@ -26,7 +26,7 @@ const debouncedSearch = useDebouncedCallback(
           value={search}
           onChangeText={handleSearch}
           placeholder="Search for anything"
-          className="w-full text-sm font-rubik text-black-300"
+          className="w-full text-sm font-rubik mt-1 text-black-300" style={{fontFamily:'outfit-Medium'}}
         />
       </View>
       <TouchableOpacity></TouchableOpacity>
