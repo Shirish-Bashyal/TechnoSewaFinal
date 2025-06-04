@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import PhoneInput from "react-native-phone-input";
 import {  SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from 'expo-router';
 
 const phone = () => {
+  const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -17,6 +19,9 @@ const phone = () => {
       `Phone Number: ${phoneNumber}
         `
     );
+  };
+  const handleOtp = () => {
+    router.push('/auth/otp')
   };
 
   const toggleCountryPicker = () => {
@@ -40,7 +45,7 @@ const phone = () => {
         style={[styles.phoneInput, isFocused && styles.phoneInputFocused]}
           textStyle={styles.phoneInputText} 
       />
-       <TouchableOpacity className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-8 mx-2 "
+       <TouchableOpacity onPress={handleOtp} className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-8 mx-2 "
                >
                  <View className="text-lg font-rubik-bold text-white text-center" >
                   Next
