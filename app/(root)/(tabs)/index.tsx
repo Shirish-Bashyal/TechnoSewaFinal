@@ -139,6 +139,7 @@ export default function Index() {
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
+                  <Link href ="/sign-in">Sign In</Link>
                   View more
                 </Text>
               </TouchableOpacity>
