@@ -13,7 +13,7 @@ const signIn = () => {
     router.push('/auth/phone'); // Routes to /auth/phone
   };
   return (
-    <SafeAreaView className="bg-white h-full">
+    <SafeAreaView className="bg-gray-100 h-full">
       <ScrollView contentContainerClassName="h-full">
         <View className=" w-full flex justify-center items-center" >
         <Image source={images.logo}  style={{

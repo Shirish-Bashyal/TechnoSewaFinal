@@ -22,7 +22,7 @@ const userdetails = () => {
     console.log("data", data);
   };
   return (
-    <SafeAreaView className="h-full bg-white">
+    <SafeAreaView className="h-full bg-gray-100">
       <View className="flex justify-center items-center mt-8">
         <Text
           className="text-lg text-black-300"

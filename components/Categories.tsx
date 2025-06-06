@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useRouter } from "expo-router";
 
 interface SettingsItemProps {
   icon: any;
@@ -34,10 +35,15 @@ const SettingsItem = ({
   </TouchableOpacity>
 );
 const Categories = () => {
+    const router = useRouter();
+   const handleShowCategory = () => {
+     
+      router.push("/category_components/[id]");
+    };
   return (
     <View className="my-5">
       <View className="flex flex-row justify-between ">
-        <SettingsItem icon="plug" title="Electrician" />
+        <SettingsItem icon="plug" title="Electrician" onPress={handleShowCategory}/>
         <SettingsItem icon="tools" title="Plumbing" />
         <SettingsItem icon="broom" title="Cleaner" />
         <SettingsItem icon="paint-roller" title="House Paint" />
@@ -45,6 +51,7 @@ const Categories = () => {
       <View className="flex flex-row gap-12 mt-5 ">
         <SettingsItem icon="car" title="Automobile" />
         <SettingsItem icon="laptop-code" title="Tech Expert" />
+        <SettingsItem icon="question-circle" title="Others" />
        
       </View>
     </View>

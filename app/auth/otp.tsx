@@ -11,7 +11,7 @@ const otp = () => {
     router.push("/auth/userdetails");
   };
   return (
-    <SafeAreaView className="h-full bg-white">
+    <SafeAreaView className="h-full bg-gray-100">
       <View className="mt-7 ml-7">
         <Text className="text-xl" style={{ fontFamily: "rubik-bold" }}>
           Please Enter Otp
