@@ -7,8 +7,11 @@ import Search from "@/components/search";
 import { Card, FeaturedCard } from "@/components/Cards";
 import Entypo from "@expo/vector-icons/Entypo";
 import Categories from "@/components/Categories";
+import { useRouter } from "expo-router";
 
 export default function Index() {
+   const router = useRouter();
+  
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
@@ -139,7 +142,7 @@ export default function Index() {
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
-                  <Link href ="/sign-in">Sign In</Link>
+                   <Text onPress={() => router.push("/sign-in")}>Sign In</Text>
                   View more
                 </Text>
               </TouchableOpacity>

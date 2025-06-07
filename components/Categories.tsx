@@ -40,6 +40,10 @@ const Categories = () => {
      
       router.push("/category_components/[id]");
     };
+     const handleShowProblem = () => {
+     
+      router.push("/Expressproblem/Express-problem");
+    };
   return (
     <View className="my-5">
       <View className="flex flex-row justify-between ">
@@ -51,7 +55,7 @@ const Categories = () => {
       <View className="flex flex-row gap-12 mt-5 ">
         <SettingsItem icon="car" title="Automobile" />
         <SettingsItem icon="laptop-code" title="Tech Expert" />
-        <SettingsItem icon="question-circle" title="Others" />
+        <SettingsItem icon="question-circle" title="Others" onPress={handleShowProblem}/>
        
       </View>
     </View>

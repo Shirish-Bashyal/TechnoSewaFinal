@@ -10,7 +10,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 const servicesComponents = () => {
    const router = useRouter();
   return (
-    <SafeAreaView className="bg-white h-full">
+    <SafeAreaView className="bg-gray-100 h-full">
       <View className="absolute bg-primary-100/70 h-28 flex justify-center top-0 left-0 right-0 z-10">
       <TouchableOpacity
           onPress={router.back}
