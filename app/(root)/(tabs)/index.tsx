@@ -57,7 +57,7 @@ export default function Index() {
                   source={images.avatar}
                   className="!size-12  rounded-full"
                 /> */}
-              <View className="flex flex-row gap-1 items-start ml-2 justify-center">
+              <View className="flex flex-row gap-1 items-start  justify-center">
                 <Text
                   className="text-xl  text-black-300"
                   style={{ fontFamily: "rubik-medium" }}
@@ -72,7 +72,7 @@ export default function Index() {
                 </Text>
               </View>
             </View>
-            <View className="px-2 mt-1 mb-1">
+            <View className=" mt-1 mb-1">
               <Text
                 className="text-base text-black-200"
                 style={{ fontFamily: "rubik-bold" }}

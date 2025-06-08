@@ -19,7 +19,7 @@ const debouncedSearch = useDebouncedCallback(
     debouncedSearch(text);
   };
   return (
-    <View className="flex flex-row items-center justify-between w-[98%] mx-2 px-4 rounded-lg bg-accent-100 border-primary-100 mt-5 py-2">
+    <View className="flex flex-row items-center justify-between w-full mx-1 px-4 rounded-lg bg-accent-100 border-primary-100 mt-5 py-2">
       <View className="flex-1 flex flex-row items-center justify-start z-50">
         <EvilIcons name="search" size={24} color="black" />
         <TextInput
