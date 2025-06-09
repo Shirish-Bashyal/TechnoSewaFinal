@@ -96,6 +96,10 @@ export const Technician = ({ onPress }: Props) => {
   const handleServiceDetails = () => {
     router.push("/auth/userdetails");
   };
+
+  const handleShowAboutTechnician = () => {
+    router.push("/Expressproblem/about-technician");
+  };
   return (
     <TouchableOpacity
       onPress={handleServiceDetails}
@@ -161,8 +165,8 @@ export const Technician = ({ onPress }: Props) => {
           </View>
         </View>
         <TouchableOpacity
-          // onPress={handleLogin}
-          className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-10 py-4 mt-1 "
+          onPress={handleShowAboutTechnician}
+          className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
         >
           <View className="">
             <Text
