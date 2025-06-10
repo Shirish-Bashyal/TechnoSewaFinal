@@ -1,4 +1,12 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Button,
+  TextInput,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Card, FeaturedCard } from "@/components/Cards";
@@ -7,9 +15,8 @@ import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import images from "@/constants/images";
 import Entypo from "@expo/vector-icons/Entypo";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useForm } from "react-hook-form";
-
 
 const aboutTechnician = () => {
   const router = useRouter();
@@ -23,7 +30,7 @@ const aboutTechnician = () => {
     register("datetime", { required: "Date and time are required" });
   }, [register]);
 
-  const onDateChange = (event:any, date:any) => {
+  const onDateChange = (event: any, date: any) => {
     if (date) {
       setSelectedDate(date);
       // Combine with current time
@@ -39,7 +46,7 @@ const aboutTechnician = () => {
     setShowDatePicker(false);
   };
 
-  const onTimeChange = (event:any, time:any) => {
+  const onTimeChange = (event: any, time: any) => {
     if (time) {
       setSelectedTime(time);
       // Combine with selected date
@@ -55,7 +62,7 @@ const aboutTechnician = () => {
     setShowTimePicker(false);
   };
 
-  const onSubmit = (data:any) => {
+  const onSubmit = (data: any) => {
     console.log("Submitted datetime:", data);
   };
   return (
@@ -74,7 +81,7 @@ const aboutTechnician = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    
+
       <View className="flex flex-row gap-4 mt-20 mx-3 items-center">
         <Image
           source={images.avatar}
@@ -179,47 +186,108 @@ const aboutTechnician = () => {
       </View>
       <View className="mt-5 mx-4">
         <Text
-              className="text-base font-rubik text-primary-100"
-              style={{ fontFamily: "rubik-bold" }}
-            >
-              Available Date and Time
-            </Text>
+          className="text-base font-rubik text-primary-100"
+          style={{ fontFamily: "rubik-bold" }}
+        >
+          Available Date and Time
+        </Text>
       </View>
       <View>
-       <View style={{ padding: 20,marginTop:10 }}>
-      <Button title="Pick Date" onPress={() => setShowDatePicker(true)} />
-      <Button title="Pick Time" onPress={() => setShowTimePicker(true)} />
+        <View style={{ padding: 20, marginTop: 10 }}>
+          <View className="flex flex-col gap-4">
+            <Button
+              title="Pick Date"
+              color={"#7A4DFF"}
+              onPress={() => setShowDatePicker(true)}
+            />
+            <Button
+              title="Pick Time"
+              color={"#7A4DFF"}
+              onPress={() => setShowTimePicker(true)}
+            />
+          </View>
+          <View className="flex flex-row gap-3 mt-4">
+            <View className="bg-gray-50  rounded-full flex justify-center flex-col items-center h-auto  px-4 py-1 shadow-black-100 shadow-sm ">
+              <Text
+                className="text-xs font-rubik-bold text-black-300 mt-1"
+                style={{ fontFamily: "rubik-bold" }}
+              >
+                Selected Date:{" "}
+                {`${selectedDate.toLocaleDateString()}`}
+              </Text>
+            </View>
+             <View className="bg-gray-50  rounded-full flex justify-center flex-col items-center h-auto  px-4 py-1 shadow-black-100 shadow-sm ">
+              <Text
+                className="text-xs font-rubik-bold text-black-300 mt-1"
+                style={{ fontFamily: "rubik-bold" }}
+              >
+                Time:{" "}
+                {` ${selectedTime.toLocaleTimeString()}`}
+              </Text>
+            </View>
+          </View>
 
-      <Text style={{ marginTop: 20 }}>
-        Selected:{" "}
-        {`${selectedDate.toLocaleDateString()} ${selectedTime.toLocaleTimeString()}`}
-      </Text>
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              display="default"
+              onChange={onDateChange}
+            />
+          )}
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display="default"
-          onChange={onDateChange}
-        />
-      )}
+          {showTimePicker && (
+            <DateTimePicker
+              value={selectedTime}
+              mode="time"
+              display="default"
+              onChange={onTimeChange}
+              className="!mt-7"
+            />
+          )}
+          <View className="my-3 flex flex-col">
+            <View className=" flex flex-row gap-">
+              <Text
+                className="text-base text-black-300 "
+                style={{ fontFamily: "outfit-light" }}
+              >
+                Total Cost
+              </Text>
+              <Text className="text-red-600 text-base ">*</Text>
+            </View>
+            <TextInput
+              placeholder="500"
+              style={inputStyle}
+              placeholderTextColor="#999"
+              onChangeText={(number) => setValue("Cost", number)}
+              {...register("Cost", {
+                required: "Cost is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Only numeric values are allowed",
+                },
+              })}
+              keyboardType="phone-pad" // opens numeric keyboard with symbols
+              maxLength={10}
+            />
+          </View>
 
-      {showTimePicker && (
-        <DateTimePicker
-          value={selectedTime}
-          mode="time"
-          display="default"
-          onChange={onTimeChange}
-          className="!mt-7"
-        />
-      )}
-
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-    </View>
+          <Button
+            title="Confirm Booking"
+            color={"#7A4DFF"}
+            onPress={handleSubmit(onSubmit)}
+          />
+        </View>
       </View>
-
     </SafeAreaView>
   );
 };
 
 export default aboutTechnician;
+
+const inputStyle = {
+  borderWidth: 1,
+  borderColor: "#ccc",
+  padding: 10,
+  borderRadius: 8,
+};

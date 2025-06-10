@@ -9,14 +9,21 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 const userdetails = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm();
+
+  const handleTech = () => {
+      
+      router.push("/auth/tech");
+    };
 
   const submitHandler = (data: any) => {
     console.log("data", data);
@@ -133,7 +140,7 @@ const userdetails = () => {
             />
           </View>
 
-          <TouchableOpacity className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 ">
+          <TouchableOpacity onPress={handleTech} className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 ">
             <Text className="text-lg font-rubik-bold text-white text-center">
               Next
             </Text>
