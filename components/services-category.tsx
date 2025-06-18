@@ -173,7 +173,7 @@ export const Technician = ({ onPress }: Props) => {
               className="text-xs  text-white text-center"
               style={{ fontFamily: "rubik-bold" }}
             >
-              Book Now
+              Show Details
             </Text>
           </View>
         </TouchableOpacity>
