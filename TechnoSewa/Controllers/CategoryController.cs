@@ -17,7 +17,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpGet]
-        [Route("get/subCategory")]
+        [Route("subcategory")]
         [Authorize]
         public async Task<IActionResult> Get(int categoryId)
         {
