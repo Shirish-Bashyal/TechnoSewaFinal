@@ -6,10 +6,11 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const userdetails = () => {
   const router = useRouter();
@@ -19,11 +20,20 @@ const userdetails = () => {
     setValue,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef<TextInput>(null);
 
+  useEffect(() => {
+    // Register field manually
+    register("password", { required: "Password is required" });
+  }, [register]);
+
+  const onSubmit = (data: any) => {
+    console.log("Form data:", data);
+  };
   const handleTech = () => {
-      
-      router.push("/auth/tech");
-    };
+    router.push("/auth/tech");
+  };
 
   const submitHandler = (data: any) => {
     console.log("data", data);
@@ -100,7 +110,7 @@ const userdetails = () => {
                 className="text-base text-black-300 "
                 style={{ fontFamily: "outfit-light" }}
               >
-                Address
+                City
               </Text>
               <Text className="text-red-600 text-base ">*</Text>
             </View>
@@ -108,8 +118,46 @@ const userdetails = () => {
               placeholder="Butwal"
               style={inputStyle}
               placeholderTextColor="#999"
-              onChangeText={(text) => setValue("Address", text)}
-              {...register("Address", { required: "Address is required" })}
+              onChangeText={(text) => setValue("City", text)}
+              {...register("City", { required: "City is required" })}
+            />
+          </View>
+          <View>
+            <View className="mb-2 flex flex-row gap-">
+              <Text
+                className="text-base text-black-300 "
+                style={{ fontFamily: "outfit-light" }}
+              >
+                Ward NO.
+              </Text>
+              <Text className="text-red-600 text-base ">*</Text>
+            </View>
+            <TextInput
+              placeholder="2"
+              style={inputStyle}
+              keyboardType="phone-pad"
+              maxLength={2}
+              placeholderTextColor="#999"
+              onChangeText={(number) => setValue("ward", number)}
+              {...register("ward", { required: "ward is required" })}
+            />
+          </View>
+          <View>
+            <View className="mb-2 flex flex-row gap-">
+              <Text
+                className="text-base text-black-300 "
+                style={{ fontFamily: "outfit-light" }}
+              >
+                Tole Name
+              </Text>
+              <Text className="text-red-600 text-base ">*</Text>
+            </View>
+            <TextInput
+              placeholder="Tole Name"
+              style={inputStyle}
+              placeholderTextColor="#999"
+              onChangeText={(text) => setValue("Tole", text)}
+              {...register("Tole", { required: "Tole is required" })}
             />
           </View>
 
@@ -140,7 +188,88 @@ const userdetails = () => {
             />
           </View>
 
-          <TouchableOpacity onPress={handleTech} className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 ">
+          <View >
+            <View className="mb-2 flex flex-row gap-">
+              <Text
+                className="text-base text-black-300 "
+                style={{ fontFamily: "outfit-light" }}
+              >
+                Password
+              </Text>
+              <Text className="text-red-600 text-base ">*</Text>
+            </View>
+            <View style={inputStyle}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                ref={passwordRef}
+                secureTextEntry={!showPassword}
+                placeholderTextColor="#999"
+                placeholder="Enter your password"
+                onChangeText={(text) => setValue("password", text)}
+                style={{
+                  flex: 1,
+                  
+                  borderColor: errors.password ? "red" : "#ccc",
+                  padding:2
+                  
+                }}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Text style={{ marginLeft: 10 }}>
+                  {showPassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            {/* {errors.password && (
+        <Text style={{ color: 'red' }}>{errors.password.message}</Text>
+      )}
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
+          </View>
+
+          <View >
+            <View className="mb-2 flex flex-row gap-">
+              <Text
+                className="text-base text-black-300 "
+                style={{ fontFamily: "outfit-light" }}
+              >
+               Confirm Password
+              </Text>
+              <Text className="text-red-600 text-base ">*</Text>
+            </View>
+            <View style={inputStyle}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TextInput
+                ref={passwordRef}
+                secureTextEntry={!showPassword}
+                placeholderTextColor="#999"
+                placeholder=" Confirm Password"
+                onChangeText={(text) => setValue("confirmpassword", text)}
+                style={{
+                  flex: 1,
+                  
+                  borderColor: errors.password ? "red" : "#ccc",
+                  padding:2
+                  
+                }}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Text style={{ marginLeft: 10 }}>
+                  {showPassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            {/* {errors.password && (
+        <Text style={{ color: 'red' }}>{errors.password.message}</Text>
+      )}
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
+          </View>
+
+          <TouchableOpacity
+            onPress={handleTech}
+            className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 "
+          >
             <Text className="text-lg font-rubik-bold text-white text-center">
               Next
             </Text>

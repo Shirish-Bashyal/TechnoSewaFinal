@@ -10,8 +10,8 @@ import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
 
 export default function Index() {
-   const router = useRouter();
-  
+  const router = useRouter();
+
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
@@ -137,13 +137,12 @@ export default function Index() {
               >
                 New Services
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/sign-in")}>
                 <Text
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
-                   <Text onPress={() => router.push("/sign-in")}>Sign In</Text>
-                  View more
+                  Sign In
                 </Text>
               </TouchableOpacity>
             </View>
