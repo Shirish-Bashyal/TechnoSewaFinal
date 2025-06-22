@@ -296,7 +296,7 @@ const userdetails = () => {
       )}
       */}
           </View>
-           <Button title="Submit" onPress={handleSubmit(submitUserData)} />
+           <Button title="Submit" onPress={handleSubmit(submitUserData)} color='#7A4DFF'/>
 
           {/* <TouchableOpacity
             onPress={handleTech}
@@ -320,3 +320,7 @@ const inputStyle = {
   padding: 10,
   borderRadius: 8,
 };
+
+const submit={
+
+}

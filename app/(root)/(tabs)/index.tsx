@@ -68,7 +68,7 @@ export default function Index() {
                   className="text-xl  text-primary-100"
                   style={{ fontFamily: "rubik-bold" }}
                 >
-                  Adrian
+                  User
                 </Text>
               </View>
             </View>
@@ -137,12 +137,12 @@ export default function Index() {
               >
                 New Services
               </Text>
-              <TouchableOpacity onPress={() => router.push("/sign-in")}>
+              <TouchableOpacity >
                 <Text
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
-                  Sign In
+                  View More
                 </Text>
               </TouchableOpacity>
             </View>

@@ -134,7 +134,9 @@ const handlePhoneChange = (number: string) => {
           />
         </View>
         {/* className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-14 py-4 mt-8 mx-2 " */}
-        <Button title="Submit" onPress={handleSubmit(submitUserData)} />
+        <View className="mt-8 mx-3">
+        <Button title="Submit" onPress={handleSubmit(submitUserData)} color='#7A4DFF'/>
+        </View>
 
         {/* <View className="text-lg font-rubik-bold text-white text-center">
             <Text className="text-white" style={{ fontFamily: "rubik-bold" }}>

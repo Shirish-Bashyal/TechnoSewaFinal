@@ -17,12 +17,13 @@ export interface LoginData {
 export interface LoginResponse {
   success: boolean;
   message: string;
-  data?: string;
+  data: string;
 }
 
 export const loginAdmin = async (
   loginData: LoginData
 ): Promise<LoginResponse> => {
+   
   try {
     console.log("Sending login payload:", loginData);
     //   const response = await fetchWithAuth(Login ,{
@@ -35,33 +36,44 @@ export const loginAdmin = async (
     console.log(response);
     return response.data;
   } catch (error: any) {
+    
     console.log("Response data:", error.message);
     const backendMessage = error.message || "Unknown error";
     console.log("Backend error:", backendMessage);
     console.log(error);
 
-    return {
+    return {  
       success: false,
+      data:"error",
       message: "An error occurred while logging in",
     };
   }
 };
 export const useLogin = () => {
+   const router = useRouter();
+   const toast = useToast();
   return useMutation<LoginResponse, Error, LoginData>({
     mutationFn: loginAdmin,
     onSuccess: async (data) => {
       if (data.success) {
-        //  await AsyncStorage.setItem("token", data.data);
+         await AsyncStorage.setItem("token", data.data);
         console.log("Token set in cookie:", AsyncStorage.getItem("token"));
-        Toast.show({
+        toast.show("User logged in Successfully", {
           type: "success",
-          text1: "User logged in successfully",
+          placement: "bottom",
+          duration: 4000,
+          animationType: "slide-in",
         });
+        router.push("/(root)/(tabs)");
+
       } else {
-        Toast.show({
-          type: "error",
-          text1: data.message,
+       toast.show(data.message, {
+          type: "danger",
+          placement: "bottom",
+          duration: 4000,
+          animationType: "slide-in",
         });
+
         console.log(data.message || "Login failed");
       }
     },
@@ -145,7 +157,7 @@ export const useSignUp = () => {
         });
 
         console.log("Successfully Registered");
-        router.replace("/auth/tech");  // ✅ navigate after success
+        router.replace("/auth/tech");  
       } else {
         toast.show(data.message || "Registration failed", {
           type: "danger",
