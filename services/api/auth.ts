@@ -1,11 +1,13 @@
-import { useMutation} from "@tanstack/react-query";
-import Toast from 'react-native-toast-message';
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 import axiosInstance from "../axiosInstance";
+// import  { fetchWithAuth } from "../axiosInstance";
 import { API_ENDPOINTS } from "../endPoints";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useToast } from "react-native-toast-notifications";
+import { useRouter } from "expo-router";
 
-const { Login} = API_ENDPOINTS;
-
+const { Login, Signup } = API_ENDPOINTS;
 
 export interface LoginData {
   phoneNumber: string;
@@ -22,19 +24,22 @@ export const loginAdmin = async (
   loginData: LoginData
 ): Promise<LoginResponse> => {
   try {
-  //   const response = await fetchWithAuth(Login ,{
-  //   method: 'POST',
-  //   headers: { 'content-type': 'application/json' },
-  //   body: JSON.stringify(loginData),
-  // });
+    console.log("Sending login payload:", loginData);
+    //   const response = await fetchWithAuth(Login ,{
+    //   method: 'POST',
+    //   headers: { 'content-type': 'application/json' },
+    //   body: JSON.stringify(loginData),
+    // });
+
     const response = await axiosInstance.post(Login, loginData);
     console.log(response);
     return response.data;
-  } catch (error:any) {
-    const backendMessage = error.response?.message || "Unknown error";
+  } catch (error: any) {
+    console.log("Response data:", error.message);
+    const backendMessage = error.message || "Unknown error";
     console.log("Backend error:", backendMessage);
-    console.log(error)
-   
+    console.log(error);
+
     return {
       success: false,
       message: "An error occurred while logging in",
@@ -44,24 +49,119 @@ export const loginAdmin = async (
 export const useLogin = () => {
   return useMutation<LoginResponse, Error, LoginData>({
     mutationFn: loginAdmin,
-    onSuccess: async(data) => {
-      if (data.success && data.data) {
-       await AsyncStorage.setItem("token", data.data);
+    onSuccess: async (data) => {
+      if (data.success) {
+        //  await AsyncStorage.setItem("token", data.data);
         console.log("Token set in cookie:", AsyncStorage.getItem("token"));
         Toast.show({
-          type:'success',
+          type: "success",
           text1: "User logged in successfully",
-        })
+        });
       } else {
         Toast.show({
-          type:'error',
+          type: "error",
           text1: data.message,
-        })
+        });
         console.log(data.message || "Login failed");
       }
     },
     onError: (error: any) => {
       console.error("Login error:", error);
+    },
+  });
+};
+
+//Register
+export interface SignUpResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface SignUpData {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phoneNumber: string;
+  city: string;
+  wardNo: number;
+  toleName: string;
+}
+
+export const SignUpAdmin = async (
+  formData: SignUpData
+): Promise<SignUpResponse> => {
+  try {
+    console.log("Sending login payload:", formData);
+    //   const response = await fetchWithAuth(Signup,{
+    //   method: 'POST',
+    //   headers: { 'content-type': 'application/json' },
+    //   body: JSON.stringify(formData),
+    // });
+    const response = await axiosInstance.post(Signup, formData);
+    console.log(response.data);
+    console.log("ok");
+
+    return response.data;
+  } catch (error: any) {
+    console.error("An error occurred during signup:", error);
+
+    let errorMessage = "An unknown error occurred while registering user";
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (error && typeof error === "object" && error.message) {
+      errorMessage = error.message;
+    }
+    return {
+      success: false,
+      message: "An error occurred while registering admin",
+    };
+  }
+};
+
+export const useSignUp = () => {
+  const router = useRouter();
+  const toast = useToast();
+  return useMutation<SignUpResponse, Error, SignUpData>({
+    mutationFn: SignUpAdmin,
+    onSuccess: (data) => {
+      // if (data.message === "User already exists") {
+      //   //  Toast.show({
+      //   //   type:'success',
+      //   //   text1: "User logged in successfully",
+      //   // })
+      //   // console.log(data.message);
+      //   toast.error("User already exists");
+      // } else
+      // if (data.success) {
+
+      if (data.success) {
+        toast.show("User Registered Successfully", {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          animationType: "slide-in",
+        });
+
+        console.log("Successfully Registered");
+        router.replace("/auth/tech");  // ✅ navigate after success
+      } else {
+        toast.show(data.message || "Registration failed", {
+          type: "danger",
+          placement: "bottom",
+        });
+      }
+    },
+    onError: (error) => {
+      console.error("An error occurred during signup:", error);
+
+      let errorMessage = "An unknown error occurred while registering user";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      console.log("An error occurred while registering user", error);
     },
   });
 };

@@ -10,7 +10,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { SignUpData, useSignUp } from "@/services/api/auth";
+// import { Toaster } from 'react-hot-toast';
+
+type FormValues = {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  phoneNumber: string;
+  city: string;
+  wardNo: number;
+  toleName: string;
+};
 
 const userdetails = () => {
   const router = useRouter();
@@ -19,7 +32,8 @@ const userdetails = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
+  const { mutate } = useSignUp();
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<TextInput>(null);
 
@@ -31,6 +45,11 @@ const userdetails = () => {
   const onSubmit = (data: any) => {
     console.log("Form data:", data);
   };
+
+   const submitUserData = async (data: SignUpData) => {
+      console.log("ok");
+      mutate(data);
+    };
   const handleTech = () => {
     router.push("/auth/tech");
   };
@@ -40,6 +59,7 @@ const userdetails = () => {
   };
   return (
     <SafeAreaView className="h-full bg-gray-100">
+
       <View className="flex justify-center items-center mt-8">
         <Text
           className="text-lg text-black-300"
@@ -47,6 +67,7 @@ const userdetails = () => {
         >
           Welcome to Techno Sewa!!
         </Text>
+         {/* <Toaster position="bottom-center" reverseOrder={false} /> */}
       </View>
       <View className="mt-1 text-sm flex justify-center items-center">
         <Text className="text-black-200" style={{ fontFamily: "rubik" }}>
@@ -118,8 +139,8 @@ const userdetails = () => {
               placeholder="Butwal"
               style={inputStyle}
               placeholderTextColor="#999"
-              onChangeText={(text) => setValue("City", text)}
-              {...register("City", { required: "City is required" })}
+              onChangeText={(text) => setValue("city", text)}
+              {...register("city", { required: "city is required" })}
             />
           </View>
           <View>
@@ -138,8 +159,8 @@ const userdetails = () => {
               keyboardType="phone-pad"
               maxLength={2}
               placeholderTextColor="#999"
-              onChangeText={(number) => setValue("ward", number)}
-              {...register("ward", { required: "ward is required" })}
+              onChangeText={(text) => setValue("wardNo", Number(text))}
+              {...register("wardNo", { required: "ward is required" })}
             />
           </View>
           <View>
@@ -156,8 +177,8 @@ const userdetails = () => {
               placeholder="Tole Name"
               style={inputStyle}
               placeholderTextColor="#999"
-              onChangeText={(text) => setValue("Tole", text)}
-              {...register("Tole", { required: "Tole is required" })}
+              onChangeText={(text) => setValue("toleName", text)}
+              {...register("toleName", { required: "Tole is required" })}
             />
           </View>
 
@@ -188,7 +209,7 @@ const userdetails = () => {
             />
           </View>
 
-          <View >
+          <View>
             <View className="mb-2 flex flex-row gap-">
               <Text
                 className="text-base text-black-300 "
@@ -199,27 +220,32 @@ const userdetails = () => {
               <Text className="text-red-600 text-base ">*</Text>
             </View>
             <View style={inputStyle}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                ref={passwordRef}
-                secureTextEntry={!showPassword}
-                placeholderTextColor="#999"
-                placeholder="Enter your password"
-                onChangeText={(text) => setValue("password", text)}
-                style={{
-                  flex: 1,
-                  
-                  borderColor: errors.password ? "red" : "#ccc",
-                  padding:2
-                  
-                }}
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Text style={{ marginLeft: 10 }}>
-                  {showPassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />}
-                </Text>
-              </TouchableOpacity>
-            </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  ref={passwordRef}
+                  secureTextEntry={!showPassword}
+                  placeholderTextColor="#999"
+                  placeholder="Enter your password"
+                  onChangeText={(text) => setValue("password", text)}
+                  style={{
+                    flex: 1,
+
+                    borderColor: errors.password ? "red" : "#ccc",
+                    padding: 2,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Text style={{ marginLeft: 10 }}>
+                    {showPassword ? (
+                      <FontAwesome name="eye-slash" size={20} color="black" />
+                    ) : (
+                      <FontAwesome name="eye" size={20} color="black" />
+                    )}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
             {/* {errors.password && (
         <Text style={{ color: 'red' }}>{errors.password.message}</Text>
@@ -227,53 +253,59 @@ const userdetails = () => {
       <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
           </View>
 
-          <View >
+          <View>
             <View className="mb-2 flex flex-row gap-">
               <Text
                 className="text-base text-black-300 "
                 style={{ fontFamily: "outfit-light" }}
               >
-               Confirm Password
+                Confirm Password
               </Text>
               <Text className="text-red-600 text-base ">*</Text>
             </View>
             <View style={inputStyle}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TextInput
-                ref={passwordRef}
-                secureTextEntry={!showPassword}
-                placeholderTextColor="#999"
-                placeholder=" Confirm Password"
-                onChangeText={(text) => setValue("confirmpassword", text)}
-                style={{
-                  flex: 1,
-                  
-                  borderColor: errors.password ? "red" : "#ccc",
-                  padding:2
-                  
-                }}
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Text style={{ marginLeft: 10 }}>
-                  {showPassword ? <FontAwesome name="eye-slash" size={20} color="black" /> : <FontAwesome name="eye" size={20} color="black" />}
-                </Text>
-              </TouchableOpacity>
-            </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TextInput
+                  ref={passwordRef}
+                  secureTextEntry={!showPassword}
+                  placeholderTextColor="#999"
+                  placeholder=" Confirm Password"
+                  onChangeText={(text) => setValue("confirmPassword", text)}
+                  style={{
+                    flex: 1,
+
+                    borderColor: errors.password ? "red" : "#ccc",
+                    padding: 2,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Text style={{ marginLeft: 10 }}>
+                    {showPassword ? (
+                      <FontAwesome name="eye-slash" size={20} color="black" />
+                    ) : (
+                      <FontAwesome name="eye" size={20} color="black" />
+                    )}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
             {/* {errors.password && (
         <Text style={{ color: 'red' }}>{errors.password.message}</Text>
       )}
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} /> */}
+      */}
           </View>
+           <Button title="Submit" onPress={handleSubmit(submitUserData)} />
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleTech}
             className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 "
           >
             <Text className="text-lg font-rubik-bold text-white text-center">
               Next
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </SafeAreaView>

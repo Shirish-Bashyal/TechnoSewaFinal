@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastProvider } from 'react-native-toast-notifications'
 
 const queryClient = new QueryClient();
 
@@ -30,9 +31,11 @@ export default function RootLayout() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ToastProvider>
         <PaperProvider>
           <Stack screenOptions={{ headerShown: false }} />;
         </PaperProvider>
+        </ToastProvider>
       </QueryClientProvider>
     </>
   );

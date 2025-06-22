@@ -1,10 +1,16 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = "https://ddc7-2400-1a00-bb20-2162-68cc-88c1-24f6-a67b.ngrok-free.app/";
+// const baseURL = "https://7d84-2400-1a00-bb20-2162-c1e-e86f-846f-a11c.ngrok-free.app/";
+const baseURL = "https://localhost:44335";
+// const baseURL = "https://192.168.1.71:44335"
+// const baseURL = "https://10.0.2.2:44335"
+ 
+
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
+  headers: { "Content-Type": "application/json" },
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
