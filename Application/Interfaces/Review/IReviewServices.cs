@@ -12,5 +12,7 @@ namespace Application.Interfaces.Review
     public interface IReviewServices
     {
         Task<ServiceResponse<object>> CreateReview(CreateReviewDTO Model);
+
+        Task<ServiceResponse<GetReviewDTO>> GetForTechnician(int TechnicianId);
     }
 }

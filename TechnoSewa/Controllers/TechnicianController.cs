@@ -19,6 +19,8 @@ namespace TechnoSewa.Controllers
             _technicianService = technicianService;
         }
 
+        //get technician api
+
         [HttpPost]
         [Route("create")]
         [Authorize]
@@ -45,6 +47,27 @@ namespace TechnoSewa.Controllers
             else
             {
                 return Unauthorized();
+            }
+        }
+
+        [HttpGet]
+        [Route("available")]
+        [Authorize]
+        public async Task<IActionResult> FilterAvailableByDateAndTime(
+            [FromQuery] GetByFilterDTO model
+        )
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _technicianService.GetByFilter(model);
+                if (result.Success)
+                    return Ok(result);
+                else
+                    return StatusCode(500, result);
+            }
+            else
+            {
+                return BadRequest("Enter Valid Data");
             }
         }
     }

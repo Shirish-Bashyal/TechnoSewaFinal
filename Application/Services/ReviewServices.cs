@@ -49,5 +49,28 @@ namespace Application.Services
                 return new ServiceResponse<object> { Success = false, Message = "Operation Error" };
             }
         }
+
+        public async Task<ServiceResponse<GetReviewDTO>> GetForTechnician(int TechnicianId)
+        {
+            var reviews = await _uow.AsyncRepositories<Review>()
+                .GetListBySpec(x =>
+                    x.ByConsumer
+                    && (
+                        (x.Booking.SubCategoryBooking.TechnicianId == TechnicianId)
+                        || (x.Booking.PostBid.Technician.Id == TechnicianId)
+                    )
+                );
+            if (reviews == null)
+            {
+                return new ServiceResponse<GetReviewDTO> { Success = false, };
+            }
+            var result = new GetReviewDTO
+            {
+                AverageRating = reviews.Average(x => x.Rating),
+                Reviews = reviews.Select(x => x.Comment).ToList()
+            };
+
+            return new ServiceResponse<GetReviewDTO> { Success = true, Data = result };
+        }
     }
 }

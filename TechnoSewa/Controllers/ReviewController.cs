@@ -39,5 +39,13 @@ namespace TechnoSewa.Controllers
                 return StatusCode(500, result);
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        [Route("technician")]
+        public async Task<IActionResult> TechnicianReviews(int TechnicianId)
+        {
+            return Ok();
+        }
     }
 }

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTO.Review;
 using Application.DTO.Technician;
 using Application.Interfaces.Data;
+using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Role;
 using Application.Response;
+using Domain.Entities.Application.Bookings;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
 using Microsoft.AspNetCore.Identity;
@@ -19,16 +23,19 @@ namespace Application.Services.Technician
         private readonly IUnitOfWork _uow;
         private readonly IRoleServices _roleServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IReviewServices _reviewServices;
 
         public TechnicianService(
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
-            IRoleServices roleServices
+            IRoleServices roleServices,
+            IReviewServices reviewServices
         )
         {
             _uow = uow;
             _userManager = userManager;
             _roleServices = roleServices;
+            _reviewServices = reviewServices;
         }
 
         public async Task<ServiceResponse<object>> BecomeTechnician(
@@ -77,6 +84,53 @@ namespace Application.Services.Technician
             {
                 return new ServiceResponse<object> { Message = "User not found", Success = false, };
             }
+        }
+
+        public async Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model)
+        {
+            var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
+            {
+                x => x.User
+            };
+
+            var availableTechnician =
+                await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                    .GetListWithIncludeAndFilter(
+                        includes,
+                        x =>
+                            !x.TechnicianBookings.Any(b =>
+                                b.ServiceDate == model.Date && b.TimeFrame.Id == model.TimeFrameEnum
+                            )
+                    );
+
+            //rank these technicians based on the locations
+
+
+            var result = availableTechnician
+                .Take(5)
+                .Select(x => new GetTechnicianDetailsDTO
+                {
+                    TechnicianId = x.Id,
+                    Name = x.User.UserName,
+                    //PhoneNumber = x.User.PhoneNumber,
+                    Reviews = new List<GetReviewDTO>()
+                })
+                .ToList();
+
+            var reviewTasks = result.Select(async technician =>
+            {
+                var reviewResponse = await _reviewServices.GetForTechnician(
+                    technician.TechnicianId
+                );
+                if (reviewResponse.Data != null)
+                {
+                    technician.Reviews.Add(reviewResponse.Data);
+                }
+            });
+
+            await Task.WhenAll(reviewTasks); // Await all in parallel
+
+            return new ServiceResponse<object> { Success = true, Data = result };
         }
     }
 }

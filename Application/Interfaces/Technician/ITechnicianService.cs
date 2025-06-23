@@ -12,5 +12,8 @@ namespace Application.Interfaces.Technician
     public interface ITechnicianService
     {
         Task<ServiceResponse<object>> BecomeTechnician(BecomeTechnicianDTO model, string userId);
+
+        //
+        Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model);
     }
 }
