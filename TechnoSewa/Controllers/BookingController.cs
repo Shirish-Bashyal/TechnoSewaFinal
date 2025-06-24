@@ -61,5 +61,43 @@ namespace TechnoSewa.Controllers
                 return StatusCode(500, result);
             }
         }
+
+        [HttpGet]
+        [Route("all/consumer")]
+        [Authorize]
+        public async Task<IActionResult> GetConsumerBooking()
+        {
+            string consumerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (consumerId != null)
+            {
+                var result = await _bookingService.GetAllForConsumer(consumerId);
+
+                return Ok(result);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        [HttpGet]
+        [Route("all/Technician")]
+        [Authorize]
+        public async Task<IActionResult> GetTechnicianBooking()
+        {
+            string technicianId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (technicianId != null)
+            {
+                //call the service to get the result
+
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

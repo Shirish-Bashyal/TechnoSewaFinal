@@ -16,6 +16,8 @@ namespace Application.DTO.Technician
 
         // public string PhoneNumber { get; set; }
 
+        public Double Distance { get; set; }
+
         public List<GetReviewDTO>? Reviews { get; set; }
 
         //  public double Distance { get; set; }

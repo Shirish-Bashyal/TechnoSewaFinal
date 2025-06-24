@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Constants.Enums;
 using Application.DTO.Booking;
+using Application.DTO.Booking.Consumer;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Data;
 using Application.Interfaces.Technician;
@@ -71,6 +72,168 @@ namespace Application.Services.Bookings
                 };
             }
             return new ServiceResponse<object> { Message = "Booking Failure", Success = false, };
+        }
+
+        public async Task<ServiceResponse<object>> GetAllForConsumer(string ConsumerId)
+        {
+            var includes = new Expression<Func<Booking, object>>[]
+            {
+                x => x.SubCategoryBooking,
+                x => x.PostBid,
+                x => x.SubCategoryBooking.SubCategory,
+                x => x.SubCategoryBooking.TimeFrame,
+                x => x.SubCategoryBooking.Technician,
+                x => x.SubCategoryBooking.Technician.User,
+                x => x.PostBid.Post,
+                x => x.PostBid.Technician,
+                x => x.PostBid.Technician.User
+            };
+            var bookings = await _uow.AsyncRepositories<Booking>()
+                .GetListWithIncludeAndFilter(
+                    includes,
+                    x =>
+                        (
+                            x.SubCategoryBooking != null
+                            && x.SubCategoryBooking.ConsumerId == ConsumerId
+                        )
+                        || (
+                            x.PostBid != null
+                            && x.PostBid.Post != null
+                            && x.PostBid.Post.User != null
+                            && x.PostBid.Post.User.Id == ConsumerId
+                        )
+                );
+
+            var activeBookings = bookings
+                .Where(x => x.Status == (int)PostStatusEnum.Booked)
+                .Select(a => new ActiveBookingsDTO
+                {
+                    BookingId = a.Id,
+                    TechnicianName =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.Technician.User.UserName
+                            : a.SubCategoryBooking.Technician.User.UserName,
+                    Price =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.EstimationPrice
+                            : a.SubCategoryBooking.SubCategory.Price,
+                    ServiceDate =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.ServiceDate
+                            : a.SubCategoryBooking.ServiceDate,
+                    TimeFrame =
+                        a.SubCategoryBooking != null ? a.SubCategoryBooking.TimeFrame : null,
+                    Lattitude =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.Lattitude
+                            : a.PostBid.Post.Lattitude,
+                    Longitude =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.Longitude
+                            : a.PostBid.Post.Longitude,
+                    Title =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.SubCategory.Title
+                            : a.PostBid.Post.Title
+                })
+                .ToList();
+
+            var completedBookings = bookings
+                .Where(x => x.Status == (int)PostStatusEnum.Completed)
+                .Select(a => new CompletedBookingsDTO
+                {
+                    BookingId = a.Id,
+                    TechnicianName =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.Technician.User.UserName
+                            : a.SubCategoryBooking.Technician.User.UserName,
+                    Price =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.EstimationPrice
+                            : a.SubCategoryBooking.SubCategory.Price,
+                    ServiceDate =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.ServiceDate
+                            : a.SubCategoryBooking.ServiceDate,
+                    TimeFrame =
+                        a.SubCategoryBooking != null ? a.SubCategoryBooking.TimeFrame : null,
+                    Lattitude =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.Lattitude
+                            : a.PostBid.Post.Lattitude,
+                    Longitude =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.Longitude
+                            : a.PostBid.Post.Longitude,
+                    Title =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.SubCategory.Title
+                            : a.PostBid.Post.Title
+                })
+                .ToList();
+
+            var postIncludes = new Expression<Func<Post, object>>[] { x => x.Bids };
+
+            var pendingPost = await _uow.AsyncRepositories<Post>()
+                .GetListWithIncludeAndFilter(
+                    postIncludes,
+                    x => x.Status == (int)PostStatusEnum.Pending
+                );
+
+            var pendingBookings = pendingPost
+                .Select(x => new PendingBookingsDTO
+                {
+                    PostDetails = new DTO.User.Post.PostResponseDTO
+                    {
+                        Category = x.Category.Name,
+                        Description = x.Description,
+                        Lattitude = x.Lattitude,
+                        Longitude = x.Longitude,
+
+                        Title = x.Title,
+                    },
+                    PostBids = x.Bids.Select(a => new DTO.User.Consumer.GetBidDTO
+                    {
+                        BidId = a.Id,
+                        ServiceDate = a.ServiceDate,
+                        SolutionDescription = a.SolutionDescription,
+                        EstimationPrice = a.EstimationPrice,
+                        TechnicianId = a.Technician.Id,
+                        TechnicianName = a.Technician.User.UserName
+                    })
+                        .ToList(),
+                })
+                .ToList();
+
+            return new ServiceResponse<object>
+            {
+                Data = new GetConsumerBookingsDTO
+                {
+                    ActiveBookings = activeBookings,
+                    CompletedBookings = completedBookings,
+                    PendingBookings = pendingBookings
+                },
+                Message = "",
+                Success = true,
+            };
+            //throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<object>> GetAllForTechnician(int TechnicianId)
+        {
+            var includes = new Expression<Func<Booking, object>>[]
+            {
+                x => x.SubCategoryBooking,
+                x => x.PostBid,
+            };
+            var result = await _uow.AsyncRepositories<Booking>()
+                .GetListWithIncludeAndFilter(
+                    includes,
+                    x =>
+                        (x.SubCategoryBooking.TechnicianId == TechnicianId)
+                        || (x.PostBid.Technician.Id == TechnicianId)
+                );
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<object>> SubCategoryBooking(

@@ -9,5 +9,8 @@ namespace Application.DTO.Technician
     public class BecomeTechnicianDTO
     {
         public string SecondPhoneNumber { get; set; }
+
+        public Double Latitude { get; set; }
+        public Double Longitude { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.DTO.Review;
 using Application.DTO.Technician;
+using Application.Helper;
 using Application.Interfaces.Data;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
@@ -49,7 +50,9 @@ namespace Application.Services.Technician
                 var tech = new Domain.Entities.User.Technician
                 {
                     SecondPhoneNumber = model.SecondPhoneNumber,
-                    User = user
+                    User = user,
+                    Latitude = model.Latitude,
+                    Longitude = model.Longitude,
                 };
                 //change the role of user
                 var technicianData = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
@@ -107,15 +110,22 @@ namespace Application.Services.Technician
 
 
             var result = availableTechnician
-                .Take(5)
                 .Select(x => new GetTechnicianDetailsDTO
                 {
                     TechnicianId = x.Id,
                     Name = x.User.UserName,
+                    Distance = HaversineAlgo.Haversine(
+                        model.Latitude,
+                        model.Longitude,
+                        x.Latitude,
+                        x.Longitude
+                    ),
                     //PhoneNumber = x.User.PhoneNumber,
                     Reviews = new List<GetReviewDTO>()
                 })
-                .ToList();
+                .OrderBy(x => x.Distance)
+                .Take(10)
+                .ToList(); //order by distance in kilometers
 
             var reviewTasks = result.Select(async technician =>
             {
