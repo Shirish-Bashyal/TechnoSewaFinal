@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /TechnoSewa/Uploads
+/.expo
+/expo-env.d.ts
