@@ -1,15 +1,48 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OtpInput } from "react-native-otp-entry";
 import { useRouter } from "expo-router";
+import { useForm } from "react-hook-form";
+import PhoneInput from "react-native-phone-input";
+import { useVerifyOtp, verifyData } from "@/services/api/auth";
+
+type FormValues = {
+  phoneNumber: string;
+  otp: string;
+};
 
 const otp = () => {
   const router = useRouter();
+  const { register, handleSubmit, setValue } = useForm<FormValues>();
+  const phoneInputRef = useRef<PhoneInput>(null);
+  const [countryPickerVisible, setCountryPickerVisible] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const { mutate } = useVerifyOtp();
 
   const handleUserDetails = () => {
     router.push("/auth/userdetails");
   };
+
+  const submitUserData = async (data: verifyData) => {
+    console.log("ok");
+    mutate(data);
+  };
+  useEffect(() => {
+    register("phoneNumber", { required: "Phone number is required" });
+    register("otp", { required: "Otp is required" });
+  }, [register]);
+
+  const handlePhoneChange = (number: string) => {
+    const countryCode = phoneInputRef.current?.getCountryCode();
+    const localNumber = number.replace(`+${countryCode}`, "");
+    setValue("phoneNumber", localNumber);
+  };
+
+  const toggleCountryPicker = () => {
+    setCountryPickerVisible(!countryPickerVisible);
+  };
+
   return (
     <SafeAreaView className="h-full bg-gray-100">
       <View className="mt-7 ml-7">
@@ -23,18 +56,44 @@ const otp = () => {
           We'll text a code to verify your phone{" "}
         </Text>
       </View>
+      <View className="mx-4 mt-4">
+        <View className="mb-2 flex flex-row gap-0.5 ">
+          <Text
+            className="text-base text-black-300 "
+            style={{ fontFamily: "outfit-light" }}
+          >
+            Phone Number
+          </Text>
+          <Text className="text-red-600 text-base ">*</Text>
+        </View>
+        <View style={styles.phoneContainer}>
+          <PhoneInput
+            ref={phoneInputRef}
+            initialCountry="np"
+            onChangePhoneNumber={handlePhoneChange}
+            textProps={{
+              placeholder: "Phone number",
+              onFocus: () => setIsFocused(true),
+              onBlur: () => setIsFocused(false),
+            }}
+            onPressFlag={toggleCountryPicker}
+            style={[styles.phoneInput, isFocused && styles.phoneInputFocused]}
+            textStyle={styles.phoneInputText}
+          />
+        </View>
+      </View>
       <View>
         <OtpInput
           numberOfDigits={4}
           focusColor="#7A4DFF"
-          onTextChange={(text) => console.log(text)}
+          onTextChange={(text) => setValue("otp", text)}
           theme={{
             containerStyle: styles.container,
           }}
         />
       </View>
       <View className="mt-24">
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={handleUserDetails}
           className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-18 mx-2 "
         >
@@ -47,7 +106,14 @@ const otp = () => {
               Confirm
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <View className="mt-8 mx-3">
+          <Button
+            title="Submit"
+            onPress={handleSubmit(submitUserData)}
+            color="#7A4DFF"
+          />
+        </View>
 
         <TouchableOpacity className="mt-5">
           <Text
@@ -69,5 +135,24 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 15,
     paddingHorizontal: 20,
+  },
+  phoneContainer: {
+    flex: 1,
+    marginTop: 5,
+  },
+  phoneInput: {
+    height: 45,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  phoneInputFocused: {
+    borderWidth: 1,
+  },
+  phoneInputText: {
+    borderWidth: 0,
   },
 });

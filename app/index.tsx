@@ -29,45 +29,41 @@ const signIn = () => {
   const { mutate } = useLogin();
 
   const phoneInputRef = useRef<PhoneInput>(null);
-
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
   const [countryPickerVisible, setCountryPickerVisible] = useState(false);
 
-  const handleOtp = () => {
-    Alert.alert(
-      "Form Submitted",
-      `Phone Number: ${phoneNumber}
-              `
-    );
-    router.push("/auth/otp");
-  };
+  // const handleOtp = () => {
+  //   Alert.alert(
+  //     "Form Submitted",
+  //     `Phone Number: ${phoneNumber}
+  //             `
+  //   );
+  //   router.push("/auth/otp");
+  // };
 
   const toggleCountryPicker = () => {
     setCountryPickerVisible(!countryPickerVisible);
   };
 
-  const handleLogin = () => {
-    router.push("/auth/phone"); // Routes to /auth/phone
-  };
 
   const handleRegister = () => {
     router.push("/auth/register");
   };
+  
   const submitUserData = async (data: LoginData) => {
     console.log("ok");
     mutate(data);
   };
   useEffect(() => {
-  register("phoneNumber", { required: "Phone number is required" });
-  register("password", { required: "Password is required" });
-}, [register]);
+    register("phoneNumber", { required: "Phone number is required" });
+    register("password", { required: "Password is required" });
+  }, [register]);
 
-const handlePhoneChange = (number: string) => {
+  const handlePhoneChange = (number: string) => {
     const countryCode = phoneInputRef.current?.getCountryCode();
-    const localNumber = number.replace(`+${countryCode}`, '');
-    setValue('phoneNumber', localNumber);
+    const localNumber = number.replace(`+${countryCode}`, "");
+    setValue("phoneNumber", localNumber);
   };
   return (
     <SafeAreaView className="bg-gray-100 h-full">
@@ -88,7 +84,7 @@ const handlePhoneChange = (number: string) => {
             Welcome to Techno Sewa
           </Text>
         </View>
-        <View className="mx-4">
+        <View className="mx-4 mt-4">
           <View className="mb-2 flex flex-row gap-0.5 ">
             <Text
               className="text-base text-black-300 "
@@ -100,15 +96,14 @@ const handlePhoneChange = (number: string) => {
           </View>
           <View style={styles.container}>
             <PhoneInput
-             ref={phoneInputRef}
-        initialCountry="np"
-        onChangePhoneNumber={handlePhoneChange}
+              ref={phoneInputRef}
+              initialCountry="np"
+              onChangePhoneNumber={handlePhoneChange}
               textProps={{
                 placeholder: "Phone number",
                 onFocus: () => setIsFocused(true),
                 onBlur: () => setIsFocused(false),
               }}
-              
               onPressFlag={toggleCountryPicker}
               style={[styles.phoneInput, isFocused && styles.phoneInputFocused]}
               textStyle={styles.phoneInputText}
@@ -116,7 +111,7 @@ const handlePhoneChange = (number: string) => {
           </View>
         </View>
 
-        <View className="mx-4">
+        <View className="mx-4 mt-16">
           <View className="mb-2 flex flex-row gap-">
             <Text
               className="text-base text-black-300 "
@@ -135,7 +130,11 @@ const handlePhoneChange = (number: string) => {
         </View>
         {/* className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-14 py-4 mt-8 mx-2 " */}
         <View className="mt-8 mx-3">
-        <Button title="Submit" onPress={handleSubmit(submitUserData)} color='#7A4DFF'/>
+          <Button
+            title="Submit"
+            onPress={handleSubmit(submitUserData)}
+            color="#7A4DFF"
+          />
         </View>
 
         {/* <View className="text-lg font-rubik-bold text-white text-center">

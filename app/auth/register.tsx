@@ -12,7 +12,7 @@ const register = () => {
         router.push('/auth/phone'); // Routes to /auth/phone
       };
       const handleLog =()=>{
-        router.push('/sign-in');
+        router.push('/');
       }
   return (
      <SafeAreaView className="bg-gray-100 h-full">
@@ -38,10 +38,10 @@ const register = () => {
            </View>
            <TouchableOpacity
              onPress={handleLogin}
-             className="bg-[#7A4DFF]/[1.6] shadow-md shadow-zinc-300 flex justify-center items-center rounded-full w-[97%] h-14 py-4 mt-8 mx-2 "
+             className="bg-[#7A4DFF]/[1.6] shadow-md shadow-zinc-300 rounded-full flex justify-center items-center w-[97%] h-14 py-4 mt-5 !mr-20 ml-2 "
            >
              <View className="flex flex-row items-center justify-center">
-              <Text className="text-base font-rubik-bold text-white text-center mt-2 ">Continue With Phone Number</Text>
+              <Text className="text-base font-rubik-bold text-white text-center ">Continue With Phone Number</Text>
               </View>
             
            </TouchableOpacity>
