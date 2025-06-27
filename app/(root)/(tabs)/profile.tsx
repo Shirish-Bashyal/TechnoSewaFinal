@@ -5,6 +5,7 @@ import images from "@/constants/images";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useViewProfile } from "@/services/api/profile";
 
 interface SettingsItemProps {
   icon: any;
@@ -39,6 +40,7 @@ const SettingsItem = ({
 
 const Profile = () => {
   const handleLogout = async () => {};
+  const { data: profileData, isError, isLoading } = useViewProfile();
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -57,12 +59,12 @@ const Profile = () => {
             <TouchableOpacity className="absolute bottom-11 right-2">
               <FontAwesome6 name="edit" size={20} color="black" />
             </TouchableOpacity>
-            <Text className="text-2l font-rubik-bold mt-2" style={{fontFamily:'rubik-bold'}}>Adrian Taxi</Text>
+            <Text className="text-2l font-rubik-bold mt-2" style={{fontFamily:'rubik-bold'}}>{profileData?.data?.name}</Text>
           </View>
           <View className="mt-14 ">
-            <Text className="font-rubik-bold text-base" style={{fontFamily:'rubik-bold'}}>Username</Text>
-            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>+9779800000000</Text>
-            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>user@gmail.com</Text>
+            <Text className="font-rubik-bold text-base" style={{fontFamily:'rubik-bold'}}>{profileData?.data?.name}</Text>
+            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>{profileData?.data?.phoneNumber}</Text>
+            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>{profileData?.data?.email}</Text>
           </View>
         </View>
         <View className="flex flex-col mt-10 ">

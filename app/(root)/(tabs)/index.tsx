@@ -8,9 +8,11 @@ import { Card, FeaturedCard } from "@/components/Cards";
 import Entypo from "@expo/vector-icons/Entypo";
 import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
+import { useViewProfile } from "@/services/api/profile";
 
 export default function Index() {
   const router = useRouter();
+  const { data: profileData, isError, isLoading } = useViewProfile();
 
   return (
     <SafeAreaView className="bg-gray-100 h-full">
@@ -24,6 +26,7 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View className="px-5">
+           
             <View className="flex flex-row items-center justify-between mt-5">
               <View className="flex flex-row items-center">
                 <Image
@@ -47,11 +50,12 @@ export default function Index() {
                     className="text-xs font-rubik-bold text-black-300 "
                     style={{ fontFamily: "rubik-bold" }}
                   >
-                    Butwal
+                    {profileData?.data?.city || "Butwal"}
                   </Text>
                 </TouchableOpacity>
               </View>{" "}
             </View>
+             
             <View className="flex flex-row items-center mt-5">
               {/* <Image
                   source={images.avatar}
@@ -68,7 +72,7 @@ export default function Index() {
                   className="text-xl  text-primary-100"
                   style={{ fontFamily: "rubik-bold" }}
                 >
-                  User
+                  {profileData?.data?.name || "User"} !!
                 </Text>
               </View>
             </View>

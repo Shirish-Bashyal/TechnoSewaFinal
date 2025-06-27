@@ -106,7 +106,7 @@ export interface SignUpData {
   toleName: string;
 }
 
-export const SignUpAdmin = async (
+export const SignUp = async (
   formData: SignUpData
 ): Promise<SignUpResponse> => {
   try {
@@ -145,7 +145,7 @@ export const useSignUp = () => {
   const router = useRouter();
   const toast = useToast();
   return useMutation<SignUpResponse, Error, SignUpData>({
-    mutationFn: SignUpAdmin,
+    mutationFn: SignUp,
     onSuccess: (data) => {
       // if (data.message === "User already exists") {
       //   //  Toast.show({
@@ -166,7 +166,7 @@ export const useSignUp = () => {
         });
 
         console.log("Successfully Registered");
-        router.replace("/auth/tech");
+        router.replace("/");
       } else {
         toast.show(data.message || "Registration failed", {
           type: "danger",
