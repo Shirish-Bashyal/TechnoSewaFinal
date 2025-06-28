@@ -10,7 +10,7 @@ const baseURL = "https://localhost:44335";
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json"},
 });
 
 axiosInstance.interceptors.request.use(async (config) => {

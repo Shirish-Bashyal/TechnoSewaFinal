@@ -29,6 +29,20 @@ const TabIcon = ({
       {title}
     </Text>
   </View>
+  // <View style={{ flex: 1, alignItems: "center" }}>
+  //   <Entypo name={icon} size={20} color={focused ? "#7A4DFF" : "#666876"} />
+  //   <Text
+  //     style={{
+  //       fontSize: 12,
+  //       textAlign: "center",
+  //       marginTop: 4,
+  //       color: focused ? "#7A4DFF" : "#666876",
+  //       fontWeight: focused ? "600" : "400",
+  //     }}
+  //   >
+  //     {title}
+  //   </Text>
+  // </View>
 );
 
 // const TabIcon = ({

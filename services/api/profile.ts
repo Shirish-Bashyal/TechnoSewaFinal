@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Message from "../../app/(root)/(tabs)/message";
+
 
 const { ConsumerProfile } = API_ENDPOINTS;
 
