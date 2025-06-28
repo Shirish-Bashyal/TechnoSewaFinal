@@ -12,10 +12,10 @@ namespace Application.DTO.User.Consumer
         public Double EstimationPrice { get; set; }
         public DateOnly ServiceDate { get; set; }
 
-        public string TechnicianName { get; set; }
+        public string? TechnicianName { get; set; }
 
         public int BidId { get; set; }
 
-        public int TechnicianId { get; set; }
+        public int? TechnicianId { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Application.Interfaces.Bookings
 
         Task<ServiceResponse<object>> GetAllForConsumer(string ConsumerId);
 
-        Task<ServiceResponse<object>> GetAllForTechnician(int TechnicianId);
+        Task<ServiceResponse<object>> GetAllForTechnician(string TechnicianUserId);
 
         //get bookings for a user,
     }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Constants.Enums;
 using Application.DTO.User.Post;
+using Application.Helper;
 using Application.Interfaces.Data;
 using Application.Interfaces.User.Consumer;
 using Application.Response;
@@ -24,6 +25,8 @@ namespace Application.Services.User.Consumer
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostEnvironment _env;
+
+        string BaseUrl = "https://localhost:7206";
 
         public PostService(
             IUnitOfWork uow,
@@ -172,10 +175,10 @@ namespace Application.Services.User.Consumer
             if (post != null)
             {
                 var images = new List<string>();
-                var baseUrl = "https://localhost:7206";
+
                 foreach (var pic in post.Photos)
                 {
-                    images.Add($"{baseUrl}/Resourses/{pic.Path}");
+                    images.Add($"{BaseUrl}/Resourses/{pic.Path}");
                 }
                 var result = new PostResponseDTO
                 {
@@ -215,7 +218,7 @@ namespace Application.Services.User.Consumer
                 };
             }
 
-            var baseUrl = "https://localhost:7206";
+            // var baseUrl = "https://localhost:7206";
 
             var result = posts
                 .Select(post => new PostResponseDTO
@@ -227,7 +230,7 @@ namespace Application.Services.User.Consumer
                     Lattitude = post.Lattitude,
                     Longitude = post.Longitude,
                     UserName = post.User.UserName,
-                    ImageUrl = post.Photos.Select(photo => $"{baseUrl}/Resources/{photo.Path}")
+                    ImageUrl = post.Photos.Select(photo => $"{BaseUrl}/Resources/{photo.Path}")
                         .ToList()
                 })
                 .ToList();
@@ -248,6 +251,81 @@ namespace Application.Services.User.Consumer
         public async Task UpdatePostStatus(int postId, int status)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<object>> GetPostsForTechniian(string UserId)
+        {
+            //ApplicationUser? technician = await _userManager.FindByIdAsync(UserId);
+            //if (technician == null)
+            //    return new ServiceResponse<object>
+            //    {
+            //        Success = false,
+            //        Message="Error finding the user"
+
+            //    };
+            var include = new Expression<Func<Domain.Entities.User.Technician, object>>[]
+            {
+                x => x.User,
+                x => x.User.Address,
+                x => x.User.Address.City,
+            };
+            var technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                .GetWithIncludeAndFilter(include, x => x.UserId == UserId);
+            if (technician == null)
+                return new ServiceResponse<object>
+                {
+                    Success = false,
+                    Message = "Error finding the user"
+                };
+            var includes = new Expression<Func<Post, object>>[]
+            {
+                s => s.User,
+                s => s.Category,
+                s => s.Photos,
+            };
+            var posts = await _uow.AsyncRepositories<Post>()
+                .GetListWithIncludeAndFilter(
+                    includes,
+                    x => x.User.Address.City == technician.User.Address.City
+                );
+            if (posts == null)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message = " No post available"
+                };
+            }
+
+            var filteredPost = posts
+                .OrderBy(x =>
+                    HaversineAlgo.Haversine(
+                        x.Lattitude,
+                        x.Longitude,
+                        technician.Latitude,
+                        technician.Longitude
+                    )
+                )
+                .Take(10);
+
+            //var baseUrl = "https://localhost:7206";
+
+            var result = filteredPost
+                .Select(post => new PostResponseDTO
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    Description = post.Description,
+                    Category = post.Category.Name,
+                    CreationDate = post.AddedDate,
+                    Lattitude = post.Lattitude,
+                    Longitude = post.Longitude,
+                    UserName = post.User.UserName,
+                    ImageUrl = post.Photos.Select(photo => $"{BaseUrl}/Resources/{photo.Path}")
+                        .ToList()
+                })
+                .ToList();
+            return new ServiceResponse<object> { Success = true, Data = result };
         }
     }
 }

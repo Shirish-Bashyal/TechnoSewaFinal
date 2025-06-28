@@ -86,13 +86,13 @@ namespace TechnoSewa.Controllers
         [Authorize]
         public async Task<IActionResult> GetTechnicianBooking()
         {
-            string technicianId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string technicianUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (technicianId != null)
+            if (technicianUserId != null)
             {
-                //call the service to get the result
+                var result = await _bookingService.GetAllForTechnician(technicianUserId);
 
-                return Ok();
+                return Ok(result);
             }
             else
             {

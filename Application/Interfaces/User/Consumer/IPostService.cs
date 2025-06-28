@@ -15,6 +15,8 @@ namespace Application.Interfaces.User.Consumer
         Task<ServiceResponse<object>> GetPost(int PostId);
         Task<ServiceResponse<object>> GetAllPosts(string UserId);
 
+        Task<ServiceResponse<object>> GetPostsForTechniian(string UserId);
+
         Task<ServiceResponse<object>> DeletePost(int PostId);
 
         Task<ServiceResponse<object>> UpdatePost(int PostId);

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,7 +37,8 @@ namespace TechnoSewa.Startup
                             Encoding.UTF8.GetBytes(configuration["JWT:Secret"])
                         ),
                         ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
+                        RoleClaimType = ClaimTypes.Role
                     };
                     options.Events = new JwtBearerEvents
                     {
