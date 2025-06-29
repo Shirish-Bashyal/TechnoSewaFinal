@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application;
+using Domain.Entities.Application.Bookings;
 using Domain.Entities.Base;
 
 namespace Domain.Entities.User.PostDetails
@@ -23,6 +24,8 @@ namespace Domain.Entities.User.PostDetails
         public Double Lattitude { get; set; }
 
         public Double Longitude { get; set; }
+
+        public ICollection<PostBid> Bids { get; set; }
 
         public int Status { get; set; }
     }

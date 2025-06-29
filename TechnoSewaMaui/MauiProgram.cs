@@ -26,6 +26,7 @@ using TechnoSewaMaui.Views.Notification;
 using TechnoSewaMaui.Views.PostProblem;
 using TechnoSewaMaui.Views.Profile;
 using TechnoSewaMaui.Views.Search;
+using TechnoSewaMaui.Views.Technician;
 
 namespace TechnoSewaMaui
 {
@@ -85,6 +86,8 @@ namespace TechnoSewaMaui
 
             builder.Services.AddTransient<SearchPage>();
             builder.Services.AddTransient<SearchViewModel>();
+
+            builder.Services.AddTransient<LandingPage>();
 
             builder.Services.AddSingleton<IBiometric>(BiometricAuthenticationService.Default);
             builder.Services.AddSingleton<HttpClient>();

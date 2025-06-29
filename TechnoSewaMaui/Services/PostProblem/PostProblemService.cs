@@ -46,7 +46,7 @@ namespace TechnoSewaMaui.Services.PostProblem
 
                     formData.Add(
                         new StringContent(latitude.ToString(CultureInfo.InvariantCulture)),
-                        "Latitude"
+                        "Lattitude"
                     );
                     formData.Add(
                         new StringContent(longitude.ToString(CultureInfo.InvariantCulture)),

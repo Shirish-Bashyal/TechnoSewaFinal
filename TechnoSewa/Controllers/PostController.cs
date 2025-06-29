@@ -85,5 +85,29 @@ namespace TechnoSewa.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpGet]
+        [Route("for-technician")]
+        [Authorize(Roles = "Technician")]
+        public async Task<IActionResult> GetPostForTechnician()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                var result = await _post.GetPostsForTechniian(userId);
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(500, result);
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

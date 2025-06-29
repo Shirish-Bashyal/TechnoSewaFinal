@@ -17,7 +17,7 @@ namespace TechnoSewa.Controllers
             _authService = authService;
         }
 
-        [HttpPost("signIn")]
+        [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignInDTO model)
         {
             if (!ModelState.IsValid)
@@ -38,8 +38,8 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("sendOtp")]
-        public async Task<IActionResult> SendOtp([FromBody] string phoneNumber)
+        [Route("otp/send")]
+        public async Task<IActionResult> SendOtp(string phoneNumber)
         {
             //generate a otp
             //save the number and otp in cache
@@ -48,11 +48,13 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("verifyOtp")]
+        [Route("otp/verify")]
         public async Task<IActionResult> VerifyOtp([FromBody] OtpVerifyDTO model)
         {
-            //verify the otp with phone number
-            return Ok("verified");
+            if (model.Otp == "1234")
+                return Ok("verified");
+            else
+                return BadRequest("Otp is Worng");
         }
 
         [HttpPost]
@@ -81,7 +83,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpPost]
-        [Route("signOut")]
+        [Route("signout")]
         [Authorize]
         public async Task<IActionResult> SignOut()
         {

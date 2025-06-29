@@ -54,6 +54,7 @@ namespace Infrastructure.Data.Repository
         )
         {
             IQueryable<T> query = _db.Where(filter);
+
             foreach (var child in children)
             {
                 query = query.Include(child);
