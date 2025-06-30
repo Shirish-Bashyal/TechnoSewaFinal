@@ -46,6 +46,7 @@ builder.Services.AddCors(options =>
 //adding services
 
 builder.Services.AddInternalDependencies(builder.Configuration);
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 var contentPath = app.Environment.ContentRootPath;
