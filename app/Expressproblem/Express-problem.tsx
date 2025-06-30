@@ -18,19 +18,26 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useForm } from "react-hook-form";
 import * as ImagePicker from "expo-image-picker";
 import { usePostProblem } from "@/services/api/postProblem";
+import { Platform } from "react-native";
+
+async function uriToFile(uri: string, fileName: string, mimeType: string) {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  return new File([blob], fileName, { type: mimeType });
+}
 
 type ImageFile = {
   uri: string;
   type: string;
   name: string;
-   fileName?: string; 
+  fileName?: string;
 };
 
 type FormValues = {
   Title: string;
   Category: string;
   Description: string;
-  ImagesFiles: ImageFile[];
+  ImageFiles: ImageFile[];
   Lattitude: number;
   Longitude: number;
 };
@@ -48,7 +55,7 @@ const ExpressProblem = () => {
   // const [image, setImage] = useState<string | null>(null); //for single image
   const [image, setImage] = useState<string[]>([]); // multiple images
   const [selectedImageFiles, setSelectedImageFiles] = useState<ImageFile[]>([]);
-   const [imagePreviewUris, setImagePreviewUris] = useState<string[]>([]);
+  const [imagePreviewUris, setImagePreviewUris] = useState<string[]>([]);
   const data = [
     { key: "1", value: "plumbing" },
     { key: "2", value: "Electrician" },
@@ -89,30 +96,49 @@ const ExpressProblem = () => {
     //   setValue("ImagesFiles", newUris);
 
     // }
-     if (!result.canceled) {
+
+    if (!result.canceled) {
       const newImageFiles: ImageFile[] = result.assets.map((asset) => {
         // Essential: Extract the correct filename and infer MIME type
-        const filename = asset.fileName || `image_${Date.now()}.${asset.type === 'image' ? 'jpg' : 'mp4'}`;
+        const filename =
+          asset.fileName ||
+          `image_${Date.now()}.${asset.type === "image" ? "jpg" : "mp4"}`;
         const uri = asset.uri;
 
         // Ensure a valid MIME type. ImagePicker asset.type is 'image' or 'video'.
         // asset.mimeType is more reliable if available.
-        let mimeType = asset.mimeType || (asset.type === 'image' ? 'image/jpeg' : 'video/mp4'); // Default fallback
+        let mimeType =
+          asset.mimeType ||
+          (asset.type === "image" ? "image/jpeg" : "video/mp4"); // Default fallback
 
         // A more robust way to get MIME type from extension
-        const ext = filename.split('.').pop()?.toLowerCase();
+        const ext = filename.split(".").pop()?.toLowerCase();
         if (ext) {
-            switch (ext) {
-                case 'jpg':
-                case 'jpeg': mimeType = 'image/jpeg'; break;
-                case 'png': mimeType = 'image/png'; break;
-                case 'gif': mimeType = 'image/gif'; break;
-                case 'bmp': mimeType = 'image/bmp'; break;
-                case 'webp': mimeType = 'image/webp'; break;
-                case 'mp4': mimeType = 'video/mp4'; break;
-                case 'mov': mimeType = 'video/quicktime'; break;
-                // Add more as needed
-            }
+          switch (ext) {
+            case "jpg":
+            case "jpeg":
+              mimeType = "image/jpeg";
+              break;
+            case "png":
+              mimeType = "image/png";
+              break;
+            case "gif":
+              mimeType = "image/gif";
+              break;
+            case "bmp":
+              mimeType = "image/bmp";
+              break;
+            case "webp":
+              mimeType = "image/webp";
+              break;
+            case "mp4":
+              mimeType = "video/mp4";
+              break;
+            case "mov":
+              mimeType = "video/quicktime";
+              break;
+            // Add more as needed
+          }
         }
 
         return {
@@ -123,74 +149,21 @@ const ExpressProblem = () => {
       });
 
       // Update states
-      setImagePreviewUris((prevUris) => [...prevUris, ...newImageFiles.map((file) => file.uri)]);
+      setImagePreviewUris((prevUris) => [
+        ...prevUris,
+        ...newImageFiles.map((file) => file.uri),
+      ]);
       setSelectedImageFiles((prevFiles) => {
         const updatedFiles = [...prevFiles, ...newImageFiles];
-        setValue("ImagesFiles", updatedFiles, { shouldValidate: true });
+        setValue("ImageFiles", updatedFiles, { shouldValidate: true });
         return updatedFiles;
       });
     }
   };
 
-  //  if (!result.canceled) {
-  //   setImage(result.assets);
-  //   setValue("ImagesFiles", result.assets, { shouldValidate: true });
-  // }
-  //     if (!result.canceled) {
-  //   const imageFiles: ImageFile[] = result.assets.map((asset, index) => {
-  //     const uri = asset.uri;
-  //     const fileName = asset.fileName || `image_${index}.jpg`;
-  //     const ext = fileName.split('.').pop()?.toLowerCase();
-  //     let mimeType = 'image/jpeg';
 
-  //     if (ext === 'png') mimeType = 'image/png';
-  //     else if (ext === 'jpg' || ext === 'jpeg') mimeType = 'image/jpeg';
 
-  //     return {
-  //       uri,
-  //       name: fileName,
-  //       type: mimeType,
-  //        fileName,
-  //     };
-  //   });
-
-  //   console.log("Prepared image files:", imageFiles); // ✅ Debugging line
-
-  //   setImage(imageFiles.map(img => img.uri)); // For preview only
-  //   setValue("ImagesFiles", imageFiles, { shouldValidate: true });
-  // }
-  //     if (!result.canceled) {
-  //   const newFiles = result.assets.map(asset => ({
-  //     uri: asset.uri,
-  //     name: asset.fileName ?? `image_${Math.random().toString(36).slice(2)}.jpg`,
-  //     type: asset.type === "image" ? `image/${(asset.fileName?.split('.').pop() ?? "jpeg").toLowerCase()}` : 'application/octet-stream',
-  //   }));
-
-  //   setImage(newFiles.map(f => f.uri)); // for UI preview
-  //   setValue("ImagesFiles", newFiles, { shouldValidate: true });
-  // }
-  //   const createFormData = (data: FormValues) => {
-  //   const formData = new FormData();
-
-  //   formData.append("Title", data.Title);
-  //   formData.append("Category", data.Category);
-  //   formData.append("Description", data.Description);
-  //   formData.append("Lattitude", String(data.Lattitude));
-  //   formData.append("Longitude", String(data.Longitude));
-
-  //   data.ImagesFiles.forEach((image, index) => {
-  //     const uri =  image.uri.startsWith("file://")
-  //       ? image.uri.substring(7)
-  //       : image.uri;
-  //     const name = image.fileName || `image_${index}.jpg`;
-  //     const type = image.type ? `image/${image.type}` : "image/jpeg";
-
-  //     formData.append("ImagesFiles", { uri, name, type } as any);
-  //   });
-
-  //   return formData;
-  // };
- const createFormData = (data: FormValues) => {
+  const createFormData = async (data: FormValues): Promise<FormData> => {
     const formData = new FormData();
 
     formData.append("Title", data.Title);
@@ -199,72 +172,41 @@ const ExpressProblem = () => {
     formData.append("Lattitude", String(data.Lattitude));
     formData.append("Longitude", String(data.Longitude));
 
-   const fileNames = data.ImagesFiles.map((image, index) => {
-    return (
-      image.fileName ||                  // preferred
-      image.name ||                      // fallback
-      decodeURIComponent(image.uri.split("/").pop() || "") || // uri fallback
-      `image_${index}.jpg`               // final fallback
-    );
+    //For web
+
+    // for (let i = 0; i < data.ImageFiles.length; i++) {
+    //   const image = data.ImageFiles[i];
+    //   const fileName = image.fileName || image.name || `image_${i}.jpg`;
+    //   const mimeType = image.type || "image/jpeg";
+
+    //   if (Platform.OS === "web") {
+    //     const file = await uriToFile(image.uri, fileName, mimeType);
+    //     formData.append("ImageFiles", file); // <-- NOTE: key is ImageFiles here
+    //   } 
+    // }
+
+    //For Android
+    data.ImageFiles.forEach((file, index) => {
+    formData.append("ImageFiles", {
+      uri: file.uri,
+      name: file.name || `image_${index}.jpg`,
+      type: file.type || "image/jpeg",
+    } as any); 
   });
 
-  // Append as JSON string
-  formData.append("ImagesFiles", JSON.stringify(fileNames));
+    return formData;
+  };
 
-
-  return formData;
-};
-
-  const submitProblemData = (data: FormValues) => {
-    const formData = createFormData(data);
+  const submitProblemData = async (data: FormValues) => {
+    const formData = await createFormData(data);
     postProblemForm(formData);
   };
 
-  //     const submitProblemData = async (data: FormValues) => {
-  //   const formData = new FormData();
-
-  //   formData.append("Title", data.Title);
-  //   formData.append("Category", data.Category);
-  //   formData.append("Description", data.Description);
-  //   formData.append("Lattitude", String(data.Lattitude)); // send number as string
-  //   formData.append("Longitude", String(data.Longitude)); // send number as string
-
-  // // data.ImagesFiles.forEach((file, index) => {
-  // //   const fileName = file.name || `image_${index}.jpg`;
-  // //   const extension = fileName.split('.').pop()?.toLowerCase();
-
-  // //   let mimeType = 'image/jpeg'; // default mime type
-
-  // //   if (extension === 'png') {
-  // //     mimeType = 'image/png';
-  // //   } else if (extension === 'jpg' || extension === 'jpeg') {
-  // //     mimeType = 'image/jpeg';
-  // //   }
-
-  // //   formData.append("ImagesFiles", {
-  // //     uri: file.uri,
-  // //     name: fileName,
-  // //     type: mimeType,
-  // //   } as any);
-  // // });
-  //  data.ImagesFiles.forEach((file: ImageFile, index) => {
-  //     // Ensure a fallback name if none exists
-  //     const fileName = file.name || file.fileName || `image_${index}.jpg`;
-
-  //     formData.append("ImagesFiles", {
-  //       uri: file.uri,
-  //       name: fileName,
-  //       type: file.type || "image/jpeg",
-  //     } as any); // as any bypasses TypeScript limitations in React Native
-  //   });
-
-  //   postProblemForm(formData as any);
-  //   };
   useEffect(() => {
     register("Title", { required: "Title is required" });
     register("Category", { required: "Category is required" });
     register("Description", { required: "Description is required" });
-    register("ImagesFiles", {
+    register("ImageFiles", {
       validate: (value) =>
         (value && value.length > 0) || "At least one image is required",
     });
@@ -394,9 +336,9 @@ const ExpressProblem = () => {
               />
             ))}
           </View> */}
-           <Button title="Pick an image from camera roll" onPress={pickImage} />
-          {errors.ImagesFiles && (
-            <Text style={{ color: "red" }}>{errors.ImagesFiles.message}</Text>
+          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          {errors.ImageFiles && (
+            <Text style={{ color: "red" }}>{errors.ImageFiles.message}</Text>
           )}
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             {imagePreviewUris.map((uri, index) => (

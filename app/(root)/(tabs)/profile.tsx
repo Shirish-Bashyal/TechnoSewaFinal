@@ -6,6 +6,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useViewProfile } from "@/services/api/profile";
+import { useRouter } from "expo-router";
 
 interface SettingsItemProps {
   icon: any;
@@ -39,8 +40,13 @@ const SettingsItem = ({
 );
 
 const Profile = () => {
+  const router = useRouter();
   const handleLogout = async () => {};
   const { data: profileData, isError, isLoading } = useViewProfile();
+
+  const handleBecomeTechnician =()=>{
+router.push("/Expressproblem/changeRole");
+  }
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -70,7 +76,7 @@ const Profile = () => {
         <View className="flex flex-col mt-10 ">
           <SettingsItem icon="calendar" title="My Booking" />
           <SettingsItem icon="credit-card" title="Payments" />
-          <SettingsItem icon="tools" title="Become technician" />
+          <SettingsItem icon="tools" title="Become technician" onPress={handleBecomeTechnician} />
         </View>
        
         

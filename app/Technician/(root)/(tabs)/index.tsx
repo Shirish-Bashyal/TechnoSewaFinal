@@ -9,9 +9,11 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
 import { Technician } from "@/components/services-category";
+import { useViewProfile } from "@/services/api/profile";
 
 const index = () => {
     const router = useRouter();
+    const { data: profileData, isError, isLoading } = useViewProfile();
   return (
      <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
@@ -47,7 +49,7 @@ const index = () => {
                     className="text-xs font-rubik-bold text-black-300 "
                     style={{ fontFamily: "rubik-bold" }}
                   >
-                    Butwal
+                    {profileData?.data?.city || "Butwal"}
                   </Text>
                 </TouchableOpacity>
               </View>{" "}
@@ -68,7 +70,7 @@ const index = () => {
                   className="text-xl  text-primary-100"
                   style={{ fontFamily: "rubik-bold" }}
                 >
-                  Adrian
+                  {profileData?.data?.name || "User"}
                 </Text>
               </View>
             </View>

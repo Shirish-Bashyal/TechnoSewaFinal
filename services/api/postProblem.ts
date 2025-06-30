@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
 import axiosInstance from "../axiosInstance";
 // import { fetchWithAuth } from "../axiosInstance";
 import { API_ENDPOINTS } from "../endPoints";
@@ -21,7 +20,7 @@ type ImageFile = {
 //   Title: string;
 //   Category: string;
 //   Description: string;
-//   // ImagesFiles: Array<string>;
+//   // ImageFiles: Array<string>;
 //   Lattitude: number;
 //   Longitude: number;
 // }
@@ -63,7 +62,11 @@ export const postProblem = async (
       });
     }
 
-    const response = await axiosInstance.post(PostProblem, data);
+    const response = await axiosInstance.post(PostProblem, data, {
+  headers: {
+    'Content-Type': 'multipart/form-data', // Axios sets boundary automatically
+  },
+});
     console.log(response);
     return response.data;
   } catch (error: any) {
@@ -74,6 +77,7 @@ export const postProblem = async (
 
 export const usePostProblem = () => {
   const toast = useToast();
+   const router = useRouter();
   //   const queryClient = useQueryClient();
   return useMutation<postProblemResponse, Error, FormData>({
     mutationFn: postProblem,
@@ -89,7 +93,7 @@ export const usePostProblem = () => {
         });
 
         console.log("Successfully Posted");
-        // router.replace("/");
+        router.push("/(root)/(tabs)");
       } else {
         toast.show(data.message || "Problem Posting failed", {
           type: "danger",
