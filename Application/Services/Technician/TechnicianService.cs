@@ -121,7 +121,7 @@ namespace Application.Services.Technician
                         x.Longitude
                     ),
                     //PhoneNumber = x.User.PhoneNumber,
-                    Reviews = new List<GetReviewDTO>()
+                    Reviews = new GetReviewDTO()
                 })
                 .OrderBy(x => x.Distance)
                 .Take(10)
@@ -134,7 +134,7 @@ namespace Application.Services.Technician
                 );
                 if (reviewResponse.Data != null)
                 {
-                    technician.Reviews.Add(reviewResponse.Data);
+                    technician.Reviews = reviewResponse.Data;
                 }
             });
 

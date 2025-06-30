@@ -18,7 +18,7 @@ namespace Application.DTO.Technician
 
         public Double Distance { get; set; }
 
-        public List<GetReviewDTO>? Reviews { get; set; }
+        public GetReviewDTO? Reviews { get; set; }
 
         //  public double Distance { get; set; }
         //avg rating
