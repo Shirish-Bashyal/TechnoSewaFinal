@@ -1,10 +1,10 @@
-﻿using Application.DTO.Chatbot;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTO.Chatbot;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Interfaces.LLM
 {
@@ -14,6 +14,7 @@ namespace Application.Interfaces.LLM
         Task<string> TranscribeAudio(IFormFile audio);
 
         Task<string> InterpertImage(string jsonStructure);
-        
+
+        Task<string> IntentFinder(string query);
     }
 }
