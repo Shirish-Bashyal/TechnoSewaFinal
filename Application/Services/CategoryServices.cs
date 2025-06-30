@@ -21,6 +21,22 @@ namespace Application.Services
             _uow = uow;
         }
 
+        public async Task<ServiceResponse<object>> AllCategoriesList()
+        {
+            var result = await _uow.AsyncRepositories<Category>().GetAllAsync();
+
+            if (result == null)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = false,
+                    Message = "Categories not found"
+                };
+            }
+
+            return new ServiceResponse<object> { Success = true, Data = result };
+        }
+
         public async Task<ServiceResponse<object>> SubCategoriesList(int categoryId)
         {
             //var doesExists = await _uow.AsyncRepositories<Category>()

@@ -10,5 +10,7 @@ namespace Application.Interfaces
     public interface ICategoryServices
     {
         Task<ServiceResponse<object>> SubCategoriesList(int categoryId);
+
+        Task<ServiceResponse<object>> AllCategoriesList();
     }
 }
