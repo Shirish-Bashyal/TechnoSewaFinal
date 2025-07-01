@@ -10,14 +10,16 @@ namespace TechnoSewa.Controllers
     [ApiController]
     public class ChatbotController : ControllerBase
     {
-        
         private readonly ITextTokenizer _tokenizer;
         private readonly IQuestionResponseService _responseService;
         private readonly IChatbotService _chatbotService;
 
-        public ChatbotController(IChatbotService chatbotService, ITextTokenizer tokenizer, IQuestionResponseService responseService)
+        public ChatbotController(
+            IChatbotService chatbotService,
+            ITextTokenizer tokenizer,
+            IQuestionResponseService responseService
+        )
         {
-   
             _tokenizer = tokenizer;
             _responseService = responseService;
             _chatbotService = chatbotService;
@@ -29,11 +31,22 @@ namespace TechnoSewa.Controllers
         {
             if (ModelState.IsValid)
             {
+                //find out the intent of the question
+
+                //then call respective service
+
+                //var result = await _chatbotService.FindIntent(question.Question);
+                //return Ok(result);
                 var result = await _chatbotService.SendMessage(question);
+
                 return Ok(result);
             }
-            else { return BadRequest(); }
+            else
+            {
+                return BadRequest();
+            }
         }
+
         [HttpPost]
         [Route("postAudio")]
         public async Task<IActionResult> PostAudio([FromForm] AudioDto audio)
@@ -43,8 +56,12 @@ namespace TechnoSewa.Controllers
                 var result = await _chatbotService.SendAudio(audio);
                 return Ok(result);
             }
-            else { return BadRequest(); }
+            else
+            {
+                return BadRequest();
+            }
         }
+
         [HttpPost]
         [Route("postImage")]
         public async Task<IActionResult> PostImage([FromForm] ImageDto image)
@@ -54,7 +71,10 @@ namespace TechnoSewa.Controllers
                 var result = await _chatbotService.SendImage(image);
                 return Ok(result);
             }
-            else { return BadRequest(); }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -66,21 +86,25 @@ namespace TechnoSewa.Controllers
                 var result = await _tokenizer.GetMatchedStrings(question);
                 return Ok(result);
             }
-            else { return BadRequest(); }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         [Route("addKeywordAndResponse")]
         public async Task<IActionResult> AddKeywordAndResponse(AddDbResponseDto request)
         {
-
             if (ModelState.IsValid)
             {
                 var result = await _responseService.AddKeywordAndResponse(request);
                 return Ok(result);
             }
-            else { return BadRequest(); }
-
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

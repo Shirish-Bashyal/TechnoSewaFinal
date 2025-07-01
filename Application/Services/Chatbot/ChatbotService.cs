@@ -1,13 +1,13 @@
-﻿using Application.DTO.Chatbot;
-using Application.Helpers.LLM;
-using Application.Interfaces.Chatbot;
-using Application.Interfaces.LLM;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTO.Chatbot;
+using Application.Helpers.LLM;
+using Application.Interfaces.Chatbot;
+using Application.Interfaces.LLM;
+using Microsoft.AspNetCore.Http;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Services.Chatbot
@@ -28,8 +28,7 @@ namespace Application.Services.Chatbot
             var question = await _llmFormatter.TranscribeAudio(request.Audio);
             if (question != null)
             {
-                var requestModel = new MessageDto()
-                { Question = question };
+                var requestModel = new MessageDto() { Question = question };
                 var response = await SendMessage(requestModel);
                 if (response != null)
                 {
@@ -54,7 +53,8 @@ namespace Application.Services.Chatbot
                 var imageBase64 = await ConvertToBase64UrlAsync(request.Image);
                 if (imageBase64 != null)
                 {
-                    var jsonStructure = $@"[
+                    var jsonStructure =
+                        $@"[
                 {{
                     ""type"": ""text"",
                     ""text"": ""{request.Text}""
@@ -68,7 +68,7 @@ namespace Application.Services.Chatbot
 
                     var response = await _llmFormatter.InterpertImage(jsonStructure);
                     if (response != null)
-                    { 
+                    {
                         return response;
                     }
                     else
@@ -78,17 +78,14 @@ namespace Application.Services.Chatbot
                 }
                 else
                 {
-
                     return "Image Url size should not exceed 4MB.";
                 }
             }
             else
             {
-
                 return "Image size should not exceed 20MB.";
             }
         }
-   
 
         public async Task<string> SendMessage(MessageDto request)
         {
@@ -104,11 +101,11 @@ namespace Application.Services.Chatbot
             {
                 return response;
             }
-            else {
+            else
+            {
                 return "Oops! Something went wrong";
             }
         }
-
 
         public async Task<string> ConvertToBase64UrlAsync(IFormFile imageFile)
         {
@@ -133,26 +130,26 @@ namespace Application.Services.Chatbot
                     return null;
                 }
             }
-
         }
 
-            public async Task<bool> CheckImageValidity(IFormFile imageFile)
+        public async Task<bool> CheckImageValidity(IFormFile imageFile)
+        {
+            var stream = imageFile.OpenReadStream();
+
+            if (imageFile.Length > 1024 * 1024 * 20)
             {
-                var stream = imageFile.OpenReadStream();
-
-
-                if (imageFile.Length > 1024 * 1024 * 20)
-                {
-                    return false;
-
-                }
-                else
-                {
-                    return true;
-                }
-
+                return false;
             }
+            else
+            {
+                return true;
+            }
+        }
 
-       
+        public async Task<string> FindIntent(string userQuery)
+        {
+            var result = await _llmFormatter.IntentFinder(userQuery);
+            return result;
+        }
     }
 }

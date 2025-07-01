@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Application.DTO.Review;
 using Application.DTO.Technician;
 using Application.Helper;
+using Application.Helpers.MachineLearningModel;
 using Application.Interfaces.Data;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
@@ -109,6 +110,8 @@ namespace Application.Services.Technician
             //rank these technicians based on the locations
 
 
+
+
             var result = availableTechnician
                 .Select(x => new GetTechnicianDetailsDTO
                 {
@@ -121,7 +124,7 @@ namespace Application.Services.Technician
                         x.Longitude
                     ),
                     //PhoneNumber = x.User.PhoneNumber,
-                    Reviews = new List<GetReviewDTO>()
+                    Reviews = new GetReviewDTO()
                 })
                 .OrderBy(x => x.Distance)
                 .Take(10)
@@ -134,11 +137,23 @@ namespace Application.Services.Technician
                 );
                 if (reviewResponse.Data != null)
                 {
-                    technician.Reviews.Add(reviewResponse.Data);
+                    technician.Reviews = reviewResponse.Data;
                 }
             });
 
             await Task.WhenAll(reviewTasks); // Await all in parallel
+
+            //var predictorInput = result
+            //    .Select(x =>
+            //        (
+            //            id: x.TechnicianId,
+            //            proximityKm: (float)x.Distance,
+            //            avgRating: (float)x.Reviews.AverageRating
+            //        )
+            //    )
+            //    .ToList();
+
+            //var predictorOutput = LightGBMPredictor.Predict(predictorInput);
 
             return new ServiceResponse<object> { Success = true, Data = result };
         }
