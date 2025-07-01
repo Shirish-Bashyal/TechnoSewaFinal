@@ -6,8 +6,18 @@ import { API_ENDPOINTS } from "../endPoints";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
+import * as jwt_decode from "jwt-decode";
+console.log(jwt_decode);
+import { Buffer } from "buffer";
 
-const { Login, Signup, VerifyOtp } = API_ENDPOINTS;
+function parseJwt(token: string) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = Buffer.from(base64, "base64").toString("utf8");
+  return JSON.parse(jsonPayload);
+}
+
+const { Login, Signup, VerifyOtp, LogOut } = API_ENDPOINTS;
 
 export interface LoginData {
   phoneNumber: string;
@@ -39,14 +49,15 @@ export const loginAdmin = async (
     return response.data;
   } catch (error: any) {
     console.log("Response data:", error.message);
-    const backendMessage = error.message || "Unknown error";
+    const backendMessage =
+      error?.response?.data?.message || error.message || "Unknown error";
     console.log("Backend error:", backendMessage);
     console.log(error);
 
     return {
       success: false,
       data: "error",
-      message: "An error occurred while logging in",
+      message: backendMessage || "Login Failed",
     };
   }
 };
@@ -57,15 +68,30 @@ export const useLogin = () => {
     mutationFn: loginAdmin,
     onSuccess: async (data) => {
       if (data.success) {
+        const token = data.data;
         await AsyncStorage.setItem("token", data.data);
         console.log("Token set in cookie:", AsyncStorage.getItem("token"));
+
+        const decoded = parseJwt(token);
+        console.log("Decoded token:", decoded);
+
+        const role =
+          decoded[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+        console.log("User role:", role);
+
         toast.show("User logged in Successfully", {
           type: "success",
           placement: "bottom",
           duration: 4000,
           animationType: "slide-in",
         });
-        router.push("/(root)/(tabs)");
+        if (role === "Technician") {
+          router.push("/Technician/(root)/(tabs)");
+        } else {
+          router.push("/(root)/(tabs)");
+        }
       } else {
         toast.show(data.message, {
           type: "danger",
@@ -79,7 +105,9 @@ export const useLogin = () => {
     },
     onError: (error: any) => {
       console.error("Login error:", error);
-      toast.show(error.message, {
+      const backendMessage =
+        error?.response?.data?.message || error.message || "Unknown error";
+      toast.show(backendMessage, {
         type: "danger",
         placement: "bottom",
         duration: 4000,
@@ -106,9 +134,7 @@ export interface SignUpData {
   toleName: string;
 }
 
-export const SignUp = async (
-  formData: SignUpData
-): Promise<SignUpResponse> => {
+export const SignUp = async (formData: SignUpData): Promise<SignUpResponse> => {
   try {
     console.log("Sending login payload:", formData);
     // const response = await fetchWithAuth(Signup, {
@@ -128,6 +154,8 @@ export const SignUp = async (
     console.error("An error occurred during signup:", error);
 
     let errorMessage = "An unknown error occurred while registering user";
+    const backendMessage =
+      error?.response?.data?.message || error.message || "Unknown error";
 
     if (error instanceof Error) {
       errorMessage = error.message;
@@ -136,7 +164,7 @@ export const SignUp = async (
     }
     return {
       success: false,
-      message: "An error occurred while registering user",
+      message: backendMessage || "Failed to Signup",
     };
   }
 };
@@ -183,6 +211,7 @@ export const useSignUp = () => {
         errorMessage = error.message;
       }
       console.log("An error occurred while registering user", error);
+      
     },
   });
 };
@@ -277,6 +306,48 @@ export const useVerifyOtp = () => {
         error instanceof Error
           ? error.message
           : "An unknown error occurred while sending OTP";
+
+      toast.show(errorMessage, {
+        type: "danger",
+        placement: "bottom",
+      });
+    },
+  });
+};
+
+export const logOut = async () => {
+  const response = await axiosInstance.post(LogOut);
+  await AsyncStorage.removeItem("token");
+  console.log(response);
+  return response;
+};
+
+export const useLogOut = () => {
+  const router = useRouter();
+  const toast = useToast();
+
+  return useMutation({
+    mutationFn: logOut,
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        toast.show("Log out successfully", {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          animationType: "slide-in",
+        });
+
+        router.replace("/auth/register");
+      } else {
+        toast.show(response || "Failed to logout", {
+          type: "danger",
+          placement: "bottom",
+        });
+      }
+    },
+    onError: (error) => {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to Logout";
 
       toast.show(errorMessage, {
         type: "danger",

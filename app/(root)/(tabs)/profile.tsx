@@ -7,6 +7,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useViewProfile } from "@/services/api/profile";
 import { useRouter } from "expo-router";
+import { useLogOut } from "@/services/api/auth";
 
 interface SettingsItemProps {
   icon: any;
@@ -41,8 +42,13 @@ const SettingsItem = ({
 
 const Profile = () => {
   const router = useRouter();
-  const handleLogout = async () => {};
+
   const { data: profileData, isError, isLoading } = useViewProfile();
+  const{mutate}=useLogOut();
+   const handleLogOut = async () => {
+      console.log("ok");
+      mutate();
+    };
 
   const handleBecomeTechnician =()=>{
 router.push("/Expressproblem/changeRole");
@@ -86,7 +92,7 @@ router.push("/Expressproblem/changeRole");
             title="Log Out"
             textStyle="text-gray-500"
             showArrow={false}
-            onPress={handleLogout}
+            onPress={handleLogOut}
           />
         </View>
         <View className="flex flex-col mt-1 border-t pt-2 border-gray-100 ">

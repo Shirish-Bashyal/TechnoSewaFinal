@@ -4,9 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Entypo from "@expo/vector-icons/Entypo";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useViewProfile } from "@/services/api/profile";
 import { useRouter } from "expo-router";
+import { useLogOut } from "@/services/api/auth";
 
 interface SettingsItemProps {
   icon: any;
@@ -29,7 +30,10 @@ const SettingsItem = ({
   >
     <View className="flex flex-row items-center gap-3">
       <Entypo name={icon} size={20} color="black" />
-      <Text className={`text-lg font-rubik-light text-black-300 ${textStyle}`} style={{fontFamily:'rubik'}}>
+      <Text
+        className={`text-lg font-rubik-light text-black-300 ${textStyle}`}
+        style={{ fontFamily: "rubik" }}
+      >
         {title}
       </Text>
     </View>
@@ -41,12 +45,18 @@ const SettingsItem = ({
 
 const profile = () => {
   const router = useRouter();
-  const handleLogout = async () => {};
+
   const { data: profileData, isError, isLoading } = useViewProfile();
 
-  const handleBecomeConsumer =()=>{
-router.push("/Expressproblem/changeRole");
-  }
+  const handleBecomeConsumer = () => {
+    router.push("/Expressproblem/changeRole");
+  };
+  
+  const { mutate } = useLogOut();
+  const handleLogout = async () => {
+    console.log("ok");
+    mutate();
+  };
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -54,7 +64,12 @@ router.push("/Expressproblem/changeRole");
         contentContainerClassName="pb-32 px-7"
       >
         <View className="flex flex-row items-center justify-between rounded-lg  mt-5 p-2 bg-[#E6E6FA] w-full h-12 ">
-          <Text className="text-xl font-rubik-bold " style={{fontFamily:'rubik-bold'}}>Profile</Text>
+          <Text
+            className="text-xl font-rubik-bold "
+            style={{ fontFamily: "rubik-bold" }}
+          >
+            Profile
+          </Text>
         </View>
         <View className="flex-row gap-10 flex mt-5">
           <View className="flex flex-col items-center relative mt-5">
@@ -65,21 +80,44 @@ router.push("/Expressproblem/changeRole");
             <TouchableOpacity className="absolute bottom-11 right-2">
               <FontAwesome6 name="edit" size={20} color="black" />
             </TouchableOpacity>
-            <Text className="text-2l font-rubik-bold mt-2" style={{fontFamily:'rubik-bold'}}>{profileData?.data?.name}</Text>
+            <Text
+              className="text-2l font-rubik-bold mt-2"
+              style={{ fontFamily: "rubik-bold" }}
+            >
+              {profileData?.data?.name}
+            </Text>
           </View>
           <View className="mt-14 ">
-            <Text className="font-rubik-bold text-base" style={{fontFamily:'rubik-bold'}}>{profileData?.data?.name}</Text>
-            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>{profileData?.data?.phoneNumber}</Text>
-            <Text className="font-outfit-medium" style={{fontFamily:'outfit-medium'}}>{profileData?.data?.email}</Text>
+            <Text
+              className="font-rubik-bold text-base"
+              style={{ fontFamily: "rubik-bold" }}
+            >
+              {profileData?.data?.name}
+            </Text>
+            <Text
+              className="font-outfit-medium"
+              style={{ fontFamily: "outfit-medium" }}
+            >
+              {profileData?.data?.phoneNumber}
+            </Text>
+            <Text
+              className="font-outfit-medium"
+              style={{ fontFamily: "outfit-medium" }}
+            >
+              {profileData?.data?.email}
+            </Text>
           </View>
         </View>
         <View className="flex flex-col mt-10 ">
           <SettingsItem icon="calendar" title="My Booking" />
           <SettingsItem icon="credit-card" title="Payments" />
-          <SettingsItem icon="tools" title="Become Consumer" onPress={handleBecomeConsumer} />
+          <SettingsItem
+            icon="tools"
+            title="Become Consumer"
+            onPress={handleBecomeConsumer}
+          />
         </View>
-       
-        
+
         <View className="flex flex-col mt-2 border-t pt-2 border-gray-100 ">
           <SettingsItem
             icon="log-out"
@@ -89,14 +127,17 @@ router.push("/Expressproblem/changeRole");
             onPress={handleLogout}
           />
         </View>
-        <View className="flex flex-col mt-1 border-t pt-2 border-gray-100 ">
-
-        </View>
-         <TouchableOpacity className="mt-2">
-        <View className="flex flex-row mt-3 border-t pt-2 border-gray-100 gap-2 ">
-          <MaterialIcons name="delete" size={24} color="red" />
-          <Text className="text-lg font-rubik-light text-danger" style={{fontFamily:'rubik'}}>Delete Account</Text>
-        </View>
+        <View className="flex flex-col mt-1 border-t pt-2 border-gray-100 "></View>
+        <TouchableOpacity className="mt-2">
+          <View className="flex flex-row mt-3 border-t pt-2 border-gray-100 gap-2 ">
+            <MaterialIcons name="delete" size={24} color="red" />
+            <Text
+              className="text-lg font-rubik-light text-danger"
+              style={{ fontFamily: "rubik" }}
+            >
+              Delete Account
+            </Text>
+          </View>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

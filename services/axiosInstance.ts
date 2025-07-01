@@ -1,8 +1,8 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = "https://e940-2400-1a00-bb20-1efe-3d09-4962-24be-19af.ngrok-free.app";
-// const baseURL = "https://localhost:44335";
+// const baseURL = "https://08ca-2400-1a00-bb20-1efe-3421-4107-4408-946f.ngrok-free.app";
+const baseURL = "https://localhost:44335";
 // const baseURL = "https://192.168.1.71:44335"
 // const baseURL = "https://10.0.2.2:44335"
  
