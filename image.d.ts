@@ -20,3 +20,4 @@ declare module "*svg"{
 }
 
 // declare module "jwt-decode"
+// declare module 'leaflet';

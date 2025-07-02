@@ -102,7 +102,7 @@ export const usePostProblem = () => {
       }
     },
     onError: (error: any) => {
-      console.error("About error:", error);
+      console.error("File must be less than 1MB", error);
     },
   });
 };

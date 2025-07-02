@@ -19,6 +19,9 @@ import { useForm } from "react-hook-form";
 import * as ImagePicker from "expo-image-picker";
 import { usePostProblem } from "@/services/api/postProblem";
 import { Platform } from "react-native";
+import LeafletWebViewMap from "./WebMap";
+// import CrossPlatformMap from "./WebMap";
+// import WebMap from "@/components/WebMap";
 
 async function uriToFile(uri: string, fileName: string, mimeType: string) {
   const response = await fetch(uri);
@@ -56,9 +59,15 @@ const ExpressProblem = () => {
   const [image, setImage] = useState<string[]>([]); // multiple images
   const [selectedImageFiles, setSelectedImageFiles] = useState<ImageFile[]>([]);
   const [imagePreviewUris, setImagePreviewUris] = useState<string[]>([]);
+  const [latitude, setLatitude] = useState(27.69828);
+  const [longitude, setLongitude] = useState(83.46188);
+
+  const [WebMapComponent, setWebMapComponent] =
+    useState<React.ComponentType<any> | null>(null);
+
   const data = [
     { key: "1", value: "plumbing" },
-    { key: "2", value: "Electrician" },
+    { key: "2", value: "Electrical" },
     { key: "3", value: "House Keeping" },
     { key: "4", value: "Automobiles" },
     { key: "5", value: "Tech Experts" },
@@ -161,8 +170,6 @@ const ExpressProblem = () => {
     }
   };
 
-
-
   const createFormData = async (data: FormValues): Promise<FormData> => {
     const formData = new FormData();
 
@@ -182,17 +189,17 @@ const ExpressProblem = () => {
     //   if (Platform.OS === "web") {
     //     const file = await uriToFile(image.uri, fileName, mimeType);
     //     formData.append("ImageFiles", file); // <-- NOTE: key is ImageFiles here
-    //   } 
+    //   }
     // }
 
     //For Android
     data.ImageFiles.forEach((file, index) => {
-    formData.append("ImageFiles", {
-      uri: file.uri,
-      name: file.name || `image_${index}.jpg`,
-      type: file.type || "image/jpeg",
-    } as any); 
-  });
+      formData.append("ImageFiles", {
+        uri: file.uri,
+        name: file.name || `image_${index}.jpg`,
+        type: file.type || "image/jpeg",
+      } as any);
+    });
 
     return formData;
   };
@@ -350,7 +357,7 @@ const ExpressProblem = () => {
             ))}
           </View>
         </View>
-        <View className="mt-4">
+        {/* <View className="mt-4">
           <View className="mb-2 flex flex-row gap-">
             <Text
               className="text-base text-black-300 "
@@ -372,8 +379,8 @@ const ExpressProblem = () => {
               })
             }
           />
-        </View>
-        <View className="mt-4">
+        </View> */}
+        {/* <View className="mt-4">
           <View className="mb-2 flex flex-row gap-0.5">
             <Text
               className="text-base text-black-300 "
@@ -395,7 +402,29 @@ const ExpressProblem = () => {
               })
             }
           />
+        </View> */}
+        <View className="mt-8">
+         <View className="mb-2 flex flex-row gap-">
+            <Text
+              className="text-base text-black-300 "
+              style={{ fontFamily: "outfit-light" }}
+            >
+              Tap on the map to select your location
+            </Text>
+            <Text className="text-red-600 text-base ">*</Text>
+          </View>
+        <LeafletWebViewMap
+          latitude={latitude}
+          longitude={longitude}
+          onSelectLocation={(lat, lng) => {
+            setLatitude(lat);
+            setLongitude(lng);
+            setValue("Lattitude", lat, { shouldValidate: true });
+            setValue("Longitude", lng, { shouldValidate: true });
+          }}
+        />
         </View>
+
         <Button
           title="Submit"
           onPress={handleSubmit(submitProblemData)}
