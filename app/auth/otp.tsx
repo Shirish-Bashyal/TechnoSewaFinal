@@ -53,7 +53,7 @@ const otp = () => {
       <View className="mt-1 ml-7">
         <Text style={{ fontFamily: "rubik-light" }}>
           {" "}
-          We'll text a code to verify your phone{" "}
+           Verify your phone and Otp{" "}
         </Text>
       </View>
       <View className="mx-4 mt-4">

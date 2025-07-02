@@ -51,7 +51,7 @@ const Profile = () => {
     };
 
   const handleBecomeTechnician =()=>{
-router.push("/Expressproblem/changeRole");
+router.push("/Expressproblem/technicianRegisterRole");
   }
   return (
     <SafeAreaView className="h-full bg-white">

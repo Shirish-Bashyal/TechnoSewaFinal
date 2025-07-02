@@ -8,32 +8,50 @@ import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export interface changeRoleData {
-  role: string;
+const { CreateTechnician } = API_ENDPOINTS;
+
+export interface createTechnicianRoleData {
+  secondPhoneNumber: string;
+  lattitude: number;
+  longitude: number;
 }
-export interface changeRoleResponse {
+export interface createTechnicianRoleResponse {
   success: Boolean;
   message: string;
+  data:string;
 }
 
-export const changeRole = async (
-  formData: changeRoleData
-): Promise<changeRoleResponse> => {
-  const encodedRole = encodeURIComponent(formData.role);
-  const response = await axiosInstance.post(
-    `/api/Role/ChangeRole?role=${encodedRole}`
-  );
-  return response.data;
+export const createTechnicianRole = async (
+  formData: createTechnicianRoleData
+): Promise<createTechnicianRoleResponse> => {
+
+  try {
+    console.log("Sending login payload:", formData);
+    const response = await axiosInstance.post(CreateTechnician, formData);
+    console.log(response);
+    return response.data;
+  } catch (error: any) {
+    console.log("Response data:", error.message);
+    const backendMessage =
+      error?.response?.data?.message || error.message || "Unknown error";
+    console.log("Backend error:", backendMessage);
+    console.log(error);
+
+    return {
+      success: false,
+      data: "error",
+      message: backendMessage || "Role doesnot changed",
+    };
+  }
 };
 
-export const useChangeRole = () => {
+export const useCreateTechnicianRole = () => {
   const router = useRouter();
   const toast = useToast();
 
-  return useMutation<changeRoleResponse, Error, changeRoleData>({
-    mutationFn: changeRole,
-    onSuccess: (data, variables) => {
-      const { role } = variables;
+  return useMutation<createTechnicianRoleResponse, Error, createTechnicianRoleData>({
+    mutationFn: createTechnicianRole,
+    onSuccess: (data) => {
       if (data.success === true) {
         toast.show("Role changed successfully", {
           type: "success",
@@ -41,11 +59,9 @@ export const useChangeRole = () => {
           duration: 4000,
           animationType: "slide-in",
         });
-        if (role === "Technician") {
-          router.replace("/Technician/(root)/(tabs)");
-        } else {
-          router.push("/(root)/(tabs)");
-        }
+         AsyncStorage.removeItem("token");
+        router.push("/auth/register")
+        
       } else {
         toast.show(data.message || "Failed to change role", {
           type: "danger",

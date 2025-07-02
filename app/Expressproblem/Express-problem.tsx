@@ -20,8 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 import { usePostProblem } from "@/services/api/postProblem";
 import { Platform } from "react-native";
 import LeafletWebViewMap from "./WebMap";
-// import CrossPlatformMap from "./WebMap";
-// import WebMap from "@/components/WebMap";
+
 
 async function uriToFile(uri: string, fileName: string, mimeType: string) {
   const response = await fetch(uri);

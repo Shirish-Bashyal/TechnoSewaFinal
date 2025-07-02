@@ -5,5 +5,6 @@ export const API_ENDPOINTS={
     ConsumerProfile:"/api/Consumer/profile",
     PostProblem:"/api/Post/problem",
     LogOut:"/api/Auth/signout",
+    CreateTechnician:"/api/Technician/create",
    
 }
