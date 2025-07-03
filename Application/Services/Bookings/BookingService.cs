@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Application.Constants.Enums;
 using Application.DTO.Booking;
 using Application.DTO.Booking.Consumer;
+using Application.Hubs.Model;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Data;
+using Application.Interfaces.Notification;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Role;
 using Application.Response;
@@ -17,6 +19,7 @@ using Domain.Entities.Application.Bookings;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 
 namespace Application.Services.Bookings
 {
@@ -24,23 +27,30 @@ namespace Application.Services.Bookings
     {
         private readonly IUnitOfWork _uow;
         private readonly IBidService _bidService;
+        INotificationSender _notificationSender;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
         public BookingService(
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
-            IBidService bidService
+            IBidService bidService,
+            INotificationSender notificationSender
         )
         {
             _uow = uow;
             _userManager = userManager;
             _bidService = bidService;
+            _notificationSender = notificationSender;
         }
 
         public async Task<ServiceResponse<object>> BidBooking(int BidId)
         {
-            var includes = new Expression<Func<PostBid, object>>[] { s => s.Post };
+            var includes = new Expression<Func<PostBid, object>>[]
+            {
+                s => s.Post,
+                s => s.Technician
+            };
             var bid = await _uow.AsyncRepositories<PostBid>()
                 .GetWithIncludeAndFilter(includes, x => x.Id == BidId);
 
@@ -61,10 +71,16 @@ namespace Application.Services.Bookings
             // Update the post status
             bid.Post.Status = (int)PostStatusEnum.Booked;
             await _uow.AsyncRepositories<Post>().UpdateAsync(bid.Post);
-
+            var notification = new NotificationDto
+            {
+                Message = $"Your bid for {bid.Post.Title} is accepted",
+                Title = "New Bid Accepted"
+            };
+            await _notificationSender.AddNotification(notification, bid.Technician.UserId);
             var result = await _uow.Save();
             if (result > 0)
             {
+                await _notificationSender.SendToUserAsync(bid.Technician.UserId, notification);
                 return new ServiceResponse<object>
                 {
                     Message = "Technician is Booked",
@@ -172,7 +188,11 @@ namespace Application.Services.Bookings
                 })
                 .ToList();
 
-            var postIncludes = new Expression<Func<Post, object>>[] { x => x.Bids };
+            var postIncludes = new Expression<Func<Post, object>>[]
+            {
+                x => x.Bids,
+                x => x.Category
+            };
 
             var pendingPost = await _uow.AsyncRepositories<Post>()
                 .GetListWithIncludeAndFilter(
@@ -185,6 +205,8 @@ namespace Application.Services.Bookings
                 {
                     PostDetails = new DTO.User.Post.PostResponseDTO
                     {
+                        Id = x.Id,
+
                         Category = x.Category.Name,
                         Description = x.Description,
                         Lattitude = x.Lattitude,
@@ -192,16 +214,18 @@ namespace Application.Services.Bookings
 
                         Title = x.Title,
                     },
-                    PostBids = x.Bids.Select(a => new DTO.User.Consumer.GetBidDTO
-                    {
-                        BidId = a.Id,
-                        ServiceDate = a.ServiceDate,
-                        SolutionDescription = a.SolutionDescription,
-                        EstimationPrice = a.EstimationPrice,
-                        TechnicianId = a.Technician.Id,
-                        TechnicianName = a.Technician.User.UserName
-                    })
-                        .ToList(),
+                    PostBids = x.Bids.Any()
+                        ? x.Bids.Select(a => new DTO.User.Consumer.GetBidDTO
+                        {
+                            BidId = a.Id,
+                            ServiceDate = a.ServiceDate,
+                            SolutionDescription = a.SolutionDescription,
+                            EstimationPrice = a.EstimationPrice,
+                            TechnicianId = a.Technician.Id,
+                            TechnicianName = a.Technician.User.UserName
+                        })
+                            .ToList()
+                        : null,
                 })
                 .ToList();
 
@@ -435,10 +459,17 @@ namespace Application.Services.Bookings
                     SubCategoryBooking = subCategoryBooking,
                 };
                 await _uow.AsyncRepositories<Booking>().AddAsync(booking);
-
+                var notification = new NotificationDto
+                {
+                    Message =
+                        $"You have been booked by {user.UserName} for {Model.ServiceDate} day",
+                    Title = "Booking Confirmed"
+                };
+                await _notificationSender.AddNotification(notification, tech.UserId);
                 var result = await _uow.Save();
                 if (result > 0)
                 {
+                    await _notificationSender.SendToUserAsync(tech.UserId, notification);
                     return new ServiceResponse<object>
                     {
                         Message = "Technician is Booked",

@@ -45,16 +45,27 @@ namespace TechnoSewa.Startup
                         //Handles extracting the JWT token from an HttpOnly cookie named "MyAuthValue"
                         OnMessageReceived = context =>
                         {
-                            // Look for the token in the HttpOnly cookie named "MyAuthValue"
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+
                             if (
+                                !string.IsNullOrEmpty(accessToken)
+                                && path.StartsWithSegments("/notificationhub")
+                            )
+                            {
+                                context.Token = accessToken;
+                            }
+                            // Optional: support HttpOnly cookies too
+                            else if (
                                 context.Request.Cookies.TryGetValue(
                                     "MyAuthValue",
-                                    out string jwtToken
+                                    out var cookieToken
                                 )
                             )
                             {
-                                context.Token = jwtToken;
+                                context.Token = cookieToken;
                             }
+
                             return Task.CompletedTask;
                         },
 

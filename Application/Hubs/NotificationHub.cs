@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Hubs.InMemoryDB;
 using Application.Hubs.Model;
+using Application.Interfaces.Notification;
 using Domain.Entities.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,105 +17,35 @@ namespace Application.Hubs
 {
     public class NotificationHub : Hub
     {
-        private readonly UserConnectionDb _sharedDb;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly NotificationDb _notificationDb;
+        private readonly INotificationSender _notificationSender;
+        private readonly UserConnectionDb _userConnectionDb;
 
         public NotificationHub(
-            UserConnectionDb sharedDb,
-            IHttpContextAccessor httpContextAccessor,
-            UserManager<ApplicationUser> userManager,
-            NotificationDb notificationDb
+            INotificationSender notificationSender,
+            UserConnectionDb userConnectionDb
         )
         {
-            _sharedDb = sharedDb;
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
-            _notificationDb = notificationDb;
+            _notificationSender = notificationSender;
+            _userConnectionDb = userConnectionDb;
         }
 
         public override async Task OnConnectedAsync()
         {
-            var userId = _httpContextAccessor
-                .HttpContext?.User
-                ?.FindFirst(ClaimTypes.NameIdentifier)
-                ?.Value;
-
+            var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
-            {
                 return;
-            }
 
-            var connectionId = Context.ConnectionId;
+            _userConnectionDb.AddConnection(userId, Context.ConnectionId);
 
-            _sharedDb.AddConnection(userId, connectionId);
+            await _notificationSender.SendPendingNotificationsAsync(userId, Context.ConnectionId);
 
-            var sendNotification = await SendPendingNotification(userId, connectionId);
-            if (sendNotification == true)
-            {
-                _notificationDb.RemoveNotification(userId);
-            }
+            await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var userId = _httpContextAccessor
-                .HttpContext?.User
-                ?.FindFirst(ClaimTypes.NameIdentifier)
-                ?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return;
-            }
-
-            var connection = _sharedDb.GetConnection(userId);
-            if (connection != null)
-            {
-                _sharedDb.RemoveConnection(userId);
-            }
-        }
-
-        public async Task<bool> SendPendingNotification(string userId, string connectionId)
-        {
-            if (userId != null)
-            {
-                var notifications = await _notificationDb.GetByUserId(userId);
-                if (notifications != null && notifications.Any())
-                {
-                    foreach (var notification in notifications)
-                    {
-                        string messages = notification.Message;
-
-                        await Clients.Client(connectionId).SendAsync("ReceiveMessage", messages);
-                    }
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public async Task SendNotificationToUser(string message, string receiverId)
-        {
-            var connectionId = _sharedDb.GetConnection(receiverId);
-            if (connectionId == null)
-            {
-                var notification = new NotificationDto() { Message = message, };
-
-                _notificationDb.AddNotification(receiverId, notification);
-            }
-            else
-            {
-                await Clients.Client(connectionId).SendAsync("ReceiveMessage", message);
-            }
+            _userConnectionDb.RemoveConnection(Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

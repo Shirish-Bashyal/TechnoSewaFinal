@@ -1,3 +1,4 @@
+using Application.Hubs;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -83,11 +84,11 @@ app.UseStaticFiles(
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
-
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
