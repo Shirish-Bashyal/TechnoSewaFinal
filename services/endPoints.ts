@@ -6,5 +6,11 @@ export const API_ENDPOINTS={
     PostProblem:"/api/Post/problem",
     LogOut:"/api/Auth/signout",
     CreateTechnician:"/api/Technician/create",
+
+
+    //For Technician
+    GetPost:"/api/Post/for-technician",
+    GetPostById:"api/Post/get",
+    CreateBid:"/api/Bid/create",
    
 }

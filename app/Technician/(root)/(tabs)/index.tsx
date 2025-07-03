@@ -10,6 +10,7 @@ import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
 import { Technician } from "@/components/services-category";
 import { useViewProfile } from "@/services/api/profile";
+import { PostForTechnician } from "@/components/Postfortechnician";
 
 const index = () => {
     const router = useRouter();
@@ -17,8 +18,8 @@ const index = () => {
   return (
      <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
-        data={[1, 2, 3, 4]}
-        renderItem={({ item }) => <Technician/>}
+        data={[1]}
+        renderItem={({ item }) => <PostForTechnician/>}
         keyExtractor={(item) => item.toString()}
         
         contentContainerClassName="pb-32 "
