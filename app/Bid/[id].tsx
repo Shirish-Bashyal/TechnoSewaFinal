@@ -14,6 +14,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { bidData, useCreateBid } from "@/services/api/bid";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 type FormValues = {
   postId: number;
@@ -29,6 +30,7 @@ const Bid = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>();
+  const router = useRouter();
   const [text, setText] = React.useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -67,20 +69,29 @@ const Bid = () => {
 
   return (
     <SafeAreaView className="h-full bg-gray-100">
-      <View className="flex justify-center items-center mt-8">
+      <View className="flex flex-row  justify-center items-center mt-8">
+         <TouchableOpacity
+          onPress={router.back}
+          className="flex flex-row  gap-4 mx-4 py-10"
+        >
+          <Text>
+          <AntDesign name="back" size={24} color="black" />
+          </Text>
+         
+        </TouchableOpacity>
         <Text
           className="text-lg text-black-300"
           style={{ fontFamily: "rubik-bold" }}
         >
-          Welcome to Techno Sewa!!
+          Create A Bid!!
         </Text>
         {/* <Toaster position="bottom-center" reverseOrder={false} /> */}
       </View>
-      <View className="mt-1 text-sm flex justify-center items-center">
+      {/* <View className="mt-1 text-sm flex justify-center items-center">
         <Text className="text-black-200" style={{ fontFamily: "rubik" }}>
           Enter your Details
         </Text>
-      </View>
+      </View> */}
       <ScrollView contentContainerStyle={{ padding: 16 }}>
         <View style={{ gap: 12 }}>
           <View>

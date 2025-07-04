@@ -86,12 +86,12 @@ const TabsLayout = () => {
       />
 
     <Tabs.Screen
-      name="message"
+      name="viewbid"
       options={{
-        title: "Message",
+        title: "Bid",
         headerShown: false,
         tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} icon="mail" title="Message" />
+          <TabIcon focused={focused} icon="ticket" title="Bid" />
         ),
       }}
     />

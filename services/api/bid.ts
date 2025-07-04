@@ -8,7 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const { CreateBid } = API_ENDPOINTS;
+const { CreateBid, ViewBid } = API_ENDPOINTS;
 
 export interface bidData {
   postId: number;
@@ -25,7 +25,7 @@ export const createBid = async (formData: bidData): Promise<bidResponse> => {
   try {
     console.log("Sending login payload:", formData);
     const response = await axiosInstance.post(CreateBid, formData);
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (error: any) {
     console.log("Response data:", error.message);
@@ -56,8 +56,8 @@ export const useCreateBid = () => {
           style: { marginTop: 125 },
           animationType: "slide-in",
         });
-        console.log(data)
-        router.replace("/Technician/(root)/(tabs)");
+        console.log(data);
+        router.replace("/Technician/(root)/(tabs)/viewbid");
       } else {
         toast.show(data.message || "Failed to create bid", {
           type: "danger",
@@ -76,5 +76,38 @@ export const useCreateBid = () => {
         placement: "bottom",
       });
     },
+  });
+};
+
+//View bid
+export interface viewBidData {
+  postId: number;
+  solutionDescription: string;
+  estimationPrice: number;
+  serviceDate: string;
+  postTitle: string;
+  bidId: number;
+}
+
+export interface viewBidDataResponse {
+  success: boolean;
+  message: string;
+  data?: viewBidData[];
+}
+
+export const showBidData = async (): Promise<viewBidDataResponse> => {
+  try {
+    const response = await axiosInstance.get(ViewBid);
+    const bidContent = await response.data;
+    return bidContent;
+  } catch (error) {
+    throw new Error("Failed to fetch  data");
+  }
+};
+
+export const useShowBidData = () => {
+  return useQuery<viewBidDataResponse, Error>({
+    queryKey: ["ViewDataBidding"],
+    queryFn: showBidData,
   });
 };

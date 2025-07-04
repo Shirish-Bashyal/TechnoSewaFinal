@@ -40,12 +40,12 @@ export const PostForTechnician = ({ onPress }: Props) => {
           key={posts.id}
         >
           <Image
-           source={
-    posts.imageUrl && posts.imageUrl.length > 0
-      ? { uri: posts.imageUrl[0] }
-      : images.avatar
-  }
-            className="!w-20 !h-20 rounded-full !object-fill"
+            source={
+              posts.imageUrl && posts.imageUrl.length > 0
+                ? { uri: posts.imageUrl[0] }
+                : images.avatar
+            }
+            className="!w-20 !h-20 rounded-lg !object-fill"
           />
           <View className="flex flex-col mt-2">
             <View className="flex flex-row justify-between gap-2">
@@ -99,7 +99,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
                 className="text-xs text-black-300"
                 style={{ fontFamily: "rubik-light" }}
               >
-                By:
+              Post By:
               </Text>
               <Text
                 className="text-xs text-black-300"
@@ -110,19 +110,17 @@ export const PostForTechnician = ({ onPress }: Props) => {
             </View>
           </View>
           <Link href={`/Showpost/${posts.id}`} asChild>
-          <TouchableOpacity
-            // onPress={handleShowAboutTechnician}
-            className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
-          >
-            
+            <TouchableOpacity
+              // onPress={handleShowAboutTechnician}
+              className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
+            >
               <Text
                 className="text-xs  text-white text-center"
                 style={{ fontFamily: "rubik-bold" }}
               >
                 Show Details
               </Text>
-           
-          </TouchableOpacity>
+            </TouchableOpacity>
           </Link>
         </View>
       ))}

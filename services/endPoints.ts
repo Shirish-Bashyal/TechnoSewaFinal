@@ -12,5 +12,8 @@ export const API_ENDPOINTS={
     GetPost:"/api/Post/for-technician",
     GetPostById:"api/Post/get",
     CreateBid:"/api/Bid/create",
+    ViewBid:"/api/Bid/get/bytechnician",
+
+    GetAllBookings:"/api/Booking/all/Technician",
    
 }
