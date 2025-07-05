@@ -1,4 +1,5 @@
 ﻿using Application.Helpers.LLM;
+using Application.Hubs.InMemoryDB;
 using Application.Interfaces;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Chatbot;
@@ -27,6 +28,10 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<INotificationSender, NotificationSender>();
+            services.AddSingleton<UserConnectionDb>();
+            services.AddSingleton<NotificationDb>();
+
             services.AddScoped<IQuestionResponseService, QuestionResponseService>();
             services.AddScoped<ILLMFormatter, LLMFormatter>();
             services.AddScoped<ITextTokenizer, TextTokenizer>();

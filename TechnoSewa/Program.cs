@@ -1,3 +1,4 @@
+using Application.Hubs;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -46,6 +47,7 @@ builder.Services.AddCors(options =>
 //adding services
 
 builder.Services.AddInternalDependencies(builder.Configuration);
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 var contentPath = app.Environment.ContentRootPath;
@@ -82,11 +84,11 @@ app.UseStaticFiles(
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
-
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
