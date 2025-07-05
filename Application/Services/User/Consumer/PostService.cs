@@ -182,6 +182,7 @@ namespace Application.Services.User.Consumer
                 }
                 var result = new PostResponseDTO
                 {
+                    Id = post.Id,
                     Title = post.Title,
                     Description = post.Description,
                     Category = post.Category.Name,
@@ -223,6 +224,7 @@ namespace Application.Services.User.Consumer
             var result = posts
                 .Select(post => new PostResponseDTO
                 {
+                    Id = post.Id,
                     Title = post.Title,
                     Description = post.Description,
                     Category = post.Category.Name,
