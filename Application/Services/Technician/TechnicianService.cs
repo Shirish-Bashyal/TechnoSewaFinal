@@ -109,53 +109,61 @@ namespace Application.Services.Technician
 
             //rank these technicians based on the locations
 
-
-
-
-            var result = availableTechnician
-                .Select(x => new GetTechnicianDetailsDTO
-                {
-                    TechnicianId = x.Id,
-                    Name = x.User.UserName,
-                    Distance = HaversineAlgo.Haversine(
-                        model.Latitude,
-                        model.Longitude,
-                        x.Latitude,
-                        x.Longitude
-                    ),
-                    //PhoneNumber = x.User.PhoneNumber,
-                    Reviews = new GetReviewDTO()
-                })
-                .OrderBy(x => x.Distance)
-                .Take(10)
-                .ToList(); //order by distance in kilometers
-
-            var reviewTasks = result.Select(async technician =>
+            if (availableTechnician != null && availableTechnician.Any())
             {
-                var reviewResponse = await _reviewServices.GetForTechnician(
-                    technician.TechnicianId
-                );
-                if (reviewResponse.Data != null)
+                var result = availableTechnician
+                    .Select(x => new GetTechnicianDetailsDTO
+                    {
+                        TechnicianId = x.Id,
+                        Name = x.User.UserName,
+                        Distance = HaversineAlgo.Haversine(
+                            model.Latitude,
+                            model.Longitude,
+                            x.Latitude,
+                            x.Longitude
+                        ),
+                        //PhoneNumber = x.User.PhoneNumber,
+                        Reviews = new GetReviewDTO()
+                    })
+                    .OrderBy(x => x.Distance)
+                    .Take(10)
+                    .ToList(); //order by distance in kilometers
+
+                var reviewTasks = result.Select(async technician =>
                 {
-                    technician.Reviews = reviewResponse.Data;
-                }
-            });
+                    var reviewResponse = await _reviewServices.GetForTechnician(
+                        technician.TechnicianId
+                    );
+                    if (reviewResponse.Data != null)
+                    {
+                        technician.Reviews = reviewResponse.Data;
+                    }
+                });
 
-            await Task.WhenAll(reviewTasks); // Await all in parallel
+                await Task.WhenAll(reviewTasks); // Await all in parallel
 
-            //var predictorInput = result
-            //    .Select(x =>
-            //        (
-            //            id: x.TechnicianId,
-            //            proximityKm: (float)x.Distance,
-            //            avgRating: (float)x.Reviews.AverageRating
-            //        )
-            //    )
-            //    .ToList();
+                //var predictorInput = result
+                //    .Select(x =>
+                //        (
+                //            id: x.TechnicianId,
+                //            proximityKm: (float)x.Distance,
+                //            avgRating: (float)x.Reviews.AverageRating
+                //        )
+                //    )
+                //    .ToList();
 
-            //var predictorOutput = LightGBMPredictor.Predict(predictorInput);
+                //var predictorOutput = LightGBMPredictor.Predict(predictorInput);
 
-            return new ServiceResponse<object> { Success = true, Data = result };
+                return new ServiceResponse<object> { Success = true, Data = result };
+            }
+            else
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message = "No technician available"
+                };
+            }
         }
     }
 }
