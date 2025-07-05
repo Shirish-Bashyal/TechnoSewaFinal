@@ -10,7 +10,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useShowAllBooking } from "@/services/api/booking";
-import index from '../Technician/(root)/(tabs)/index';
+
 
 const pendingBooking = () => {
     const { data: bookingData, isError, isLoading } = useShowAllBooking();

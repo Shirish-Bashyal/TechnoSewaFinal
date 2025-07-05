@@ -31,6 +31,10 @@ const phone = () => {
   const handleOtp = async (data: phoneData) => {
     console.log("ok");
     mutate(data);
+     Alert.alert(
+      "Your Otp is",
+      "1234"
+     )
   };
 
   useEffect(() => {

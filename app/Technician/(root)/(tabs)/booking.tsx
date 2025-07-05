@@ -19,6 +19,9 @@ const booking = () => {
   const handleShowPendingBookings = () => {
     router.push("/Bookings/pendingbooking");
   };
+    const handleShowActiveBookings = () => {
+    router.push("/Bookings/activebooking");
+  };
 
   return (
     <SafeAreaView className="bg-gray-100 h-full">
@@ -53,6 +56,7 @@ const booking = () => {
             </View>
           </View>
           </TouchableOpacity>
+           <TouchableOpacity  onPress={handleShowActiveBookings} className="cursor-pointer">
           <View className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg">
             <View className="flex flex-row justify-between mx-4">
               <View className="flex flex-row gap-4">
@@ -79,6 +83,7 @@ const booking = () => {
               </View>
             </View>
           </View>
+          </TouchableOpacity>
           <View
             className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
             //   key={posts.id}

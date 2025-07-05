@@ -17,6 +17,7 @@ import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import PhoneInput from "react-native-phone-input";
 import { LoginData, useLogin } from "@/services/api/auth";
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 type FormValues = {
   phoneNumber: string;
@@ -26,7 +27,7 @@ type FormValues = {
 const signIn = () => {
   const router = useRouter();
   const { register, handleSubmit, setValue } = useForm<FormValues>();
-  const { mutate } = useLogin();
+  const { mutate,isPending } = useLogin();
 
   const phoneInputRef = useRef<PhoneInput>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -129,6 +130,10 @@ const signIn = () => {
           />
         </View>
         {/* className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-14 py-4 mt-8 mx-2 " */}
+       {isPending? (
+        <ActivityIndicator animating={true} color={MD2Colors.red800} style={{marginTop:8}} />
+       ) : (
+       
         <View className="mt-8 mx-3">
           <Button
             title="Submit"
@@ -136,6 +141,7 @@ const signIn = () => {
             color="#7A4DFF"
           />
         </View>
+       )}
 
         {/* <View className="text-lg font-rubik-bold text-white text-center">
             <Text className="text-white" style={{ fontFamily: "rubik-bold" }}>

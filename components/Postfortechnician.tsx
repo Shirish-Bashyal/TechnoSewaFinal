@@ -12,6 +12,8 @@ import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, useRouter } from "expo-router";
 import { useViewPostForTechnician } from "@/services/api/postfortechnician";
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 interface Props {
   onPress?: () => void;
@@ -27,6 +29,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
   //   router.push(`/`);
   // };
   return (
+    
     <View className="flex-1 w-[98%] mt-2 px-3 py-1 !mr-10 ml-2  ">
       {/* <View className="flex flex-row items-center absolute px-2 top-5 right-5 bg-white/90 p1 rounded-full z-50">
         <FontAwesome name="star-half-empty" size={20} color="gold" />
@@ -34,6 +37,10 @@ export const PostForTechnician = ({ onPress }: Props) => {
           4.4
         </Text>
       </View> */}
+      {isLoading ? (
+        <ActivityIndicator animating={true} color={MD2Colors.red800} style={{marginTop:8}} />
+       ) : (
+        <View>
       {postData?.data?.map((posts: any) => (
         <View
           className="flex flex-row gap-4 items-center mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
@@ -75,7 +82,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
             <View>
               <Text
                 className="text-base font-outfit-bold text-black-300 "
-                style={{ fontFamily: "outfit-Medium" }}
+                style={{ fontFamily: "outfit-Medium" }} numberOfLines={2}
               >
                 {posts.title || "problem"}
               </Text>
@@ -124,6 +131,9 @@ export const PostForTechnician = ({ onPress }: Props) => {
           </Link>
         </View>
       ))}
+      </View>
+       )}
     </View>
+     
   );
 };

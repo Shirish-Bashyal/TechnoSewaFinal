@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SignUpData, useSignUp } from "@/services/api/auth";
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 // import { Toaster } from 'react-hot-toast';
 
 type FormValues = {
@@ -33,7 +34,7 @@ const userdetails = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>();
-  const { mutate } = useSignUp();
+  const { mutate,isPending } = useSignUp();
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<TextInput>(null);
 
@@ -296,8 +297,11 @@ const userdetails = () => {
       )}
       */}
           </View>
+          {isPending? (
+        <ActivityIndicator animating={true} color={MD2Colors.red800} style={{marginTop:8}} />
+       ) : (
            <Button title="Submit" onPress={handleSubmit(submitUserData)} color='#7A4DFF'/>
-
+       )}
           {/* <TouchableOpacity
             onPress={handleTech}
             className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-18 py-4 mt-5 mx-2 "
