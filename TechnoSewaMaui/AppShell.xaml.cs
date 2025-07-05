@@ -3,6 +3,7 @@ using Microsoft.Maui.Storage;
 using TechnoSewaMaui.Views.Auth.Register;
 using TechnoSewaMaui.Views.Auth.SignIn;
 using TechnoSewaMaui.Views.Bookings;
+using TechnoSewaMaui.Views.Chatbot;
 using TechnoSewaMaui.Views.Home;
 using TechnoSewaMaui.Views.Notification;
 using TechnoSewaMaui.Views.PostProblem;
@@ -31,6 +32,8 @@ namespace TechnoSewaMaui
             Routing.RegisterRoute(nameof(LandingPage), typeof(LandingPage));
             Routing.RegisterRoute(nameof(MapPage), typeof(MapPage));
             Routing.RegisterRoute(nameof(PostProblemPage), typeof(PostProblemPage));
+            Routing.RegisterRoute(nameof(ChatBotPopup), typeof(ChatBotPopup));
+
             Routing.RegisterRoute(nameof(NotificationPage), typeof(NotificationPage));
             Routing.RegisterRoute(nameof(SigninPage), typeof(SigninPage));
         }

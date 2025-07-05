@@ -56,22 +56,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\audio.png" />
+	  <None Remove="Resources\Images\bot.png" />
+	  <None Remove="Resources\Images\cancel.png" />
 	  <None Remove="Resources\Images\fingerprint.png" />
+	  <None Remove="Resources\Images\gallery.png" />
 	  <None Remove="Resources\Images\key.png" />
+	  <None Remove="Resources\Images\mic.png" />
+	  <None Remove="Resources\Images\pause.png" />
+	  <None Remove="Resources\Images\play.png" />
 	  <None Remove="Resources\Images\secure.png" />
+	  <None Remove="Resources\Images\send.png" />
 	  <None Remove="Resources\Images\telephone.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="FuzzySharp" Version="2.0.2" />
+		<PackageReference Include="GroqSharp" Version="1.1.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.60" />
+		<PackageReference Include="Microsoft.ML" Version="4.0.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.1.8" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="3.1.1" />
 		<PackageReference Include="Plugin.Maui.Biometric" Version="0.0.2" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0" />
 	</ItemGroup>
@@ -90,6 +102,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Bookings\BookingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Chatbot\ChatBotPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Home\HomePage.xaml">

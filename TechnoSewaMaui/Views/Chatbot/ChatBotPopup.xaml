@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+   xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="TechnoSewaMaui.Views.Chatbot.ChatBotPopup"
+xmlns:viewmodel="clr-namespace:TechnoSewaMaui.ViewModel.Chatbot"
+x:DataType="viewmodel:ChatbotPopupViewModel"
+                xmlns:models="clr-namespace:TechnoSewaMaui.Model"
+               
+               >
+
+    <Grid RowDefinitions="Auto,*,Auto" >
+
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" BackgroundColor="MediumPurple" Padding="2" HeightRequest="46" >
+            <Label Grid.Column="0" Text="Techno Bot"  TextColor="White" Padding="5" HorizontalOptions="Start" VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold" FontAutoScalingEnabled="False" />
+            <!--<ImageButton Grid.Column="1" HorizontalOptions="End" VerticalOptions="End" Source="cancel.png" Clicked="OnNoButtonClicked"/>-->
+        </Grid>
+
+        <ScrollView Grid.Row="1" Padding="10">
+
+            <VerticalStackLayout Padding="10"  >
+                    <CollectionView ItemsSource="{Binding Messages}">
+                        <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ChatMessageModel">
+                            <Frame HorizontalOptions="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
+                               BackgroundColor="Transparent" BorderColor="Transparent"
+                               CornerRadius="15"
+                               Padding="10"
+                               HasShadow="False"
+                               MaximumWidthRequest="250">
+                              
+                                <Grid RowDefinitions="*,Auto,Auto">
+                                    <Border Grid.Row="0" BackgroundColor="{Binding IsSentByUser, Converter={StaticResource BoolToColorConverter}}" Padding="3,3,3,1" StrokeShape="RoundRectangle 20,20,20,20" StrokeThickness="1.2" StrokeDashOffset="15" >
+
+                                        <Editor Text="{Binding Question}" FontSize="15" IsVisible="{Binding IsChat}"
+                          BackgroundColor="Transparent" Margin="5,0,0,-10" HorizontalTextAlignment="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}"
+                                 TextColor="Black"/>
+                                    </Border>
+                                    <Grid Grid.Row="0" Padding="0,0,15,5" VerticalOptions="Center" IsVisible="{Binding IsChat, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="{Binding IsSentByUser, Converter={StaticResource BoolToAlignmentConverter}}">
+                                        <ImageButton Margin="5,0,0,-10" IsVisible="{Binding IsChat, Converter={StaticResource InverseBoolConverter}}"
+                                            Source="audio.png" 
+                                            HeightRequest="24" WidthRequest="24"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=PlayChatAudioCommand}"
+                                            CommandParameter="{Binding AudioFile}"/>
+                                       
+                                    </Grid>
+                                    <Grid Grid.Row="1" 
+                                          
+                                          IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent}" 
+                                          >
+                                        <Image Source="{Binding ImageSource}"
+                                WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent, Converter={StaticResource BoolToSizeConverter}}"
+                                HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ChatbotPopupViewModel}}, Path=BindingContext.IsMsgWithImageSent, Converter={StaticResource BoolToSizeConverter}}"
+                                VerticalOptions="End"
+                                HorizontalOptions="End"
+                                   Margin="5"
+                                BackgroundColor="Transparent"
+   
+                                Aspect="AspectFill"
+                                 />
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+        </ScrollView>
+
+        <Grid Grid.Row="2" RowDefinitions="Auto,*"  Padding="10" BackgroundColor="Transparent" >
+            <Frame Grid.Row="1" Padding="4" BackgroundColor="#f0f0f0"  IsVisible="{Binding IsAudioPreviewVisible, Converter={StaticResource InverseBoolConverter}}">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5">
+                    <Entry Grid.Column="0" Text="{Binding MessageText}" Placeholder="Type a message..." VerticalOptions="Center"/>
+                 <ImageButton Source="mic.png" Grid.Column="1"  Command="{Binding SelectAudioCommand}" VerticalOptions="Center" HeightRequest="24" WidthRequest="24">
+                        <ImageButton.Triggers>
+                            <DataTrigger TargetType="ImageButton"
+                                 Binding="{Binding IsRecordingMode}"
+                                 Value="True">
+                                <Setter Property="Source" Value="pause.png" />
+                                <Setter Property="Command" Value="{Binding RecordAudioCommand}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="ImageButton"
+                                  Binding="{Binding IsRecordingMode}"
+                                  Value="False">
+                                <Setter Property="Source" Value="mic.png" />
+                                <Setter Property="Command" Value="{Binding SelectAudioCommand}" />
+                            </DataTrigger>
+                        </ImageButton.Triggers>
+
+                    </ImageButton>
+                    <ImageButton Source="gallery.png" Grid.Column="2"  Command="{Binding PickImageCommand}" VerticalOptions="Center" HeightRequest="28" WidthRequest="28"/>
+                    <ImageButton Source="send.png" Grid.Column="3"  Command="{Binding SendCommand}" VerticalOptions="Center"  HeightRequest="34" WidthRequest="34"/>
+                </Grid>
+            </Frame>
+
+            <Frame Grid.Row="1" Padding="4" BackgroundColor="#f0f0f0"  IsVisible="{Binding IsAudioPreviewVisible}">
+                <Grid Grid.Column="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="5">
+                    <ImageButton Grid.Column="0"
+                        Source="cancel.png"
+                        Command="{Binding ClearAudioCommand}"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        CornerRadius="20" 
+                                 BackgroundColor="Black"/>
+                    <Frame Grid.Column="1"
+                       Padding="8"
+                       BackgroundColor="#EEEEEE"
+                       CornerRadius="12"
+                       VerticalOptions="Center">
+                    <Label Text="{Binding AudioFileName}" 
+                           TextColor="Black"
+                           FontAttributes="Bold"/>
+                    </Frame>
+                    <ImageButton Grid.Column="2"
+                        Source="play.png"
+                        Command="{Binding PlayAudioCommand}"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        CornerRadius="20"  />
+                    
+                    <ImageButton Source="mic.png" Grid.Column="3"  Command="{Binding SelectAudioCommand}" VerticalOptions="Center" HeightRequest="24" WidthRequest="24">
+                        <ImageButton.Triggers>
+                            <DataTrigger TargetType="ImageButton"
+                 Binding="{Binding IsRecordingMode}"
+                 Value="True">
+                                <Setter Property="Source" Value="pause.png" />
+                                <Setter Property="Command" Value="{Binding RecordAudioCommand}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="ImageButton"
+                  Binding="{Binding IsRecordingMode}"
+                  Value="False">
+                                <Setter Property="Source" Value="mic.png" />
+                                <Setter Property="Command" Value="{Binding SelectAudioCommand}" />
+                            </DataTrigger>
+                        </ImageButton.Triggers>
+
+                    </ImageButton>
+                    <ImageButton Source="send.png" Grid.Column="4"  Command="{Binding SendAudioCommand}" VerticalOptions="Center"  HeightRequest="34" WidthRequest="34"/>
+                </Grid>
+            </Frame>
+
+            <Image Grid.Row="0" Source="{Binding PickedImage}"
+           WidthRequest="64"
+           HeightRequest="64"
+           VerticalOptions="End"
+           HorizontalOptions="End"
+          
+           BackgroundColor="White"
+          
+           Aspect="AspectFill"
+           IsVisible="{Binding IsImagePicked}" />
+            
+        </Grid>
+    </Grid>
+
+</toolkit:Popup>

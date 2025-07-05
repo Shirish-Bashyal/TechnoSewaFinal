@@ -11,7 +11,7 @@
 
    
 
-    <Grid RowDefinitions="auto,auto,*,auto" 
+    <Grid RowDefinitions="auto,auto,*,*,auto" 
           Padding="0" 
           Margin="0" 
           HorizontalOptions="Fill" 
@@ -186,6 +186,25 @@
                     <Image Source="dotnet_bot.png" HeightRequest="60" WidthRequest="60"/>
                     <Label  TextColor="#145DA0" Text="AC Repair" FontSize="14" HorizontalOptions="Center" FontAttributes="Bold"/>
                 </StackLayout>
+            </Grid>
+
+
+            <Grid Grid.Row="1">
+
+                <Image 
+                    Source="bot.png" 
+                    HeightRequest="60"
+                    WidthRequest="60"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"
+                    Margin="20"
+                    ZIndex="99"
+                    BackgroundColor="Transparent"
+                    Aspect="AspectFit"> 
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OnChatbotTapped}" />
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
         </Grid>
     </Grid>
