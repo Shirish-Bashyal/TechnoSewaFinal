@@ -9,6 +9,87 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
 import { useViewProfile } from "@/services/api/profile";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+const cardFeaturedData = [
+  {
+    image: images.pipe,
+    title: "Pipe Repairs",
+    price: "4500",
+    rating: "4.4",
+  },
+  {
+    image: images.switches,
+    title: "Switch Repairs Package",
+    price: "5000",
+    rating: "4.8",
+  },
+  {
+    image: images.furniture,
+    title: "Furniture Package",
+    price: "6000",
+    rating: "4.6",
+  },
+  {
+    image: images.wire,
+    title: "Full Package",
+    price: "3000",
+    rating: "3.6",
+  },
+  {
+    image: images.tab,
+    title: "Full Package",
+    price: "2000",
+    rating: "2.8",
+  },
+];
+const cardData = [
+  {
+    image: images.wire,
+    title: "Electric wire repair",
+    price: "500",
+    rating: "3.6",
+    reviews: "9",
+    team: "By Team Nepal",
+    description: "Electrical Appliance Installation",
+  },
+  {
+    image: images.tab,
+    title: "Tab repairs",
+    price: "200",
+    rating: "4.8",
+    reviews: "12",
+    team: "By Repair Nepal",
+    description: "Plumber Services",
+  },
+  {
+    image: images.pipe,
+    title: "Pipe Repairs",
+    price: "650",
+    rating: "4.4",
+    reviews: "8",
+    team: "By Cool Air",
+    description: "Pipe Repairs and Maintenance",
+  },
+  {
+    image: images.switches,
+    title: "Switch Repairs Package",
+    price: "400",
+    rating: "3.8",
+    reviews: "5",
+    team: "By Team Nepal",
+    description: "Switch Installation",
+  },
+  {
+    image: images.furniture,
+    title: "Furniture Package",
+    price: "600",
+    rating: "2.6",
+    reviews: "11",
+    team: "By Furniture Nepal",
+    description: "Furniture Installation",
+  },
+];
 
 export default function Index() {
   const router = useRouter();
@@ -17,8 +98,18 @@ export default function Index() {
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
-        data={[1, 2, 3, 4]}
-        renderItem={({ item }) => <Card />}
+        data={cardData}
+        renderItem={({ item }) => (
+          <Card
+            image={item.image}
+            title={item.title}
+            price={item.price}
+            rating={item.rating}
+            description={item.description}
+            team={item.team}
+            reviews={item.reviews}
+          />
+        )}
         keyExtractor={(item) => item.toString()}
         numColumns={2}
         contentContainerClassName="pb-32"
@@ -26,7 +117,6 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View className="px-5">
-           
             <View className="flex flex-row items-center justify-between mt-5">
               <View className="flex flex-row items-center">
                 <Image
@@ -55,7 +145,7 @@ export default function Index() {
                 </TouchableOpacity>
               </View>{" "}
             </View>
-             
+
             <View className="flex flex-row items-center mt-5">
               {/* <Image
                   source={images.avatar}
@@ -106,9 +196,16 @@ export default function Index() {
 
               {/* //{"New Services "} */}
               <FlatList
-                data={[1, 2, 3]}
-                renderItem={({ item }) => <FeaturedCard />}
-                keyExtractor={(item) => item.toString()}
+                data={cardFeaturedData}
+                renderItem={({ item }) => (
+                  <FeaturedCard
+                    image={item.image}
+                    title={item.title}
+                    price={item.price}
+                    rating={item.rating}
+                  />
+                )}
+                keyExtractor={(item, index) => index.toString()}
                 horizontal
                 bounces={false}
                 showsHorizontalScrollIndicator={false}
@@ -141,7 +238,7 @@ export default function Index() {
               >
                 New Services
               </Text>
-              <TouchableOpacity >
+              <TouchableOpacity>
                 <Text
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
@@ -153,6 +250,26 @@ export default function Index() {
           </View>
         }
       />
+      <TouchableOpacity
+    onPress={() => console.log("Chatbot opened")}
+    style={{
+      position: "absolute",
+      top: 280,
+      right: 20,
+      backgroundColor: "#007AFF",
+      borderRadius: 50,
+      padding: 16,
+      elevation: 10,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 3,
+      zIndex: 100,
+    }}
+  >
+    {/* <Ionicons name="chatbubbles-outline" size={24} color="white" /> */}
+    <MaterialCommunityIcons name="robot-outline" size={24} color="white" />
+  </TouchableOpacity>
     </SafeAreaView>
   );
 }

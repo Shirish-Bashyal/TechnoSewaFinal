@@ -15,6 +15,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { bidData, useCreateBid } from "@/services/api/bid";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 type FormValues = {
   postId: number;
@@ -36,7 +37,7 @@ const Bid = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { id } = useLocalSearchParams();
 
-  const { mutate } = useCreateBid();
+  const { mutate, isPending } = useCreateBid();
 
   const onDateChange = (event: any, date: any) => {
     if (date) {
@@ -70,14 +71,13 @@ const Bid = () => {
   return (
     <SafeAreaView className="h-full bg-gray-100">
       <View className="flex flex-row  justify-center items-center mt-8">
-         <TouchableOpacity
+        <TouchableOpacity
           onPress={router.back}
           className="flex flex-row  gap-4 mx-4 py-10"
         >
           <Text>
-          <AntDesign name="back" size={24} color="black" />
+            <AntDesign name="back" size={24} color="black" />
           </Text>
-         
         </TouchableOpacity>
         <Text
           className="text-lg text-black-300"
@@ -195,11 +195,19 @@ const Bid = () => {
 
           <View></View>
         </View>
-        <Button
-          title="Submit"
-          onPress={handleSubmit(submitBidData)}
-          color="#7A4DFF"
-        />
+        {isPending ? (
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            style={{ marginTop: 8 }}
+          />
+        ) : (
+          <Button
+            title="Submit"
+            onPress={handleSubmit(submitBidData)}
+            color="#7A4DFF"
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

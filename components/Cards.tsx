@@ -13,16 +13,25 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 interface Props {
   onPress?: () => void;
+  image: any; // or ImageSourcePropType
+  title: string;
+  price: string;
+  rating: string;
+  reviews?: string;
+  team?: string;
+  description?: string;
 }
 
-export const FeaturedCard = ({ onPress }: Props) => {
+
+
+export const FeaturedCard = ({onPress, image,rating,title,price}: Props) => {
   return (
     <>
       <TouchableOpacity
         onPress={onPress}
         className="flex flex-col items-start w-56 h-72 relative"
       >
-        <Image source={images.coverimage} style={styles.image} />
+        <Image source={image} style={styles.image} />
         <View style={styles.overlay} />
 
         <View className="flex flex-row items-center bg-white/85 px-3 py-1.5 rounded-full absolute top-5 right-5">
@@ -31,7 +40,7 @@ export const FeaturedCard = ({ onPress }: Props) => {
             className="text-xs font-rubik-bold text-black-300 ml-1"
             style={{ fontFamily: "rubik-bold" }}
           >
-            4.4
+            {rating}
           </Text>
         </View>
         <View className="flex flex-col items-start absolute bottom-5 inset-x-5">
@@ -40,7 +49,7 @@ export const FeaturedCard = ({ onPress }: Props) => {
               className="text-base font-rubik-bold mx-2 mt-4 text-white "
               style={{ fontFamily: "rubik-bold" }}
             >
-              Full Package
+             {title}
             </Text>
           </View>
           <View className="flex flex-row items-center justify-between w-full">
@@ -48,7 +57,7 @@ export const FeaturedCard = ({ onPress }: Props) => {
               className="text-sm  text-white mx-2 "
               style={{ fontFamily: "outfit-light" }}
             >
-              Rs,5000
+              Rs,{price}
             </Text>
           </View>
         </View>
@@ -57,7 +66,7 @@ export const FeaturedCard = ({ onPress }: Props) => {
   );
 };
 
-export const Card = ({ onPress }: Props) => {
+export const Card = ({ onPress, image,rating,title,price,reviews,description,team }: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -70,7 +79,7 @@ export const Card = ({ onPress }: Props) => {
         </Text>
       </View> */}
       <Image
-        source={images.coverimage}
+        source={image}
         className="!w-full !h-24 rounded-lg !object-fill"
       />
       <View className="flex flex-col mt-2">
@@ -83,13 +92,13 @@ export const Card = ({ onPress }: Props) => {
               className="text-xs font-rubik-bold text-black-200 mt-1"
               style={{ fontFamily: "rubik-bold" }}
             >
-              4.4
+              {rating}
             </Text>
             <Text
               className="text-xs font-rubik-bold text-black-100 mt-1"
               style={{ fontFamily: "rubik-bold" }}
             >
-              (12)
+              ({reviews})
             </Text>
           </View>
            <View>
@@ -97,7 +106,7 @@ export const Card = ({ onPress }: Props) => {
             className="text-xs font-outfit-bold text-black-100 mt-1"
             style={{ fontFamily: "outfit-medium" }}
           >
-           By Team Nepal Air Condition
+          {team}
           </Text></View>
         </View>
         <View>
@@ -105,7 +114,7 @@ export const Card = ({ onPress }: Props) => {
             className="text-base font-outfit-bold text-black-300 "
             style={{ fontFamily: "outfit-Medium" }}
           >
-            AC Repairs and Maintenance
+            {description}
           </Text>
         </View>
         <View className="flex flex-row gap-1">
@@ -119,7 +128,7 @@ export const Card = ({ onPress }: Props) => {
             className="text-xs font-rubik text-primary-100"
             style={{ fontFamily: "rubik-bold" }}
           >
-            Rs,450
+            Rs,{price}
           </Text>
         </View>
       </View>

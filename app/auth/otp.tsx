@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import PhoneInput from "react-native-phone-input";
 import { useVerifyOtp, verifyData } from "@/services/api/auth";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 type FormValues = {
   phoneNumber: string;
@@ -18,7 +19,7 @@ const otp = () => {
   const phoneInputRef = useRef<PhoneInput>(null);
   const [countryPickerVisible, setCountryPickerVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { mutate } = useVerifyOtp();
+  const { mutate, isPending } = useVerifyOtp();
 
   const handleUserDetails = () => {
     router.push("/auth/userdetails");
@@ -53,7 +54,7 @@ const otp = () => {
       <View className="mt-1 ml-7">
         <Text style={{ fontFamily: "rubik-light" }}>
           {" "}
-           Verify your phone and Otp{" "}
+          Verify your phone and Otp{" "}
         </Text>
       </View>
       <View className="mx-4 mt-4">
@@ -107,13 +108,21 @@ const otp = () => {
             </Text>
           </View>
         </TouchableOpacity> */}
-        <View className="mt-8 mx-3">
-          <Button
-            title="Submit"
-            onPress={handleSubmit(submitUserData)}
-            color="#7A4DFF"
+        {isPending ? (
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            style={{ marginTop: 8 }}
           />
-        </View>
+        ) : (
+          <View className="mt-8 mx-3">
+            <Button
+              title="Submit"
+              onPress={handleSubmit(submitUserData)}
+              color="#7A4DFF"
+            />
+          </View>
+        )}
 
         <TouchableOpacity className="mt-5">
           <Text

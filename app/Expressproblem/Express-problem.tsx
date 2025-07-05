@@ -20,7 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 import { usePostProblem } from "@/services/api/postProblem";
 import { Platform } from "react-native";
 import LeafletWebViewMap from "./WebMap";
-
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 async function uriToFile(uri: string, fileName: string, mimeType: string) {
   const response = await fetch(uri);
@@ -403,7 +403,7 @@ const ExpressProblem = () => {
           />
         </View> */}
         <View className="mt-8">
-         <View className="mb-2 flex flex-row gap-">
+          <View className="mb-2 flex flex-row gap-">
             <Text
               className="text-base text-black-300 "
               style={{ fontFamily: "outfit-light" }}
@@ -412,23 +412,30 @@ const ExpressProblem = () => {
             </Text>
             <Text className="text-red-600 text-base ">*</Text>
           </View>
-        <LeafletWebViewMap
-          latitude={latitude}
-          longitude={longitude}
-          onSelectLocation={(lat, lng) => {
-            setLatitude(lat);
-            setLongitude(lng);
-            setValue("Lattitude", lat, { shouldValidate: true });
-            setValue("Longitude", lng, { shouldValidate: true });
-          }}
-        />
+          <LeafletWebViewMap
+            latitude={latitude}
+            longitude={longitude}
+            onSelectLocation={(lat, lng) => {
+              setLatitude(lat);
+              setLongitude(lng);
+              setValue("Lattitude", lat, { shouldValidate: true });
+              setValue("Longitude", lng, { shouldValidate: true });
+            }}
+          />
         </View>
-
-        <Button
-          title="Submit"
-          onPress={handleSubmit(submitProblemData)}
-          color="#7A4DFF"
-        />
+        {isPending ? (
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            style={{ marginTop: 8 }}
+          />
+        ) : (
+          <Button
+            title="Submit"
+            onPress={handleSubmit(submitProblemData)}
+            color="#7A4DFF"
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

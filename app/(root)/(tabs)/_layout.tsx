@@ -100,12 +100,12 @@ const TabsLayout = () => {
       />
 
     <Tabs.Screen
-      name="message"
+      name="showpost"
       options={{
-        title: "Message",
+        title: "Post",
         headerShown: false,
         tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} icon="mail" title="Message" />
+          <TabIcon focused={focused} icon="progress-full" title="Posts" />
         ),
       }}
     />

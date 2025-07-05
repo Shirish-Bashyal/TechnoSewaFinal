@@ -15,5 +15,8 @@ export const API_ENDPOINTS={
     ViewBid:"/api/Bid/get/bytechnician",
 
     GetAllBookings:"/api/Booking/all/Technician",
+
+    //For Consumer
+    GetAllPostedProblem:"/api/Post/get/all",
    
 }

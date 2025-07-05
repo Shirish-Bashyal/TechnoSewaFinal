@@ -1,35 +1,23 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Touchable,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
-import Entypo from "@expo/vector-icons/Entypo";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, useRouter } from "expo-router";
-import { useViewPostForTechnician } from "@/services/api/postfortechnician";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { StyleSheet } from 'react-native';
+import { usePostProblemForConsumer } from "@/services/api/consumerpostedproblem";
 
-interface Props {
-  onPress?: () => void;
-}
-export const PostForTechnician = ({ onPress }: Props) => {
+const Message = () => {
   const router = useRouter();
-  const { data: postData, isError, isLoading } = useViewPostForTechnician();
-  //   const handleServiceDetails = () => {
-  //     router.push("/auth/userdetails");
-  //   };
-
-  // const handleShowAboutTechnician = () => {
-  //   router.push(`/`);
-  // };
+   const { data: postData, isError, isLoading } = usePostProblemForConsumer();
   return (
-    <View className="flex-1 w-[98%] mt-2 px-3 py-1 !mr-10 ml-2  ">
+    <SafeAreaView className="h-full bg-white">
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+           
+          >
+            <View className="flex-1 w-full mt-2 px-1 py-1 !mr-10 ml-2  ">
       {isLoading ? (
         <ActivityIndicator
           animating={true}
@@ -93,7 +81,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
               <Link href={`/Showpost/${posts.id}`} asChild>
                 <TouchableOpacity
                   // onPress={handleShowAboutTechnician}
-                  className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
+                  className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
                 >
                   <Text
                     className="text-xs  text-white text-center"
@@ -108,5 +96,16 @@ export const PostForTechnician = ({ onPress }: Props) => {
         </View>
       )}
     </View>
-  );
-};
+             </ScrollView>
+                </SafeAreaView>
+
+  )
+}
+
+export default Message
+
+const styles = StyleSheet.create({
+  title: {
+    textAlign: 'center',
+  },
+})

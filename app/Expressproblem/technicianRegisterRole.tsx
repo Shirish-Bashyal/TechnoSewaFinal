@@ -20,7 +20,8 @@ import { Platform } from "react-native";
 import LeafletWebViewMap from "./WebMap";
 import PhoneInput from "react-native-phone-input";
 import { useCreateTechnicianRole } from "@/services/api/technicianRegisterRole";
-import { createTechnicianRoleData } from '../../services/api/technicianRegisterRole';
+import { createTechnicianRoleData } from "../../services/api/technicianRegisterRole";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 type FormValues = {
   secondPhoneNumber: string;
@@ -38,9 +39,9 @@ const technicianRegisterRole = () => {
   const [latitude, setLatitude] = useState(27.69828);
   const [longitude, setLongitude] = useState(83.46188);
 
-  const { mutate } = useCreateTechnicianRole();
+  const { mutate, isPending } = useCreateTechnicianRole();
 
-  const handleOtp = async (data:createTechnicianRoleData) => {
+  const handleOtp = async (data: createTechnicianRoleData) => {
     console.log("ok");
     mutate(data);
   };
@@ -84,14 +85,14 @@ const technicianRegisterRole = () => {
       </View>
       <ScrollView className="mt-28 px-2">
         <View className="m-2 flex flex-row gap-">
-            <Text
-              className="text-base text-black-300 "
-              style={{ fontFamily: "outfit-light" }}
-            >
-              Enter your Phone Number
-            </Text>
-            <Text className="text-red-600 text-base ">*</Text>
-          </View>
+          <Text
+            className="text-base text-black-300 "
+            style={{ fontFamily: "outfit-light" }}
+          >
+            Enter your Phone Number
+          </Text>
+          <Text className="text-red-600 text-base ">*</Text>
+        </View>
         <View style={styles.container}>
           <PhoneInput
             ref={phoneInputRef}
@@ -128,14 +129,21 @@ const technicianRegisterRole = () => {
             }}
           />
         </View>
-
-        <View className="mt-8 mx-3">
-          <Button
-            title="Submit"
-            onPress={handleSubmit(handleOtp)}
-            color="#7A4DFF"
+        {isPending ? (
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            style={{ marginTop: 8 }}
           />
-        </View>
+        ) : (
+          <View className="mt-8 mx-3">
+            <Button
+              title="Submit"
+              onPress={handleSubmit(handleOtp)}
+              color="#7A4DFF"
+            />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

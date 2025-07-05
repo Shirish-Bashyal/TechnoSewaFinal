@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import { phoneData, useSendOtp } from "@/services/api/auth";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 type FormValues = {
   phoneNumber: string;
@@ -26,7 +27,7 @@ const phone = () => {
   const [countryPickerVisible, setCountryPickerVisible] = useState(false);
   const phoneInputRef = useRef<PhoneInput>(null);
 
-  const { mutate } = useSendOtp();
+  const { mutate,isPending } = useSendOtp();
 
   const handleOtp = async (data: phoneData) => {
     console.log("ok");
@@ -77,6 +78,13 @@ const phone = () => {
           style={[styles.phoneInput, isFocused && styles.phoneInputFocused]}
           textStyle={styles.phoneInputText}
         />
+        {isPending ? (
+          <ActivityIndicator
+            animating={true}
+            color={MD2Colors.red800}
+            style={{ marginTop: 8 }}
+          />
+        ) : (
         <View className="mt-8 mx-3">
           <Button
             title="Submit"
@@ -84,6 +92,7 @@ const phone = () => {
             color="#7A4DFF"
           />
         </View>
+        )}
         {/* <TouchableOpacity
           onPress={handleSubmit(handleOtp)}
           className="bg-[#7A4DFF]/[1.6] shadow-md flex flex-row items-center  justify-center shadow-zinc-300 rounded-full w-[97%] h-14 py-4 mt-8 mx-2 "
