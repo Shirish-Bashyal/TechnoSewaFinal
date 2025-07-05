@@ -178,7 +178,7 @@ namespace Application.Services.User.Consumer
 
                 foreach (var pic in post.Photos)
                 {
-                    images.Add($"{BaseUrl}/Resourses/{pic.Path}");
+                    images.Add($"{BaseUrl}/Resources/{pic.Path}");
                 }
                 var result = new PostResponseDTO
                 {
