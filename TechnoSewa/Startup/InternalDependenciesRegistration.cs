@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Data;
 using Application.Interfaces.Notification;
+using Application.Interfaces.Payment;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Auth;
@@ -11,6 +12,7 @@ using Application.Interfaces.User.Role;
 using Application.Services;
 using Application.Services.Bookings;
 using Application.Services.Notification;
+using Application.Services.Payment;
 using Application.Services.Technician;
 using Application.Services.User.Auth;
 using Application.Services.User.Consumer;
@@ -29,6 +31,8 @@ namespace TechnoSewa.Startup
             services.AddScoped<INotificationSender, NotificationSender>();
             services.AddSingleton<UserConnectionDb>();
             services.AddSingleton<NotificationDb>();
+
+            services.AddScoped<IPaymentServics, PaymentService>();
 
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
