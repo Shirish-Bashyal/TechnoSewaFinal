@@ -11,19 +11,23 @@ import { useRouter } from "expo-router";
 import { Technician } from "@/components/services-category";
 import { useViewProfile } from "@/services/api/profile";
 import { PostForTechnician } from "@/components/Postfortechnician";
+import { useShowNotificationData } from "@/services/api/notification";
 
 const index = () => {
-    const router = useRouter();
-    const { data: profileData, isError, isLoading } = useViewProfile();
+  const router = useRouter();
+  const { data: profileData, isError, isLoading } = useViewProfile();
+  const { data: notiData } = useShowNotificationData();
+
+  const handleShowNotification = () => {
+    router.push("/Bookings/notification");
+  };
   return (
-     <SafeAreaView className="bg-gray-100 h-full">
+    <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
         data={[1]}
-        renderItem={({ item }) => <PostForTechnician/>}
+        renderItem={({ item }) => <PostForTechnician />}
         keyExtractor={(item) => item.toString()}
-        
         contentContainerClassName="pb-32 "
-       
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View className="px-5">
@@ -41,8 +45,18 @@ const index = () => {
                   
                 </View> */}
               <View className="flex flex-row gap-4">
-                <TouchableOpacity className="border-[1px] h-8 mt-0.5 rounded-full">
+                <TouchableOpacity
+                  className="border-[1px] h-8 w-10 px-1 mt-0.5 rounded-full"
+                  onPress={handleShowNotification}
+                >
                   <Ionicons name="notifications" size={24} color="black" />
+                  {notiData?.data?.length && notiData.data.length > 0 && (
+                    <View className="absolute -top-1 -right-1 bg-green-500 rounded-full w-5 h-5 items-center justify-center">
+                      <Text className="text-white text-[10px] font-bold">
+                        {notiData?.data?.length ?? 0}
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity className="flex flex-row items-center bg-gray-200/85 px-3 py-1.5 rounded-full ">
                   <Ionicons name="location-outline" size={24} color="black" />
@@ -104,7 +118,7 @@ const index = () => {
               </View>
 
               {/* //{"New Services "} */}
-              {/* <FlatList
+            {/* <FlatList
                 data={[1, 2, 3]}
                 renderItem={({ item }) => <FeaturedCard />}
                 keyExtractor={(item) => item.toString()}
@@ -113,14 +127,12 @@ const index = () => {
                 showsHorizontalScrollIndicator={false}
                 contentContainerClassName="flex gap-2 mt-5"
               /> */}
-            {/* </View> */} 
-
-            
+            {/* </View> */}
           </View>
         }
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default index
+export default index;

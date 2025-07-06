@@ -28,6 +28,15 @@ export const PostForTechnician = ({ onPress }: Props) => {
   // const handleShowAboutTechnician = () => {
   //   router.push(`/`);
   // };
+
+// const rawUrl = postData?.data?.imageUrl;
+  // const imageUri =
+//   Array.isArray(rawUrl) && rawUrl[0]?.trim()
+//     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
+//     : null;
+
+//     console.log(imageUri)
+
   return (
     <View className="flex-1 w-[98%] mt-2 px-3 py-1 !mr-10 ml-2  ">
       {isLoading ? (
@@ -40,9 +49,10 @@ export const PostForTechnician = ({ onPress }: Props) => {
         <View>
           {postData?.data?.map((posts: any) => (
             <View
-              className="flex flex-row gap-4 items-center mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
+              className="flex flex-col py-2 mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
               key={posts.id}
             >
+              <View className="flex flex-row mx-2 gap-4 items-center">
               <Image
                 source={
                   posts.imageUrl && posts.imageUrl.length > 0
@@ -90,17 +100,20 @@ export const PostForTechnician = ({ onPress }: Props) => {
                   </Text>
                 </View>
               </View>
+              </View>
               <Link href={`/Showpost/${posts.id}`} asChild>
                 <TouchableOpacity
                   // onPress={handleShowAboutTechnician}
-                  className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
+                  className="bg-[#7A4DFF]/[1.6] shadow-md  shadow-zinc-300 rounded-lg w-[95%] mx-2  flex justify-center items-center h-12 py-4 mt-1 "
                 >
-                  <Text
-                    className="text-xs  text-white text-center"
-                    style={{ fontFamily: "rubik-bold" }}
-                  >
-                    Show Details
-                  </Text>
+                  <View>
+                    <Text
+                      className="text-xs  text-white text-center"
+                      style={{ fontFamily: "rubik-bold" }}
+                    >
+                      Show Details
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               </Link>
             </View>

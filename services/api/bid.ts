@@ -8,7 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const { CreateBid, ViewBid } = API_ENDPOINTS;
+const { CreateBid, ViewBid, GetBidById } = API_ENDPOINTS;
 
 export interface bidData {
   postId: number;
@@ -109,5 +109,39 @@ export const useShowBidData = () => {
   return useQuery<viewBidDataResponse, Error>({
     queryKey: ["ViewDataBidding"],
     queryFn: showBidData,
+  });
+};
+
+//ViewBidById
+
+export interface viewBid {
+  solutionDescription: string;
+  estimationPrice: number;
+  serviceDate: string;
+  technicianName: string;
+  bidId: number;
+  technicianId: number;
+}
+export interface viewBidByIdResponse {
+  success: boolean;
+  data?: viewBid[];
+}
+
+export const viewBidById = async (
+  postId: string
+): Promise<viewBidByIdResponse> => {
+  try {
+    const response = await axiosInstance.get(`${GetBidById}?postId=${postId}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error response from server:", error.response);
+    throw new Error("Failed view Employee");
+  }
+};
+
+export const useViewBidIdById = (postId: string) => {
+  return useQuery<viewBidByIdResponse, Error>({
+    queryKey: ["postViewData", postId],
+    queryFn: () => viewBidById(postId),
   });
 };

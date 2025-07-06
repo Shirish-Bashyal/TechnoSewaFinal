@@ -53,6 +53,10 @@ const Profile = () => {
   const handleBecomeTechnician =()=>{
 router.push("/Expressproblem/technicianRegisterRole");
   }
+
+     const handleBookings = () => {
+    router.push("/(root)/(tabs)/explore");
+  };
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -80,7 +84,7 @@ router.push("/Expressproblem/technicianRegisterRole");
           </View>
         </View>
         <View className="flex flex-col mt-10 ">
-          <SettingsItem icon="calendar" title="My Booking" />
+          <SettingsItem icon="calendar" title="My Booking" onPress={handleBookings}/>
           <SettingsItem icon="credit-card" title="Payments" />
           <SettingsItem icon="tools" title="Become technician" onPress={handleBecomeTechnician} />
         </View>

@@ -24,20 +24,20 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 const showPost = () => {
   const { id } = useLocalSearchParams();
   const { data: postData } = useViewpostIdById(id as string);
-  const {
-    data: postProblemData,
-    isError,
-    isLoading,
-  } = useViewPostForTechnician();
+  // const {
+  //   data: postProblemData,
+  //   isError,
+  //   isLoading,
+  // } = useViewPostForTechnician();
 
   const rawUrl = postData?.data?.imageUrl;
   console.log("rawurl", rawUrl);
-const imageUri =
-  Array.isArray(rawUrl) && rawUrl[0]?.trim()
-    ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
-    : null;
+// const imageUri =
+//   Array.isArray(rawUrl) && rawUrl[0]?.trim()
+//     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
+//     : null;
 
-    console.log(imageUri)
+//     console.log(imageUri)
 
   return (
     <SafeAreaView className="h-full bg-white">
@@ -52,9 +52,9 @@ const imageUri =
           <View className="flex-1">
           <View>
             <Image
-              source={imageUri ? { uri: imageUri } : images.avatar}
+              source={rawUrl ? { uri: rawUrl } : images.avatar}
               className="w-full h-[350px]"
-              resizeMode="stretch"
+                resizeMode="contain"
             />
           </View>
           <View className="flex-col items-start justify-center mt-5 px-5">
@@ -111,7 +111,7 @@ const imageUri =
               // onPress={handleShowAboutTechnician}
               className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 "
             >
-              <View className="flex justify-center items-center">
+              <View className="flex justify-center items-center">               
                 <Text
                   className="text-xs  text-white text-center"
                   style={{ fontFamily: "rubik-bold" }}

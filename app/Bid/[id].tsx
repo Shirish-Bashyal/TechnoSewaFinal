@@ -75,9 +75,11 @@ const Bid = () => {
           onPress={router.back}
           className="flex flex-row  gap-4 mx-4 py-10"
         >
+          <View>
           <Text>
             <AntDesign name="back" size={24} color="black" />
           </Text>
+          </View>
         </TouchableOpacity>
         <Text
           className="text-lg text-black-300"

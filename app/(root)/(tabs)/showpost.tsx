@@ -11,6 +11,15 @@ import { usePostProblemForConsumer } from "@/services/api/consumerpostedproblem"
 const Message = () => {
   const router = useRouter();
    const { data: postData, isError, isLoading } = usePostProblemForConsumer();
+
+   // const rawUrl = postData?.data?.imageUrl;
+  // const imageUri =
+//   Array.isArray(rawUrl) && rawUrl[0]?.trim()
+//     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
+//     : null;
+
+//     console.log(imageUri)
+
   return (
     <SafeAreaView className="h-full bg-white">
           <ScrollView
@@ -78,17 +87,19 @@ const Message = () => {
                   </Text>
                 </View>
               </View>
-              <Link href={`/Showpost/${posts.id}`} asChild>
+              <Link href={`/Forconsumer/showbid/${posts.id}`} asChild>
                 <TouchableOpacity
                   // onPress={handleShowAboutTechnician}
                   className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
                 >
+                  <View>
                   <Text
                     className="text-xs  text-white text-center"
                     style={{ fontFamily: "rubik-bold" }}
                   >
-                    Show Details
+                    Show Bids
                   </Text>
+                  </View>
                 </TouchableOpacity>
               </Link>
             </View>

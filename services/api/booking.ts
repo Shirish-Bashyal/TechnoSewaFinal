@@ -8,7 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const { GetAllBookings } = API_ENDPOINTS;
+const { GetAllBookings,BookTechnician,GetAllBookingsForConsumer } = API_ENDPOINTS;
 
 export interface viewPendingBookings {
   postBids?: {
@@ -56,5 +56,124 @@ export const useShowAllBooking = () => {
   return useQuery<viewAllBookingResponse, Error>({
     queryKey: ["ViewDataAllBooking"],
     queryFn: showAllBooking,
+  });
+};
+
+
+//Book Technician //Create Booking
+export interface bookData {
+  bidId: number;
+  
+}
+export interface bookResponse {
+  success: Boolean;
+  message: string;
+}
+
+export const createBooking = async (bidId: string): Promise<bookResponse> => {
+  try {
+    
+    const response = await axiosInstance.post(`${BookTechnician}?bidId=${bidId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    console.log("Response data:", error.message);
+    const backendMessage =
+      error?.response?.data?.message || error.message || "Unknown error";
+    console.log("Backend error:", backendMessage);
+    console.log(error);
+
+    return {
+      success: false,
+      message: backendMessage || " Booking Failed",
+    };
+  }
+};
+
+export const useCreateBooking = () => {
+  const router = useRouter();
+  const toast = useToast();
+
+  return useMutation<bookResponse, Error, string>({
+    mutationFn: createBooking,
+    onSuccess: (data) => {
+      if (data.success === true) {
+        toast.show("Technician Booked successfully", {
+          type: "success",
+          placement: "top",
+          duration: 4000,
+          style: { marginTop: 125 },
+          animationType: "slide-in",
+        });
+        console.log(data);
+        router.replace("/(root)/(tabs)/explore");
+      } else {
+        toast.show(data.message || "Failed to book technician", {
+          type: "danger",
+          placement: "bottom",
+        });
+      }
+    },
+    onError: (error) => {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred while creating bid";
+
+      toast.show(errorMessage, {
+        type: "danger",
+        placement: "bottom",
+      });
+    },
+  });
+};
+
+
+//For Consumer get all Bookings
+export interface viewPendingBookingsForConsumer {
+  postBids?: {
+    solutionDescription: string;
+    estimationPrice: number;
+    serviceDate: string;
+    postTitle: string;
+    bidId: number;
+  };
+}
+
+export interface viewActiveForConsumer {
+  bookingId: number;
+  title: string;
+  price: number;
+  serviceDate: string;
+  // "timeFrame": null,
+  technicianName: string;
+  lattitude: number;
+  longitude: number;
+}
+
+export interface viewAllBookingResponseForConsumer {
+  success: boolean;
+  message: string;
+  data?: {
+    pendingBookings: viewPendingBookingsForConsumer[];
+    activeBookings: viewActiveForConsumer[];
+    completedBookings:[]
+  };
+}
+
+export const showAllBookingForConsumer = async (): Promise<viewAllBookingResponseForConsumer> => {
+  try {
+    const response = await axiosInstance.get(GetAllBookingsForConsumer);
+    const bookingContent = await response.data;
+    return bookingContent;
+  } catch (error) {
+    throw new Error("Failed to fetch  data");
+  }
+};
+
+export const useShowAllBookingForConsumer = () => {
+  return useQuery<viewAllBookingResponseForConsumer, Error>({
+    queryKey: ["ViewForConsumer"],
+    queryFn: showAllBookingForConsumer,
   });
 };

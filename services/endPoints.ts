@@ -6,6 +6,7 @@ export const API_ENDPOINTS={
     PostProblem:"/api/Post/problem",
     LogOut:"/api/Auth/signout",
     CreateTechnician:"/api/Technician/create",
+    Notification:"/api/Notification",
 
 
     //For Technician
@@ -18,5 +19,8 @@ export const API_ENDPOINTS={
 
     //For Consumer
     GetAllPostedProblem:"/api/Post/get/all",
+    GetBidById:"api/Bid/get/all",
+    BookTechnician:"api/Booking/create/bidBooking",
+    GetAllBookingsForConsumer:"/api/Booking/all/consumer",
    
 }

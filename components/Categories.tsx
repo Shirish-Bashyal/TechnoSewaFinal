@@ -47,14 +47,14 @@ const Categories = () => {
   return (
     <View className="my-5">
       <View className="flex flex-row justify-between ">
-        <SettingsItem icon="plug" title="Electrician" onPress={handleShowCategory}/>
-        <SettingsItem icon="tools" title="Plumbing" />
-        <SettingsItem icon="broom" title="Cleaner" />
-        <SettingsItem icon="paint-roller" title="House Paint" />
+        <SettingsItem icon="plug" title="Electrician" onPress={handleShowProblem}/>
+        <SettingsItem icon="tools" title="Plumbing" onPress={handleShowProblem} />
+        <SettingsItem icon="broom" title="Cleaner" onPress={handleShowProblem}/>
+        <SettingsItem icon="paint-roller" title="House Paint" onPress={handleShowProblem}/>
       </View>
       <View className="flex flex-row gap-12 mt-5 ">
-        <SettingsItem icon="car" title="Automobile" />
-        <SettingsItem icon="laptop-code" title="Tech Expert" />
+        <SettingsItem icon="car" title="Automobile" onPress={handleShowProblem}/>
+        <SettingsItem icon="laptop-code" title="Tech Expert" onPress={handleShowProblem} />
         <SettingsItem icon="question-circle" title="Others" onPress={handleShowProblem}/>
        
       </View>

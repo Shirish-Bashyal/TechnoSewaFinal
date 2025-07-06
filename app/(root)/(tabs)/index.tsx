@@ -9,7 +9,8 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Categories from "@/components/Categories";
 import { useRouter } from "expo-router";
 import { useViewProfile } from "@/services/api/profile";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useShowNotificationData } from "@/services/api/notification";
 
 const cardFeaturedData = [
   {
@@ -94,6 +95,11 @@ const cardData = [
 export default function Index() {
   const router = useRouter();
   const { data: profileData, isError, isLoading } = useViewProfile();
+  const { data: notiData } = useShowNotificationData();
+
+  const handleShowNotification = () => {
+    router.push("/Bookings/notification");
+  };
 
   return (
     <SafeAreaView className="bg-gray-100 h-full">
@@ -131,8 +137,18 @@ export default function Index() {
                   
                 </View> */}
               <View className="flex flex-row gap-4">
-                <TouchableOpacity className="border-[1px] h-8 mt-0.5 rounded-full">
+                <TouchableOpacity
+                  className="border-[1px] h-8 w-10 px-1 mt-0.5 rounded-full"
+                  onPress={handleShowNotification}
+                >
                   <Ionicons name="notifications" size={24} color="black" />
+                  {notiData?.data?.length && notiData.data.length > 0 && (
+                    <View className="absolute -top-1 -right-1 bg-green-500 rounded-full w-5 h-5 items-center justify-center">
+                      <Text className="text-white text-[10px] font-bold">
+                        {notiData?.data?.length ?? 0}
+                      </Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
                 <TouchableOpacity className="flex flex-row items-center bg-gray-200/85 px-3 py-1.5 rounded-full ">
                   <Ionicons name="location-outline" size={24} color="black" />
@@ -250,26 +266,28 @@ export default function Index() {
           </View>
         }
       />
+
+      {/* ChatBot */}
       <TouchableOpacity
-    onPress={() => console.log("Chatbot opened")}
-    style={{
-      position: "absolute",
-      top: 280,
-      right: 20,
-      backgroundColor: "#007AFF",
-      borderRadius: 50,
-      padding: 16,
-      elevation: 10,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
-      zIndex: 100,
-    }}
-  >
-    {/* <Ionicons name="chatbubbles-outline" size={24} color="white" /> */}
-    <MaterialCommunityIcons name="robot-outline" size={24} color="white" />
-  </TouchableOpacity>
+        onPress={() => console.log("Chatbot opened")}
+        style={{
+          position: "absolute",
+          top: 280,
+          right: 20,
+          backgroundColor: "#007AFF",
+          borderRadius: 50,
+          padding: 16,
+          elevation: 10,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 3,
+          zIndex: 100,
+        }}
+      >
+        {/* <Ionicons name="chatbubbles-outline" size={24} color="white" /> */}
+        <MaterialCommunityIcons name="robot-outline" size={24} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
