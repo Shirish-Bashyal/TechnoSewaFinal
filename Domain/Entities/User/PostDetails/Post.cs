@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application;
 using Domain.Entities.Application.Bookings;
-using Domain.Entities.Base;
+using Domain.Entities.Entity;
 
 namespace Domain.Entities.User.PostDetails
 {

@@ -6,6 +6,7 @@ using Application.Interfaces.Chatbot;
 using Application.Interfaces.Data;
 using Application.Interfaces.LLM;
 using Application.Interfaces.Notification;
+using Application.Interfaces.Payment;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Auth;
@@ -15,6 +16,7 @@ using Application.Services;
 using Application.Services.Bookings;
 using Application.Services.Chatbot;
 using Application.Services.Notification;
+using Application.Services.Payment;
 using Application.Services.Technician;
 using Application.Services.User.Auth;
 using Application.Services.User.Consumer;
@@ -38,6 +40,8 @@ namespace TechnoSewa.Startup
             services.AddScoped<ILLMFormatter, LLMFormatter>();
             services.AddScoped<ITextTokenizer, TextTokenizer>();
             services.AddScoped<IChatbotService, ChatbotService>();
+
+            services.AddScoped<IPaymentServics, PaymentService>();
 
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();

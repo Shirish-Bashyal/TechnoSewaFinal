@@ -16,6 +16,7 @@ using Application.Interfaces.User.Role;
 using Application.Response;
 using Domain.Entities.Application;
 using Domain.Entities.Application.Bookings;
+using Domain.Entities.Application.Payment;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
 using Microsoft.AspNetCore.Identity;
@@ -482,6 +483,77 @@ namespace Application.Services.Bookings
             {
                 return new ServiceResponse<object> { Message = "User not found", Success = false, };
             }
+        }
+
+        public async Task<ServiceResponse<object>> MarkBookingCompletion(
+            int BookingId,
+            string UserId
+        )
+        {
+            var includes = new Expression<Func<Booking, object>>[]
+            {
+                x => x.SubCategoryBooking,
+                x => x.SubCategoryBooking.SubCategory,
+                x => x.PostBid,
+            };
+            var booking = await _uow.AsyncRepositories<Booking>()
+                .GetWithIncludeAndFilter(includes, x => x.Id == BookingId);
+            if (booking == null)
+                return new ServiceResponse<object>
+                {
+                    Message = "Booking not found",
+                    Success = false
+                };
+
+            var Technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                .GetSingleBySpec(x => x.UserId == UserId);
+            if (Technician == null)
+                return new ServiceResponse<object>
+                {
+                    Success = false,
+                    Message = "Technician not found"
+                };
+
+            booking.Status = (int)PostStatusEnum.Completed;
+            await _uow.AsyncRepositories<Booking>().UpdateAsync(booking);
+
+            var commssion = await _uow.AsyncRepositories<CommissionDetail>()
+                .GetSingleBySpec(x => x.TechnicianId == Technician.Id);
+
+            var commissionAmount =
+                booking.PostBid == null
+                    ? booking.SubCategoryBooking.SubCategory.Price
+                    : booking.PostBid.EstimationPrice;
+
+            if (commssion == null)
+            {
+                commssion = new CommissionDetail()
+                {
+                    IsLimitReached = commissionAmount > 1000 ? true : false,
+                    TechnicianId = Technician.Id,
+                    CommissionAmount = commissionAmount,
+                    Technician = Technician,
+                };
+                await _uow.AsyncRepositories<CommissionDetail>().AddAsync(commssion);
+            }
+            else
+            {
+                commssion.CommissionAmount += commissionAmount;
+                commssion.IsLimitReached = commssion.CommissionAmount > 1000 ? true : false;
+                await _uow.AsyncRepositories<CommissionDetail>().UpdateAsync(commssion);
+            }
+
+            var result = await _uow.Save();
+            if (result > 0)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message = "Booking Marked as Completed"
+                };
+            }
+            return new ServiceResponse<object> { Success = false, Message = "Operation Failed" };
+            ;
         }
     }
 }

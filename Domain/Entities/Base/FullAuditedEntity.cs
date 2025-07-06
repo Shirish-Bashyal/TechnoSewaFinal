@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces.Entity;
 
-namespace Domain.Entities.Base
+namespace Domain.Entities.Entity
 {
     public abstract class FullAuditedEntity<TPrimaryKey> : Entity<TPrimaryKey>, IFulAudited
     {

@@ -9,6 +9,7 @@ using Application.DTO.Technician;
 using Application.Helper;
 using Application.Helpers.MachineLearningModel;
 using Application.Interfaces.Data;
+using Application.Interfaces.Payment;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Role;
@@ -26,18 +27,21 @@ namespace Application.Services.Technician
         private readonly IRoleServices _roleServices;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IReviewServices _reviewServices;
+        private readonly IPaymentServics _paymentServics;
 
         public TechnicianService(
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
             IRoleServices roleServices,
-            IReviewServices reviewServices
+            IReviewServices reviewServices,
+            IPaymentServics paymentServics
         )
         {
             _uow = uow;
             _userManager = userManager;
             _roleServices = roleServices;
             _reviewServices = reviewServices;
+            _paymentServics = paymentServics;
         }
 
         public async Task<ServiceResponse<object>> BecomeTechnician(
@@ -106,28 +110,35 @@ namespace Application.Services.Technician
                                 b.ServiceDate == model.Date && b.TimeFrame.Id == model.TimeFrameEnum
                             )
                     );
+            var unblockedTechnicians = new List<Domain.Entities.User.Technician>();
 
-            //rank these technicians based on the locations
-
-            if (availableTechnician != null && availableTechnician.Any())
+            //get the technician whose comission limit is not reached
+            foreach (var tech in availableTechnician)
             {
-                var result = availableTechnician
-                    .Select(x => new GetTechnicianDetailsDTO
-                    {
-                        TechnicianId = x.Id,
-                        Name = x.User.UserName,
-                        Distance = HaversineAlgo.Haversine(
-                            model.Latitude,
-                            model.Longitude,
-                            x.Latitude,
-                            x.Longitude
-                        ),
-                        //PhoneNumber = x.User.PhoneNumber,
-                        Reviews = new GetReviewDTO()
-                    })
-                    .OrderBy(x => x.Distance)
-                    .Take(10)
-                    .ToList(); //order by distance in kilometers
+                var isLimitReached = await _paymentServics.CheckLimitReached(tech.Id);
+                if (!isLimitReached)
+                {
+                    unblockedTechnicians.Add(tech);
+                }
+            }
+
+            var result = unblockedTechnicians
+                .Select(x => new GetTechnicianDetailsDTO
+                {
+                    TechnicianId = x.Id,
+                    Name = x.User.UserName,
+                    Distance = HaversineAlgo.Haversine(
+                        model.Latitude,
+                        model.Longitude,
+                        x.Latitude,
+                        x.Longitude
+                    ),
+                    //PhoneNumber = x.User.PhoneNumber,
+                    Reviews = new GetReviewDTO()
+                })
+                .OrderBy(x => x.Distance)
+                .Take(10)
+                .ToList(); //order by distance in kilometers
 
                 var reviewTasks = result.Select(async technician =>
                 {
