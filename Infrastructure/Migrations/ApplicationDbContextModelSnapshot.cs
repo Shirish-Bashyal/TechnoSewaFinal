@@ -161,6 +161,58 @@ namespace Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Application.Payment.CommissionDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("CommissionAmount")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsLimitReached")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TechnicianId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TechnicianId");
+
+                    b.ToTable("CommissionDetail");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Application.Payment.TransactionDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Pid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TechnicianId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TechnicianId");
+
+                    b.ToTable("TransactionDetail");
+                });
+
             modelBuilder.Entity("Domain.Entities.Application.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -242,6 +294,24 @@ namespace Infrastructure.Migrations
                     b.ToTable("TimeFrames");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Chatbot.QuestionResponse", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Keyword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestionResponse");
+                });
+
             modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -273,24 +343,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Chatbot.QuestionResponse", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Keyword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuestionResponse");
                 });
 
             modelBuilder.Entity("Domain.Entities.User.AddressDetails.Address", b =>
@@ -722,6 +774,28 @@ namespace Infrastructure.Migrations
                     b.Navigation("Technician");
 
                     b.Navigation("TimeFrame");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Application.Payment.CommissionDetail", b =>
+                {
+                    b.HasOne("Domain.Entities.User.Technician", "Technician")
+                        .WithMany()
+                        .HasForeignKey("TechnicianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Technician");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Application.Payment.TransactionDetail", b =>
+                {
+                    b.HasOne("Domain.Entities.User.Technician", "Technician")
+                        .WithMany()
+                        .HasForeignKey("TechnicianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Technician");
                 });
 
             modelBuilder.Entity("Domain.Entities.Application.Review", b =>
