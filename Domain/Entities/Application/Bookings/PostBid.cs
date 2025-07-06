@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Entities.Base;
+using Domain.Entities.Entity;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
 

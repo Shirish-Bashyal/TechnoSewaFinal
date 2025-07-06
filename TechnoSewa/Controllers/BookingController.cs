@@ -99,5 +99,29 @@ namespace TechnoSewa.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpPost]
+        [Route("completed")]
+        [Authorize]
+        public async Task<IActionResult> MarkBookingCompleted([FromQuery] int BookingId)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                var result = await _bookingService.MarkBookingCompletion(BookingId, userId);
+                if (result.Success)
+                {
+                    return StatusCode(200, result);
+                }
+                else
+                {
+                    return StatusCode(500, result);
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

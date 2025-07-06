@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Entities.Application;
 using Domain.Entities.Application.Bookings;
-using Domain.Entities.Base;
 using Domain.Entities.User;
 using Domain.Entities.User.AddressDetails;
 using Domain.Entities.User.PostDetails;

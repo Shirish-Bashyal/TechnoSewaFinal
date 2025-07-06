@@ -10,6 +10,7 @@ using Application.Helper;
 using Application.Interfaces.Data;
 using Application.Interfaces.User.Consumer;
 using Application.Response;
+using Application.Services.Payment;
 using Domain.Entities.Application;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
@@ -22,6 +23,7 @@ namespace Application.Services.User.Consumer
 {
     public class PostService : IPostService
     {
+        private readonly PaymentService _paymentService;
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostEnvironment _env;
@@ -31,12 +33,14 @@ namespace Application.Services.User.Consumer
         public PostService(
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
-            IHostEnvironment env
+            IHostEnvironment env,
+            PaymentService paymentService
         )
         {
             _uow = uow;
             _userManager = userManager;
             _env = env;
+            _paymentService = paymentService;
         }
 
         public async Task<string> SaveFileAsync(IFormFile imageFile, string[] allowedFileExtensions)
@@ -277,6 +281,17 @@ namespace Application.Services.User.Consumer
                     Success = false,
                     Message = "Error finding the user"
                 };
+            var isLimitReached = await _paymentService.CheckLimitReached(technician.Id);
+            if (isLimitReached)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message =
+                        "COMMISSION LIMIT IS REACHED. No post will be shown until payment is done."
+                };
+            }
+
             var includes = new Expression<Func<Post, object>>[]
             {
                 s => s.User,

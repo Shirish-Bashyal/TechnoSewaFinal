@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Entities.Base;
+using Domain.Entities.Entity;
 using Domain.Entities.User;
 
 namespace Domain.Entities
