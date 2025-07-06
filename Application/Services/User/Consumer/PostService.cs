@@ -8,6 +8,7 @@ using Application.Constants.Enums;
 using Application.DTO.User.Post;
 using Application.Helper;
 using Application.Interfaces.Data;
+using Application.Interfaces.Payment;
 using Application.Interfaces.User.Consumer;
 using Application.Response;
 using Application.Services.Payment;
@@ -23,7 +24,7 @@ namespace Application.Services.User.Consumer
 {
     public class PostService : IPostService
     {
-        private readonly PaymentService _paymentService;
+        private readonly IPaymentServics _paymentService;
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostEnvironment _env;
@@ -34,7 +35,7 @@ namespace Application.Services.User.Consumer
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
             IHostEnvironment env,
-            PaymentService paymentService
+            IPaymentServics paymentService
         )
         {
             _uow = uow;

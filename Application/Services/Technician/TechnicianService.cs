@@ -110,35 +110,37 @@ namespace Application.Services.Technician
                                 b.ServiceDate == model.Date && b.TimeFrame.Id == model.TimeFrameEnum
                             )
                     );
-            var unblockedTechnicians = new List<Domain.Entities.User.Technician>();
-
-            //get the technician whose comission limit is not reached
-            foreach (var tech in availableTechnician)
+            if (availableTechnician.Any())
             {
-                var isLimitReached = await _paymentServics.CheckLimitReached(tech.Id);
-                if (!isLimitReached)
-                {
-                    unblockedTechnicians.Add(tech);
-                }
-            }
+                var unblockedTechnicians = new List<Domain.Entities.User.Technician>();
 
-            var result = unblockedTechnicians
-                .Select(x => new GetTechnicianDetailsDTO
+                //get the technician whose comission limit is not reached
+                foreach (var tech in availableTechnician)
                 {
-                    TechnicianId = x.Id,
-                    Name = x.User.UserName,
-                    Distance = HaversineAlgo.Haversine(
-                        model.Latitude,
-                        model.Longitude,
-                        x.Latitude,
-                        x.Longitude
-                    ),
-                    //PhoneNumber = x.User.PhoneNumber,
-                    Reviews = new GetReviewDTO()
-                })
-                .OrderBy(x => x.Distance)
-                .Take(10)
-                .ToList(); //order by distance in kilometers
+                    var isLimitReached = await _paymentServics.CheckLimitReached(tech.Id);
+                    if (!isLimitReached)
+                    {
+                        unblockedTechnicians.Add(tech);
+                    }
+                }
+
+                var result = unblockedTechnicians
+                    .Select(x => new GetTechnicianDetailsDTO
+                    {
+                        TechnicianId = x.Id,
+                        Name = x.User.UserName,
+                        Distance = HaversineAlgo.Haversine(
+                            model.Latitude,
+                            model.Longitude,
+                            x.Latitude,
+                            x.Longitude
+                        ),
+                        //PhoneNumber = x.User.PhoneNumber,
+                        Reviews = new GetReviewDTO()
+                    })
+                    .OrderBy(x => x.Distance)
+                    .Take(10)
+                    .ToList(); //order by distance in kilometers
 
                 var reviewTasks = result.Select(async technician =>
                 {
