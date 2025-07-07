@@ -32,12 +32,12 @@ const showPost = () => {
 
   const rawUrl = postData?.data?.imageUrl;
   console.log("rawurl", rawUrl);
-// const imageUri =
-//   Array.isArray(rawUrl) && rawUrl[0]?.trim()
-//     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
-//     : null;
+const imageUri =
+  Array.isArray(rawUrl) && rawUrl[0]?.trim()
+    ? rawUrl[0].replace("https://localhost:7206", "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app")
+    : null;
 
-//     console.log(imageUri)
+    console.log(imageUri)
 
   return (
     <SafeAreaView className="h-full bg-white">
@@ -52,7 +52,7 @@ const showPost = () => {
           <View className="flex-1">
           <View>
             <Image
-              source={rawUrl ? { uri: rawUrl } : images.avatar}
+              source={imageUri ? { uri: imageUri } : images.avatar}
               className="w-full h-[350px]"
                 resizeMode="contain"
             />

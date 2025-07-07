@@ -25,7 +25,7 @@ const explore = () => {
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="flex-1 w-[98%] h-auto mt-2 px-3 py-1 !mr-10 ml-2  ">
+        <View className="flex-1 w-[98%] h-auto mt-8 px-3 py-1 !mr-10 ml-2  ">
          
          <TouchableOpacity  onPress={handleShowPendingBookings} className="cursor-pointer">
           <View className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg">

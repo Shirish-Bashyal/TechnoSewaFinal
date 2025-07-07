@@ -30,7 +30,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
   // };
 
 // const rawUrl = postData?.data?.imageUrl;
-  // const imageUri =
+//   const imageUri =
 //   Array.isArray(rawUrl) && rawUrl[0]?.trim()
 //     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
 //     : null;
@@ -47,7 +47,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
         />
       ) : (
         <View>
-          {postData?.data?.map((posts: any) => (
+          {postData?.data?.toReversed().map((posts: any) => (
             <View
               className="flex flex-col py-2 mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
               key={posts.id}
@@ -56,7 +56,12 @@ export const PostForTechnician = ({ onPress }: Props) => {
               <Image
                 source={
                   posts.imageUrl && posts.imageUrl.length > 0
-                    ? { uri: posts.imageUrl[0] }
+                    ? {
+          uri: posts.imageUrl[0].replace(
+            "https://localhost:7206",
+            "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app"
+          ),
+        }
                     : images.avatar
                 }
                 className="!w-20 !h-20 rounded-lg !object-fill"

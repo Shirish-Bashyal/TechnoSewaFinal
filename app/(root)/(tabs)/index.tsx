@@ -14,30 +14,35 @@ import { useShowNotificationData } from "@/services/api/notification";
 
 const cardFeaturedData = [
   {
+    id:1,
     image: images.pipe,
     title: "Pipe Repairs",
     price: "4500",
     rating: "4.4",
   },
   {
+    id:2,
     image: images.switches,
     title: "Switch Repairs Package",
     price: "5000",
     rating: "4.8",
   },
   {
+    id:3,
     image: images.furniture,
     title: "Furniture Package",
     price: "6000",
     rating: "4.6",
   },
   {
+    id:4,
     image: images.wire,
     title: "Full Package",
     price: "3000",
     rating: "3.6",
   },
   {
+    id:5,
     image: images.tab,
     title: "Full Package",
     price: "2000",
@@ -46,6 +51,7 @@ const cardFeaturedData = [
 ];
 const cardData = [
   {
+    id:1,
     image: images.wire,
     title: "Electric wire repair",
     price: "500",
@@ -55,6 +61,7 @@ const cardData = [
     description: "Electrical Appliance Installation",
   },
   {
+    id:2,
     image: images.tab,
     title: "Tab repairs",
     price: "200",
@@ -64,6 +71,7 @@ const cardData = [
     description: "Plumber Services",
   },
   {
+    id:3,
     image: images.pipe,
     title: "Pipe Repairs",
     price: "650",
@@ -73,6 +81,7 @@ const cardData = [
     description: "Pipe Repairs and Maintenance",
   },
   {
+    id:4,
     image: images.switches,
     title: "Switch Repairs Package",
     price: "400",
@@ -82,6 +91,7 @@ const cardData = [
     description: "Switch Installation",
   },
   {
+    id:5,
     image: images.furniture,
     title: "Furniture Package",
     price: "600",
@@ -101,6 +111,10 @@ export default function Index() {
     router.push("/Bookings/notification");
   };
 
+    const handleShowChatbot= () => {
+    router.push("/chatbot/chats");
+  };
+
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <FlatList
@@ -116,7 +130,7 @@ export default function Index() {
             reviews={item.reviews}
           />
         )}
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         contentContainerClassName="pb-32"
         columnWrapperClassName="flex gap-5 px-5"
@@ -221,7 +235,7 @@ export default function Index() {
                     rating={item.rating}
                   />
                 )}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 horizontal
                 bounces={false}
                 showsHorizontalScrollIndicator={false}
@@ -269,7 +283,7 @@ export default function Index() {
 
       {/* ChatBot */}
       <TouchableOpacity
-        onPress={() => console.log("Chatbot opened")}
+        onPress={handleShowChatbot}
         style={{
           position: "absolute",
           top: 280,

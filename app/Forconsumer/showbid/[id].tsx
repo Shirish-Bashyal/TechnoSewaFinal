@@ -27,10 +27,10 @@ const Showbid = () => {
 };
   return (
     <SafeAreaView className="bg-gray-100 h-full">
-         <View className="flex flex-row  justify-center items-center mt-8">
+         <View className="flex flex-row  justify-center items-center mt-2">
         <TouchableOpacity
           onPress={router.back}
-          className="flex flex-row  gap-4 mx-4 py-10"
+          className="flex flex-row mx-1 py-4"
         >
           <View>
           <Text>
@@ -51,10 +51,10 @@ const Showbid = () => {
         // contentContainerClassName="pb-32 px-7"
       >
         <View className="flex-1 w-[98%] h-auto mt-2 px-3 py-1 !mr-10 ml-2  ">
-          {bidData?.data?.map((bids: any) => (
+          {bidData?.data?.map((bids: any,index:number) => (
             <View
               className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
-              //   key={posts.id}
+              key={index}
             >
               <View className="flex flex-col">
                 <View className="flex flex-row justify-between gap-2">

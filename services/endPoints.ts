@@ -22,5 +22,9 @@ export const API_ENDPOINTS={
     GetBidById:"api/Bid/get/all",
     BookTechnician:"api/Booking/create/bidBooking",
     GetAllBookingsForConsumer:"/api/Booking/all/consumer",
+
+
+    //Chatbot
+    PostQuestion:"/api/Chatbot/postQuestions",
    
 }

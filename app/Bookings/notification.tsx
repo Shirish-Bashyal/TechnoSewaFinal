@@ -50,8 +50,8 @@ const Notification = () => {
             />
           ) : (
             <View>
-              {notiData?.data?.map((posts: any) => (
-                <View className="flex flex-row gap-4 items-center mx-3 mb-4 px-3 h-auto py-2 bg-blue-400/20 shadow-md shadow-zinc-400 rounded-lg">
+              {notiData?.data?.map((posts: any,index: number) => (
+                <View className="flex flex-row gap-4 items-center mx-3 mb-4 px-3 h-auto py-2 bg-blue-400/20  shadow-zinc-400 rounded-lg" key={index}>
                   <View className="flex flex-col mt-2">
                     <View className="flex flex-row gap-1">
                         <MaterialIcons name="celebration" size={20} color="purple" />
@@ -70,7 +70,7 @@ const Notification = () => {
                         {posts.message}
                       </Text>
                     </View>
-                    <View className="flex flex-row gap-1">
+                    <View className="flex flex-row gap-1 mt-1 mb-2">
                       <Text
                         className="text-xs text-black-300"
                         style={{ fontFamily: "rubik-light" }}

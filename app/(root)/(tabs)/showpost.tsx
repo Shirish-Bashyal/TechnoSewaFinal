@@ -5,118 +5,119 @@ import images from "@/constants/images";
 import { Link, useRouter } from "expo-router";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 import { usePostProblemForConsumer } from "@/services/api/consumerpostedproblem";
 
 const Message = () => {
   const router = useRouter();
-   const { data: postData, isError, isLoading } = usePostProblemForConsumer();
+  const { data: postData, isError, isLoading } = usePostProblemForConsumer();
 
-   // const rawUrl = postData?.data?.imageUrl;
+  // const rawUrl = postData?.data?.imageUrl;
   // const imageUri =
-//   Array.isArray(rawUrl) && rawUrl[0]?.trim()
-//     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
-//     : null;
+  //   Array.isArray(rawUrl) && rawUrl[0]?.trim()
+  //     ? rawUrl[0].replace("https://localhost:7206", "https://5cc9-2400-1a00-bb20-1efe-2022-e39d-832f-c606.ngrok-free.app")
+  //     : null;
 
-//     console.log(imageUri)
+  //     console.log(imageUri)
 
   return (
     <SafeAreaView className="h-full bg-white">
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-           
-          >
-            <View className="flex-1 w-full mt-2 px-1 py-1 !mr-10 ml-2  ">
-      {isLoading ? (
-        <ActivityIndicator
-          animating={true}
-          color={MD2Colors.red800}
-          style={{ marginTop: 8 }}
-        />
-      ) : (
-        <View>
-          {postData?.data?.map((posts: any) => (
-            <View
-              className="flex flex-row gap-4 items-center mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
-              key={posts.id}
-            >
-              <Image
-                source={
-                  posts.imageUrl && posts.imageUrl.length > 0
-                    ? { uri: posts.imageUrl[0] }
-                    : images.avatar
-                }
-                className="!w-20 !h-20 rounded-lg !object-fill"
-              />
-              <View className="flex flex-col mt-2">
-                <View>
-                  <Text
-                    className="text-base font-outfit-bold text-black-300 "
-                    style={{ fontFamily: "outfit-Medium" }}
-                    numberOfLines={2}
-                  >
-                    {posts.title || "problem"}
-                  </Text>
-                </View>
-                <View className="flex flex-row gap-1">
-                  <Text
-                    className="text-xs text-black-300"
-                    style={{ fontFamily: "rubik-light" }}
-                  >
-                    Category:
-                  </Text>
-                  <Text
-                    className="text-xs font-rubik text-primary-100"
-                    style={{ fontFamily: "rubik-bold" }}
-                  >
-                    {posts.category}
-                  </Text>
-                </View>
-                <View className="flex flex-row gap-1">
-                  <Text
-                    className="text-xs text-black-300"
-                    style={{ fontFamily: "rubik-light" }}
-                  >
-                    Post By:
-                  </Text>
-                  <Text
-                    className="text-xs text-black-300"
-                    style={{ fontFamily: "rubik-light" }}
-                  >
-                    {posts.userName}
-                  </Text>
-                </View>
-              </View>
-              <Link href={`/Forconsumer/showbid/${posts.id}`} asChild>
-                <TouchableOpacity
-                  // onPress={handleShowAboutTechnician}
-                  className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className="flex-1 w-full mt-8 px-1 py-1 !mr-10 ml-2  ">
+          {isLoading ? (
+            <ActivityIndicator
+              animating={true}
+              color={MD2Colors.red800}
+              style={{ marginTop: 8 }}
+            />
+          ) : (
+            <View>
+              {postData?.data?.map((posts: any) => (
+                <View
+                  className="flex flex-row gap-4 items-center mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
+                  key={posts.id}
                 >
-                  <View>
-                  <Text
-                    className="text-xs  text-white text-center"
-                    style={{ fontFamily: "rubik-bold" }}
-                  >
-                    Show Bids
-                  </Text>
+                  <Image
+                    source={
+                      posts.imageUrl && posts.imageUrl.length > 0
+                        ? {
+                            uri: posts.imageUrl[0].replace(
+                              "https://localhost:7206",
+                              "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app"
+                            ),
+                          }
+                        : images.avatar
+                    }
+                    className="!w-20 !h-20 rounded-lg !object-fill"
+                  />
+                  <View className="flex flex-col mt-2">
+                    <View>
+                      <Text
+                        className="text-base font-outfit-bold text-black-300 "
+                        style={{ fontFamily: "outfit-Medium" }}
+                        numberOfLines={2}
+                      >
+                        {posts.title || "problem"}
+                      </Text>
+                    </View>
+                    <View className="flex flex-row gap-1">
+                      <Text
+                        className="text-xs text-black-300"
+                        style={{ fontFamily: "rubik-light" }}
+                      >
+                        Category:
+                      </Text>
+                      <Text
+                        className="text-xs font-rubik text-primary-100"
+                        style={{ fontFamily: "rubik-bold" }}
+                      >
+                        {posts.category}
+                      </Text>
+                    </View>
+                    <View className="flex flex-row gap-1">
+                      <Text
+                        className="text-xs text-black-300"
+                        style={{ fontFamily: "rubik-light" }}
+                      >
+                        Post By:
+                      </Text>
+                      <Text
+                        className="text-xs text-black-300"
+                        style={{ fontFamily: "rubik-light" }}
+                      >
+                        {posts.userName}
+                      </Text>
+                    </View>
                   </View>
-                </TouchableOpacity>
-              </Link>
+                  <Link href={`/Forconsumer/showbid/${posts.id}`} asChild>
+                    <TouchableOpacity
+                      // onPress={handleShowAboutTechnician}
+                      className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
+                    >
+                      <View>
+                        <Text
+                          className="text-xs  text-white text-center"
+                          style={{ fontFamily: "rubik-bold" }}
+                        >
+                          Show Bids
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Link>
+                </View>
+              ))}
             </View>
-          ))}
+          )}
         </View>
-      )}
-    </View>
-             </ScrollView>
-                </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-  )
-}
-
-export default Message
+export default Message;
 
 const styles = StyleSheet.create({
   title: {
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+});
