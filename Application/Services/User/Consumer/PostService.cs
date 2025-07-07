@@ -262,14 +262,6 @@ namespace Application.Services.User.Consumer
 
         public async Task<ServiceResponse<object>> GetPostsForTechniian(string UserId)
         {
-            //ApplicationUser? technician = await _userManager.FindByIdAsync(UserId);
-            //if (technician == null)
-            //    return new ServiceResponse<object>
-            //    {
-            //        Success = false,
-            //        Message="Error finding the user"
-
-            //    };
             var include = new Expression<Func<Domain.Entities.User.Technician, object>>[]
             {
                 x => x.User,
@@ -277,12 +269,12 @@ namespace Application.Services.User.Consumer
                 x => x.User.Address.City,
             };
             var technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
-                .GetWithIncludeAndFilter(include, x => x.UserId == UserId);
+                .GetWithIncludeAndFilter(include, x => x.UserId == UserId && x.IsVerified == true);
             if (technician == null)
                 return new ServiceResponse<object>
                 {
-                    Success = false,
-                    Message = "Error finding the user"
+                    Success = true,
+                    Message = "Technician not registered"
                 };
             var isLimitReached = await _paymentService.CheckLimitReached(technician.Id);
             if (isLimitReached)
@@ -304,7 +296,9 @@ namespace Application.Services.User.Consumer
             var posts = await _uow.AsyncRepositories<Post>()
                 .GetListWithIncludeAndFilter(
                     includes,
-                    x => x.User.Address.City == technician.User.Address.City
+                    x =>
+                        x.User.Address.City == technician.User.Address.City
+                        && x.Status == (int)PostStatusEnum.Pending
                 );
             if (posts == null)
             {

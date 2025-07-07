@@ -22,6 +22,8 @@ namespace Domain.Entities.User
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
 
+        public bool IsVerified { get; set; }
+
         public ICollection<SubCategoryBooking>? TechnicianBookings { get; set; }
         public ICollection<PostBid>? PostBids { get; set; }
     }
