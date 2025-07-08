@@ -17,10 +17,13 @@ const explore = () => {
     const { data: bookingData, isError, isLoading } = useShowAllBookingForConsumer();
   
     const handleShowPendingBookings = () => {
-      router.push("/Bookings/pendingbooking");
+      router.push("/Forconsumer/pendingbookingforconsumer");
     };
       const handleShowActiveBookings = () => {
-      router.push("/Bookings/activebooking");
+      router.push("/Forconsumer/activebookingforconsumer");
+    };
+     const handleShowCompleteBookings = () => {
+      router.push("/Forconsumer/completebookingforconsumer");
     };
   return (
     <SafeAreaView className="bg-gray-100 h-full">
@@ -83,6 +86,7 @@ const explore = () => {
             </View>
           </View>
           </TouchableOpacity>
+          <TouchableOpacity  onPress={handleShowCompleteBookings} className="cursor-pointer">
           <View
             className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
             //   key={posts.id}
@@ -112,6 +116,7 @@ const explore = () => {
               </View>
             </View>
           </View>
+          </TouchableOpacity>
 
           {/* ))} */}
         </View>

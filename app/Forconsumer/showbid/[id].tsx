@@ -51,10 +51,11 @@ const Showbid = () => {
         // contentContainerClassName="pb-32 px-7"
       >
         <View className="flex-1 w-[98%] h-auto mt-2 px-3 py-1 !mr-10 ml-2  ">
-          {bidData?.data?.map((bids: any,index:number) => (
+          {Array.isArray(bidData?.data) && bidData.data.length > 0 ? (
+          bidData?.data?.map((bids: any) => (
             <View
               className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
-              key={index}
+              key={bids.bidId}
             >
               <View className="flex flex-col">
                 <View className="flex flex-row justify-between gap-2">
@@ -96,7 +97,7 @@ const Showbid = () => {
                     {bids.estimationPrice}
                   </Text>
                 </View>
-                <View className="flex flex-row px-2 py-2 mt-2 gap-1 bg-gray-200 rounded-full ">
+                <View className="flex flex-row px-2 py-2 mt-2 gap-1 bg-blue-300/30 rounded-full ">
                   <MaterialCommunityIcons
                     name="calendar-clock"
                     size={18}
@@ -137,7 +138,10 @@ const Showbid = () => {
         )}
               {/* </Link> */}
             </View>
-          ))}
+          ))
+          ) : (
+  <Text>No bids available</Text>
+)}
         </View>
       </ScrollView>
     </SafeAreaView>

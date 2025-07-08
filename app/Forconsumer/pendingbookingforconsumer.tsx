@@ -9,10 +9,12 @@ import {
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useShowBidData } from "@/services/api/bid";
+import { useShowAllBooking, useShowAllBookingForConsumer } from "@/services/api/booking";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import LeafletViewMap from "../Expressproblem/ViewMap";
 
-const viewbidpost = () => {
-  const { data: bidData, isError, isLoading } = useShowBidData();
+const Pendingbookingforconsumer = () => {
+      const { data: bookingData, isError, isLoading } = useShowAllBookingForConsumer();
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <ScrollView
@@ -20,10 +22,10 @@ const viewbidpost = () => {
         // contentContainerClassName="pb-32 px-7"
       >
         <View className="flex-1 w-[98%] h-auto mt-2 px-3 py-1 !mr-10 ml-2  ">
-          {bidData?.data?.map((bids: any,index:number) => (
+          {bookingData?.data?.pendingBookings.map((booking: any,index:any) => (
             <View
               className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
-              key={bids.bidId || index}
+               key={booking?.postDetails?.id || index}
             >
               <View className="flex flex-col">
                 <View className="flex flex-row justify-between gap-2">
@@ -32,7 +34,7 @@ const viewbidpost = () => {
                       className="text-base font-outfit-bold text-black mt-1"
                       style={{ fontFamily: "outfit-medium" }}
                     >
-                      {bids.postTitle}
+                      {booking?.postDetails?.title ||"Technical problem"}
                     </Text>
                   </View>
                 </View>
@@ -42,7 +44,7 @@ const viewbidpost = () => {
                     className="text-xs text-black-300"
                     style={{ fontFamily: "rubik-light" }}
                   >
-                    {bids.solutionDescription}
+                    {booking?.postDetails?.description}
                   </Text>
                   {/* <Text
                 className="text-xs font-rubik text-primary-100"
@@ -56,16 +58,16 @@ const viewbidpost = () => {
                     className="text-xs text-black-300"
                     style={{ fontFamily: "rubik-light" }}
                   >
-                    Estimated Price:
+                    Category:
                   </Text>
                   <Text
                     className="text-xs font-rubik text-primary-100"
                     style={{ fontFamily: "rubik-bold" }}
                   >
-                    {bids.estimationPrice}
+                    {booking?.postDetails?.category}
                   </Text>
                 </View>
-                <View className="flex flex-row px-2 py-2 mt-2 gap-1 bg-blue-300/30 rounded-full ">
+                {/* <View className="flex flex-row px-2 py-2 mt-2 gap-1 bg-gray-200 rounded-full ">
                   <MaterialCommunityIcons
                     name="calendar-clock"
                     size={18}
@@ -78,16 +80,26 @@ const viewbidpost = () => {
                     Service Date:
                   </Text>
                   <Text className="text-xs font-rubik-bold text-primary-300 ml-0.5">
-                    {bids.serviceDate}
+                    {booking?.postBids?.serviceDate}
                   </Text>
-                </View>
+                </View> */}
+                 {booking?.postDetails?.lattitude !== undefined &&
+                booking?.postDetails?.longitude !== undefined && (
+                  <LeafletViewMap
+                    latitude={booking?.postDetails?.lattitude}
+                    longitude={booking?.postDetails?.longitude}
+                    onSelectLocation={(lat, lng) => {
+                      console.log("Selected new location:", lat, lng);
+                    }}
+                  />
+                )}
               </View>
             </View>
           ))}
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default viewbidpost;
+export default Pendingbookingforconsumer

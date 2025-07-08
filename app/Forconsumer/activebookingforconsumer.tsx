@@ -9,20 +9,17 @@ import {
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useCompleteBooking, useShowAllBooking } from "@/services/api/booking";
+import { useShowAllBookingForConsumer } from "@/services/api/booking";
 import LeafletViewMap from "../Expressproblem/ViewMap";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
-const activeBooking = () => {
-  const { data: bookingData, isError, isLoading } = useShowAllBooking();
-  const { mutate: completeBooking, isPending } = useCompleteBooking();
-
-  const submitComoletBookingData = (bookingId: number) => {
-    if (!bookingId) return;
-    completeBooking(bookingId.toString());
-  };
-  
+const Activebookingforconsumer = () => {
+  const {
+    data: bookingData,
+    isError,
+    isLoading,
+  } = useShowAllBookingForConsumer();
   return (
     <SafeAreaView className="bg-gray-100 h-full">
       <ScrollView
@@ -47,14 +44,14 @@ const activeBooking = () => {
             </View> */}
                 <View className=" mt-2">
                   <Text className="text-light-200 text-sm italic">
-                    Post By: {booking?.consumerName}
+                    Technician: {booking?.technicianName}
                   </Text>
                 </View>
-                <View className=" mt-1">
+                {/* <View className=" mt-1">
                   <Text className="text-light-200 text-sm italic">
                     Consumer Phone Number: {booking?.consumerPhoneNumber}
                   </Text>
-                </View>
+                </View> */}
                 <View className="flex-row items-center bg-gray-100 px-1 py-1 rounded-md gap-x-1 mt-2">
                   <MaterialIcons
                     name="monetization-on"
@@ -93,29 +90,6 @@ const activeBooking = () => {
                     }}
                   />
                 )}
-
-              {isPending ? (
-                <ActivityIndicator
-                  animating={true}
-                  color={MD2Colors.red800}
-                  style={{ marginTop: 8 }}
-                />
-              ) : (
-                <TouchableOpacity
-                  onPress={() => submitComoletBookingData(booking.bookingId)}
-                  className="bg-[#7A4DFF]/[1.6] shadow-md w-full  shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
-                >
-                  <View>
-                    <Text
-                      className="text-xs  text-white text-center"
-                      style={{ fontFamily: "rubik-bold" }}
-                    >
-                      Mark Booking as Completed
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              {/* </Link> */}
             </View>
           ))}
         </View>
@@ -124,4 +98,4 @@ const activeBooking = () => {
   );
 };
 
-export default activeBooking;
+export default Activebookingforconsumer;

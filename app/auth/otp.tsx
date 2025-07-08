@@ -83,7 +83,7 @@ const otp = () => {
           />
         </View>
       </View>
-      <View>
+      <View className="mt-16">
         <OtpInput
           numberOfDigits={4}
           focusColor="#7A4DFF"

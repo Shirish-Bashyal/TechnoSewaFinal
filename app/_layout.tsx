@@ -4,8 +4,11 @@ import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ToastProvider } from 'react-native-toast-notifications'
-
+import { ToastProvider } from "react-native-toast-notifications";
+import {
+  registerForPushNotificationsAsync,
+  startSignalRConnection,
+} from "./notificationServices";
 
 const queryClient = new QueryClient();
 
@@ -27,15 +30,24 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
+  useEffect(() => {
+  const setup = async () => {
+    await registerForPushNotificationsAsync();
+    await startSignalRConnection(); // No need to pass token manually
+  };
+
+  setup();
+  }, []);
+
   if (!fontsLoaded) return null;
 
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
-        <PaperProvider>
-          <Stack screenOptions={{ headerShown: false }} />;
-        </PaperProvider>
+          <PaperProvider>
+            <Stack screenOptions={{ headerShown: false }} />;
+          </PaperProvider>
         </ToastProvider>
       </QueryClientProvider>
     </>

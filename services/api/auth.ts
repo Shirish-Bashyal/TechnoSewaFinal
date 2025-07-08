@@ -9,6 +9,16 @@ import { useRouter } from "expo-router";
 import * as jwt_decode from "jwt-decode";
 console.log(jwt_decode);
 import { Buffer } from "buffer";
+import {
+  registerForPushNotificationsAsync,
+  startSignalRConnection,
+} from "@/app/notificationServices";
+import {
+  registerForPushNotificationsAsyncs,
+  showPopupNotification,
+} from "@/app/notiservices";
+import { showNotificationData } from "./notification";
+import * as Notifications from "expo-notifications";
 
 function parseJwt(token: string) {
   const base64Url = token.split(".")[1];
@@ -70,6 +80,13 @@ export const useLogin = () => {
       if (data.success) {
         const token = data.data;
         await AsyncStorage.setItem("token", data.data);
+        // const permissionGranted = await registerForPushNotificationsAsyncs();
+        // if (permissionGranted) {
+        //   await showPopupNotification(
+        //     "Welcome!",
+        //     "You have successfully logged in."
+        //   );
+        // }
         console.log("Token set in cookie:", AsyncStorage.getItem("token"));
 
         const decoded = parseJwt(token);
@@ -211,7 +228,6 @@ export const useSignUp = () => {
         errorMessage = error.message;
       }
       console.log("An error occurred while registering user", error);
-      
     },
   });
 };

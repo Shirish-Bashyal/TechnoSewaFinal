@@ -16,12 +16,14 @@ export const API_ENDPOINTS={
     ViewBid:"/api/Bid/get/bytechnician",
 
     GetAllBookings:"/api/Booking/all/Technician",
+    CompleteBookings:"/api/Booking/completed",
 
     //For Consumer
     GetAllPostedProblem:"/api/Post/get/all",
     GetBidById:"api/Bid/get/all",
     BookTechnician:"api/Booking/create/bidBooking",
     GetAllBookingsForConsumer:"/api/Booking/all/consumer",
+    CreateReviews:"/api/Review/create",
 
 
     //Chatbot

@@ -1,0 +1,116 @@
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useShowAllBookingForConsumer } from "@/services/api/booking";
+import LeafletViewMap from "../Expressproblem/ViewMap";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { Link, useRouter } from "expo-router";
+
+const Completebookingforconsumer = () => {
+  const {
+    data: bookingData,
+    isError,
+    isLoading,
+  } = useShowAllBookingForConsumer();
+  return (
+    <SafeAreaView className="bg-gray-100 h-full">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        // contentContainerClassName="pb-32 px-7"
+      >
+        <View className="flex-1 w-[98%] h-auto mt-2 px-3 py-1 !mr-10 ml-2  ">
+          {bookingData?.data?.completedBookings.map(
+            (booking: any, index: any) => (
+              <View
+                className=" gap-4  h-auto mb-4 px-2 py-2 bg-white shadow-md shadow-zinc-400 rounded-lg"
+                key={booking?.postBids?.bidId || index}
+              >
+                <View className="flex-col items-start justify-center mt-2 px-5">
+                  <Text className="text-black font-bold text-xl">
+                    {booking?.title}
+                  </Text>
+                  {/* <View className=" mt-2">
+              <Text className="text-light-200 text-gray-500 text-sm">
+                {booking?.description}
+              </Text>
+              
+            </View> */}
+                  <View className=" mt-2">
+                    <Text className="text-light-200 text-sm italic">
+                      Technician: {booking?.technicianName}
+                    </Text>
+                  </View>
+                  {/* <View className=" mt-1">
+                  <Text className="text-light-200 text-sm italic">
+                    Consumer Phone Number: {booking?.consumerPhoneNumber}
+                  </Text>
+                </View> */}
+                  <View className="flex-row items-center bg-gray-100 px-1 py-1 rounded-md gap-x-1 mt-2">
+                    <MaterialIcons
+                      name="monetization-on"
+                      size={18}
+                      color="blue"
+                    />
+                    <Text className="text-light-200 text-sm text-blue-800">
+                      Estimated Price:
+                    </Text>
+                    <Text className="text-black-200 font-bold text-sm">
+                      {booking?.price}
+                    </Text>
+                  </View>
+                  <View className="flex-row items-center bg-gray-100 px-1 rounded-md gap-x-1 mt-2 mb-2">
+                    <MaterialCommunityIcons
+                      name="calendar-clock-outline"
+                      size={18}
+                      color="green"
+                    />
+                    <Text className="text-light-200 text-sm text-green-700">
+                      Service Date:
+                    </Text>
+                    <Text className="text-black-200 font-bold text-sm">
+                      {booking?.serviceDate?.split("T")[0]}
+                    </Text>
+                  </View>
+                </View>
+                {booking?.bookingId && (
+                  <Link
+                    href={{
+                      pathname: "/reviews/[id]",
+                      params: { id: booking.bookingId.toString() },
+                    }}
+                    asChild
+                  >
+                    <TouchableOpacity
+                      // onPress={handleShowAboutTechnician}
+                      className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
+                    >
+                      <View>
+                        <Text
+                          className="text-xs  text-white text-center"
+                          style={{ fontFamily: "rubik-bold" }}
+                        >
+                          Add Reviews
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Link>
+                )}
+              </View>
+            )
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default Completebookingforconsumer;
