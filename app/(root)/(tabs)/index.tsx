@@ -251,12 +251,14 @@ export default function Index() {
                 Categories
               </Text>
               <TouchableOpacity>
+                <View>
                 <Text
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
                   View more
                 </Text>
+                </View>
               </TouchableOpacity>
             </View>
             <Categories />
@@ -269,12 +271,14 @@ export default function Index() {
                 New Services
               </Text>
               <TouchableOpacity>
+                <View>
                 <Text
                   className="text-xs underline font-rubik-bold text-primary-100"
                   style={{ fontFamily: "outfit-medium" }}
                 >
                   View More
                 </Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>

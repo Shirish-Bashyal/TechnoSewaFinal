@@ -5,6 +5,8 @@ import {
   Button,
   Text,
   TouchableOpacity,
+   KeyboardAvoidingView,
+   StyleSheet,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,6 +39,7 @@ const userdetails = () => {
   const { mutate,isPending } = useSignUp();
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<TextInput>(null);
+  const scrollRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     // Register field manually
@@ -70,6 +73,16 @@ const userdetails = () => {
         </Text>
          {/* <Toaster position="bottom-center" reverseOrder={false} /> */}
       </View>
+       <KeyboardAvoidingView
+                behavior="height"
+                style={{ flex: 1 }}
+                keyboardVerticalOffset={0}
+              >
+                <ScrollView
+                  ref={scrollRef}
+                  contentContainerStyle={styles.chatContainer}
+                  showsVerticalScrollIndicator={false}
+                >
       <View className="mt-1 text-sm flex justify-center items-center">
         <Text className="text-black-200" style={{ fontFamily: "rubik" }}>
           Enter your Details
@@ -226,7 +239,7 @@ const userdetails = () => {
                   ref={passwordRef}
                   secureTextEntry={!showPassword}
                   placeholderTextColor="#999"
-                  placeholder="Enter your password"
+                  placeholder="1 Capital | 1 symbol | 1 Number | 6 Character"
                   onChangeText={(text) => setValue("password", text)}
                   style={{
                     flex: 1,
@@ -311,7 +324,10 @@ const userdetails = () => {
             </Text>
           </TouchableOpacity> */}
         </View>
+        </ScrollView>
+        
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -325,6 +341,9 @@ const inputStyle = {
   borderRadius: 8,
 };
 
-const submit={
-
-}
+const styles = StyleSheet.create({
+  chatContainer: {
+    padding: 16,
+    paddingBottom: 60,
+  },
+})

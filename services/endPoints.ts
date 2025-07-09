@@ -24,9 +24,14 @@ export const API_ENDPOINTS={
     BookTechnician:"api/Booking/create/bidBooking",
     GetAllBookingsForConsumer:"/api/Booking/all/consumer",
     CreateReviews:"/api/Review/create",
+    AvailableTechnician:"/api/Technician/available",
 
 
     //Chatbot
     PostQuestion:"/api/Chatbot/postQuestions",
+
+
+    //Payment
+    Payments:"/api/Payment/add",
    
 }

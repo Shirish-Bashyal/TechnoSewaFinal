@@ -55,6 +55,10 @@ const profile = () => {
     router.push("/Technician/(root)/(tabs)/booking");
   };
 
+     const handlePayments = () => {
+    router.push("/payments/paymentscreen");
+  };
+
   
   const { mutate } = useLogOut();
   const handleLogout = async () => {
@@ -114,7 +118,7 @@ const profile = () => {
         </View>
         <View className="flex flex-col mt-10 ">
           <SettingsItem icon="calendar" title="My Booking" onPress={handleBookings}/>
-          <SettingsItem icon="credit-card" title="Payments" />
+          <SettingsItem icon="credit-card" title="Payments" onPress={handlePayments}/>
           <SettingsItem
             icon="tools"
             title="Become Consumer"

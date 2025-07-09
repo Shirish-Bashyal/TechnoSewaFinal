@@ -38,7 +38,7 @@ const Categories = () => {
     const router = useRouter();
    const handleShowCategory = () => {
      
-      router.push("/category_components/[id]");
+      router.push("/Forconsumer/showAvailabletechnician");
     };
      const handleShowProblem = () => {
      
@@ -47,8 +47,8 @@ const Categories = () => {
   return (
     <View className="my-5">
       <View className="flex flex-row justify-between ">
-        <SettingsItem icon="plug" title="Electrician" onPress={handleShowProblem}/>
-        <SettingsItem icon="tools" title="Plumbing" onPress={handleShowProblem} />
+        <SettingsItem icon="plug" title="Electrician" onPress={handleShowCategory }/>
+        <SettingsItem icon="tools" title="Plumbing" onPress={handleShowCategory } />
         <SettingsItem icon="broom" title="Cleaner" onPress={handleShowProblem}/>
         <SettingsItem icon="paint-roller" title="House Paint" onPress={handleShowProblem}/>
       </View>
