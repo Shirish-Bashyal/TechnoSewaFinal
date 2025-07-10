@@ -70,5 +70,27 @@ namespace TechnoSewa.Controllers
                 return BadRequest("Enter Valid Data");
             }
         }
+
+        [HttpGet]
+        [Route("byid")]
+        public async Task<IActionResult> GetById(int technicianId)
+        {
+            var result = await _technicianService.GetById(technicianId);
+            if (result.Success)
+                return Ok(result);
+            else
+                return StatusCode(500, result);
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _technicianService.GetAll();
+            if (result.Success)
+                return Ok(result);
+            else
+                return StatusCode(500, result);
+        }
     }
 }

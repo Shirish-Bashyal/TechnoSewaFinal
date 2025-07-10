@@ -58,26 +58,31 @@ namespace Application.Services.Technician
                     User = user,
                     Latitude = model.Latitude,
                     Longitude = model.Longitude,
+                    IsVerified = false,
                 };
-                //change the role of user
-                var technicianData = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
-                    .AddAsync(tech);
+                //wait for the admin to verify for the role change
+                await _uow.AsyncRepositories<Domain.Entities.User.Technician>().AddAsync(tech);
                 var result = await _uow.Save();
                 if (result > 0)
                 {
-                    var role = await _roleServices.ChangeRole(userId, "Technician");
+                    //var role = await _roleServices.ChangeRole(userId, "Technician");
 
-                    if (role.Success)
+                    //if (role.Success)
+                    //{
+                    //    return role;
+                    //}
+                    //else
+                    //{
+                    //    await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                    //        .DeleteAsync(technicianData);
+                    //    await _uow.Save();
+                    //    return role;
+                    //}
+                    return new ServiceResponse<object>
                     {
-                        return role;
-                    }
-                    else
-                    {
-                        await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
-                            .DeleteAsync(technicianData);
-                        await _uow.Save();
-                        return role;
-                    }
+                        Message = "Wait for admin to verify.",
+                        Success = true,
+                    };
                 }
                 else
                 {
@@ -94,6 +99,38 @@ namespace Application.Services.Technician
             }
         }
 
+        public async Task<ServiceResponse<object>> GetAll()
+        {
+            var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
+            {
+                x => x.User,
+                x => x.User.Address,
+                x => x.User.Address.City,
+            };
+            var technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                .GetWithInclude(includes);
+            if (technician == null)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = false,
+                    Message = "Technician not found"
+                };
+            }
+            var result = technician.Select(x => new GetTechnicianAllDetails
+            {
+                TechnicianId = x.Id,
+                SecondPhoneNumber = x.SecondPhoneNumber,
+                IsVerified = x.IsVerified,
+                Name = x.User.UserName,
+                PhoneNumber = x.User.PhoneNumber,
+                Address =
+                    $"{x.User.Address.City.Name}-{x.User.Address.WardNo},{x.User.Address.ToleName}",
+            });
+
+            return new ServiceResponse<object> { Success = true, Data = result };
+        }
+
         public async Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model)
         {
             var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
@@ -106,8 +143,13 @@ namespace Application.Services.Technician
                     .GetListWithIncludeAndFilter(
                         includes,
                         x =>
-                            !x.TechnicianBookings.Any(b =>
-                                b.ServiceDate == model.Date && b.TimeFrame.Id == model.TimeFrameEnum
+                            x.IsVerified
+                            && (
+                                x.TechnicianBookings == null
+                                || !x.TechnicianBookings.Any(b =>
+                                    b.ServiceDate == model.Date
+                                    && b.TimeFrame.Id == (int)model.TimeFrameEnum
+                                )
                             )
                     );
             if (availableTechnician.Any())
@@ -173,6 +215,38 @@ namespace Application.Services.Technician
                     Message = "No technician available"
                 };
             }
+        }
+
+        public async Task<ServiceResponse<object>> GetById(int TechnicianId)
+        {
+            var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
+            {
+                x => x.User,
+                x => x.User.Address,
+                x => x.User.Address.City,
+            };
+            var technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
+                .GetWithIncludeAndFilter(includes, x => x.Id == TechnicianId);
+            if (technician == null)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = false,
+                    Message = "Technician not found"
+                };
+            }
+            var result = new GetTechnicianAllDetails
+            {
+                TechnicianId = technician.Id,
+                SecondPhoneNumber = technician.SecondPhoneNumber,
+                IsVerified = technician.IsVerified,
+                Name = technician.User.UserName,
+                PhoneNumber = technician.User.PhoneNumber,
+                Address =
+                    $"{technician.User.Address.City.Name}-{technician.User.Address.WardNo},{technician.User.Address.ToleName}",
+            };
+
+            return new ServiceResponse<object> { Success = true, Data = result };
         }
     }
 }

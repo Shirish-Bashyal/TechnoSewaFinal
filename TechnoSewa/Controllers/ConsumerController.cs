@@ -12,9 +12,12 @@ namespace TechnoSewa.Controllers
     {
         private readonly IProfileService _profile;
 
-        public ConsumerController(IProfileService profile)
+        private readonly IConsumerService _consumer;
+
+        public ConsumerController(IProfileService profile, IConsumerService consumer)
         {
             _profile = profile;
+            _consumer = consumer;
         }
 
         [HttpGet("profile")]
@@ -31,6 +34,17 @@ namespace TechnoSewa.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<IActionResult> GetAll()
+        {
+            var consumers = await _consumer.GetAll();
+            if (consumers.Success)
+                return Ok(consumers);
+            else
+                return NotFound();
         }
     }
 }

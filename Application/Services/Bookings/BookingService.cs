@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Constants.Enums;
 using Application.DTO.Booking;
+using Application.DTO.Booking.Admin;
 using Application.DTO.Booking.Consumer;
 using Application.Hubs.Model;
 using Application.Interfaces.Bookings;
@@ -554,6 +555,69 @@ namespace Application.Services.Bookings
             }
             return new ServiceResponse<object> { Success = false, Message = "Operation Failed" };
             ;
+        }
+
+        public async Task<ServiceResponse<object>> GetAll()
+        {
+            var includes = new Expression<Func<Booking, object>>[]
+            {
+                x => x.SubCategoryBooking,
+                x => x.PostBid,
+                x => x.SubCategoryBooking.SubCategory,
+                x => x.SubCategoryBooking.Consumer,
+                x => x.PostBid.Post,
+                x => x.PostBid.Post.User,
+                x => x.SubCategoryBooking.Technician,
+                x => x.SubCategoryBooking.Technician.User,
+                x => x.PostBid.Technician,
+                x => x.PostBid.Technician.User
+            };
+            var bookings = await _uow.AsyncRepositories<Booking>().GetWithInclude(includes);
+
+            var result = bookings
+                .Select(a => new GetAllBookingsDTO
+                {
+                    Id = a.Id,
+                    ConsumerName =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.Post.User.UserName
+                            : a.SubCategoryBooking.Consumer.UserName,
+
+                    Status = ((PostStatusEnum)a.Status).ToString(),
+                    TechnicianName =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.Technician.User.UserName
+                            : a.SubCategoryBooking.Technician.User.UserName,
+                    TechnicianPhone =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.Technician.User.PhoneNumber
+                            : a.SubCategoryBooking.Technician.User.PhoneNumber,
+                    Price =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.EstimationPrice
+                            : a.SubCategoryBooking.SubCategory.Price,
+                    ServiceDate =
+                        a.SubCategoryBooking == null
+                            ? a.PostBid.ServiceDate
+                            : a.SubCategoryBooking.ServiceDate,
+
+                    Title =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.SubCategory.Title
+                            : a.PostBid.Post.Title,
+                    ConsumerPhone =
+                        a.SubCategoryBooking != null
+                            ? a.SubCategoryBooking.Consumer.PhoneNumber
+                            : a.PostBid.Post.User.PhoneNumber
+                })
+                .ToList();
+
+            return new ServiceResponse<object>
+            {
+                Data = result,
+                Message = "",
+                Success = true,
+            };
         }
     }
 }

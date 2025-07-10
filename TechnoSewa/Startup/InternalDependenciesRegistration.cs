@@ -1,6 +1,7 @@
 ﻿using Application.Helpers.LLM;
 using Application.Hubs.InMemoryDB;
 using Application.Interfaces;
+using Application.Interfaces.Admin;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Chatbot;
 using Application.Interfaces.Data;
@@ -13,6 +14,7 @@ using Application.Interfaces.User.Auth;
 using Application.Interfaces.User.Consumer;
 using Application.Interfaces.User.Role;
 using Application.Services;
+using Application.Services.Admin;
 using Application.Services.Bookings;
 using Application.Services.Chatbot;
 using Application.Services.Notification;
@@ -32,6 +34,7 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<INotificationSender, NotificationSender>();
             services.AddSingleton<UserConnectionDb>();
             services.AddSingleton<NotificationDb>();
@@ -42,6 +45,7 @@ namespace TechnoSewa.Startup
             services.AddScoped<IChatbotService, ChatbotService>();
 
             services.AddScoped<IPaymentServics, PaymentService>();
+            services.AddScoped<IConsumerService, ConsumerService>();
 
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
