@@ -142,18 +142,14 @@ namespace Application.Services.Technician
                     .Take(10)
                     .ToList(); //order by distance in kilometers
 
-                var reviewTasks = result.Select(async technician =>
+                foreach (var tech in result)
                 {
-                    var reviewResponse = await _reviewServices.GetForTechnician(
-                        technician.TechnicianId
-                    );
+                    var reviewResponse = await _reviewServices.GetForTechnician(tech.TechnicianId);
                     if (reviewResponse.Data != null)
                     {
-                        technician.Reviews = reviewResponse.Data;
+                        tech.Reviews = reviewResponse.Data;
                     }
-                });
-
-                await Task.WhenAll(reviewTasks); // Await all in parallel
+                }
 
                 //var predictorInput = result
                 //    .Select(x =>
