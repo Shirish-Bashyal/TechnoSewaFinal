@@ -122,6 +122,11 @@ namespace Application.Services.Bookings
                         )
                 );
 
+            if (bookings == null || !bookings.Any())
+            {
+                return new ServiceResponse<object> { Success = true, Message = "No bookings " };
+            }
+
             var activeBookings = bookings
                 .Where(x => x.Status == (int)PostStatusEnum.Booked)
                 .Select(a => new ActiveBookingsDTO
@@ -201,6 +206,20 @@ namespace Application.Services.Bookings
                     postIncludes,
                     x => x.Status == (int)PostStatusEnum.Pending && x.User.Id == ConsumerId
                 );
+            if (pendingPost != null || !pendingPost.Any())
+            {
+                return new ServiceResponse<object>
+                {
+                    Data = new Application.DTO.Booking.GetConsumerBookingsDTO
+                    {
+                        ActiveBookings = activeBookings,
+                        CompletedBookings = completedBookings,
+                        PendingBookings = new List<PendingBookingsDTO>(),
+                    },
+                    Message = "",
+                    Success = true,
+                };
+            }
 
             var pendingBookings = pendingPost
                 .Select(x => new PendingBookingsDTO
@@ -272,6 +291,10 @@ namespace Application.Services.Bookings
                             && x.PostBid.Technician.UserId == TechnicianUserId
                         )
                 );
+            if (bookings == null || !bookings.Any())
+            {
+                return new ServiceResponse<object> { Success = true, Message = "No bookings " };
+            }
 
             var activeBookings = bookings
                 .Where(x => x.Status == (int)PostStatusEnum.Booked)
@@ -358,6 +381,21 @@ namespace Application.Services.Bookings
                         x.Status == (int)PostStatusEnum.Pending
                         && x.Technician.UserId == TechnicianUserId
                 );
+
+            if (pendingPost != null || !pendingPost.Any())
+            {
+                return new ServiceResponse<object>
+                {
+                    Data = new Application.DTO.Booking.Technician.GetTechnicianBookingsDTO
+                    {
+                        ActiveBookings = activeBookings,
+                        CompletedBookings = completedBookings,
+                        PendingBookings = new List<DTO.Booking.Technician.PendindBookingsDTO>()
+                    },
+                    Message = "",
+                    Success = true,
+                };
+            }
 
             var pendingBookings = pendingPost
                 .Select(x => new Application.DTO.Booking.Technician.PendindBookingsDTO
