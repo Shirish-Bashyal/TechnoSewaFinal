@@ -45,6 +45,7 @@ namespace TechnoSewa.Startup
             services.AddScoped<IChatbotService, ChatbotService>();
 
             services.AddScoped<IPaymentServics, PaymentService>();
+            services.AddScoped<IConsumerService, ConsumerService>();
 
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
