@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTO.User.Consumer;
@@ -27,16 +28,17 @@ namespace Application.Services.User.Consumer
         public async Task<ServiceResponse<object>> GetAll()
         {
             var consumers = await _userManager.GetUsersInRoleAsync("Consumer");
-            if (consumers == null || !consumers.Any())
-            {
-                return new ServiceResponse<object>
-                {
-                    Success = true,
-                    Message = "No Consumers Found"
-                };
-            }
 
-            var result = consumers
+            var includes = new Expression<Func<ApplicationUser, object>>[]
+            {
+                x => x.Address,
+                x => x.Address.City,
+            };
+
+            var consumersWithIncludes = await _uow.AsyncRepositories<ApplicationUser>()
+                .GetListWithIncludeAndFilter(includes, x => consumers.Contains(x));
+
+            var result = consumersWithIncludes
                 .Select(x => new GetAllConsumersDTO
                 {
                     Id = x.Id,
