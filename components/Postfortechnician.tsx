@@ -15,12 +15,15 @@ import { useViewPostForTechnician } from "@/services/api/postfortechnician";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
+import {baseURL} from "../services/axiosInstance"
+
 interface Props {
   onPress?: () => void;
 }
 export const PostForTechnician = ({ onPress }: Props) => {
   const router = useRouter();
   const { data: postData, isError, isLoading } = useViewPostForTechnician();
+  console.log(baseURL);
   //   const handleServiceDetails = () => {
   //     router.push("/auth/userdetails");
   //   };
@@ -59,7 +62,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
                     ? {
           uri: posts.imageUrl[0].replace(
             "https://localhost:7206",
-            "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app"
+           baseURL
           ),
         }
                     : images.avatar

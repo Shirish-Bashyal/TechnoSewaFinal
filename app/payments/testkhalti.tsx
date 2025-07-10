@@ -59,20 +59,29 @@ export default function KhaltiPayment() {
 
     if (data.token && data.amount) {
       try {
-        const response = await axios.post("https://23e3606805ca.ngrok-free.app/api/Payment/add", {
-          token: data.token,
-          amount: data.amount,
-          pid: "1",
-        });
+        const response = await axios.post(
+          "https://23e3606805ca.ngrok-free.app/api/Payment/add",
+          {
+            token: data.token,
+            amount: data.amount,
+            pid: "1",
+          }
+        );
 
         if (response.data.success) {
           Alert.alert("Success", "Payment verified and added!");
           router.push("/payments/success");
         } else {
-          Alert.alert("Failed", response.data.message || "Payment verification failed.");
+          Alert.alert(
+            "Failed",
+            response.data.message || "Payment verification failed."
+          );
         }
       } catch (error: any) {
-        Alert.alert("Error", error?.response?.data?.message || "Something went wrong.");
+        Alert.alert(
+          "Error",
+          error?.response?.data?.message || "Something went wrong."
+        );
       }
     } else if (data.error) {
       Alert.alert("Khalti Error", JSON.stringify(data.error));

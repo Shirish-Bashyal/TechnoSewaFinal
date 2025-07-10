@@ -11,6 +11,7 @@ import images from "@/constants/images";
 import LeafletViewMap from "../Expressproblem/ViewMap";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import {baseURL} from "../../services/axiosInstance"
 
 // const MovieInfo = ({ label, value }: MovieInfoProps) => (
 //   <View className="flex-col items-start justify-center">
@@ -34,7 +35,7 @@ const showPost = () => {
   console.log("rawurl", rawUrl);
 const imageUri =
   Array.isArray(rawUrl) && rawUrl[0]?.trim()
-    ? rawUrl[0].replace("https://localhost:7206", "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app")
+    ? rawUrl[0].replace("https://localhost:7206", baseURL)
     : null;
 
     console.log(imageUri)

@@ -25,6 +25,7 @@ export const API_ENDPOINTS={
     GetAllBookingsForConsumer:"/api/Booking/all/consumer",
     CreateReviews:"/api/Review/create",
     AvailableTechnician:"/api/Technician/available",
+    BookSubCategory:"/api/Booking/create/subcategoryBooking",
 
 
     //Chatbot

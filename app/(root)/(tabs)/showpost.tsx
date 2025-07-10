@@ -7,6 +7,7 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { usePostProblemForConsumer } from "@/services/api/consumerpostedproblem";
+import { baseURL } from "../../../services/axiosInstance";
 
 const Message = () => {
   const router = useRouter();
@@ -43,7 +44,7 @@ const Message = () => {
                         ? {
                             uri: posts.imageUrl[0].replace(
                               "https://localhost:7206",
-                              "https://4932-2400-1a00-bb20-1efe-575-f20-9c4f-1887.ngrok-free.app"
+                              baseURL
                             ),
                           }
                         : images.avatar

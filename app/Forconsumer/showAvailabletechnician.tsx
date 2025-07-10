@@ -68,13 +68,13 @@ const ShowAvailableTechnician = () => {
       Longitude: longitude,
     });
      router.push({
-    pathname: "/Forconsumer/available-technician", // ✅ must match actual file
+    pathname: "/Forconsumer/available-technician", 
   params: {
     ...values,
     TimeFrameEnum: parseInt(values.TimeFrameEnum),
     Latitude: latitude,
     Longitude: longitude,
-  },             // ✅ pass form data
+  },            
   });
   };
 
@@ -205,7 +205,7 @@ setValue("Date", formattedDate);
             onPress={handleSubmit(onSubmit)}
             color="#7A4DFF"
           />
-        )}
+        )} 
 
       
       </ScrollView>
