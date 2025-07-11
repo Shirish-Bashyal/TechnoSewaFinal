@@ -1,4 +1,5 @@
 ﻿using Application.Helpers.LLM;
+using Application.InMemoryCache;
 using Application.Interfaces;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Chatbot;
@@ -31,7 +32,7 @@ namespace TechnoSewa.Startup
             services.AddScoped<ILLMFormatter, LLMFormatter>();
             services.AddScoped<ITextTokenizer, TextTokenizer>();
             services.AddScoped<IChatbotService, ChatbotService>();
-
+            services.AddSingleton<UserChatDb>();
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
 

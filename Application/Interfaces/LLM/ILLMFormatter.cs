@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTO.Chatbot;
+using Application.Response;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Interfaces.LLM
@@ -16,5 +17,8 @@ namespace Application.Interfaces.LLM
         Task<string> InterpertImage(string jsonStructure);
 
         Task<string> IntentFinder(string query);
+        Task<ChatbotBookingTaskDto> BookingTask(StringBuilder request);
+
+        Task<ChatbotJsonConverterResponse> ConvertResponseToJson(string request);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTO.Chatbot;
+using Application.Response;
 
 namespace Application.Interfaces.Chatbot
 {
@@ -13,6 +14,7 @@ namespace Application.Interfaces.Chatbot
         Task<string> SendAudio(AudioDto request);
         Task<string> SendImage(ImageDto request);
 
-        Task<string> FindIntent(string userQuery);
+        Task<ServiceResponse<string>> MainChat(string customerId, string userQuery);
+        Task<ServiceResponse<string>> BookingTask(string customerId, string userQuery);
     }
 }

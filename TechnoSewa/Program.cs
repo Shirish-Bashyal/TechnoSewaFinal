@@ -46,7 +46,6 @@ builder.Services.AddCors(options =>
 //adding services
 
 builder.Services.AddInternalDependencies(builder.Configuration);
-
 var app = builder.Build();
 var contentPath = app.Environment.ContentRootPath;
 var uploadsPath = Path.Combine(contentPath, "Uploads");
