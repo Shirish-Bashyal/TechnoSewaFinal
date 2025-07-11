@@ -30,14 +30,14 @@ export default function RootLayout() {
     }
   }, [fontsLoaded]);
 
-  useEffect(() => {
-  const setup = async () => {
-    await registerForPushNotificationsAsync();
-    await startSignalRConnection(); // No need to pass token manually
-  };
+  // useEffect(() => {
+  // const setup = async () => {
+  //   await registerForPushNotificationsAsync();
+  //   await startSignalRConnection(); // No need to pass token manually
+  // };
 
-  setup();
-  }, []);
+  // setup();
+  // }, []);
 
   if (!fontsLoaded) return null;
 

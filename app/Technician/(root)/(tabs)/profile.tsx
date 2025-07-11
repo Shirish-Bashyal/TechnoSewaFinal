@@ -56,7 +56,7 @@ const profile = () => {
   };
 
      const handlePayments = () => {
-    router.push("/payments/paymentscreen");
+    router.push("/payments/paymentform");
   };
 
   

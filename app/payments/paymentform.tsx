@@ -1,15 +1,18 @@
 // app/payment-form.tsx
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 
 export default function PaymentForm() {
   const router = useRouter();
   const [amount, setAmount] = useState("");
 
   const handlePay = () => {
-    if (!amount) return;
-    router.push(`/payments/esewapaymentscreen?amount=${amount}`);
+    if (!amount || isNaN(Number(amount))) {
+      Alert.alert("Invalid Input", "Please enter a valid amount.");
+      return;
+    }
+    router.push(`/payments/testkhalti?amount=${amount}`);
   };
 
   return (
@@ -22,7 +25,7 @@ export default function PaymentForm() {
         onChangeText={setAmount}
         placeholder="e.g. 100"
       />
-      <Button title="Pay with eSewa" onPress={handlePay} />
+      <Button title="Pay with Khalti" onPress={handlePay} />
     </View>
   );
 }

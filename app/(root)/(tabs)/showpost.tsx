@@ -35,9 +35,10 @@ const Message = () => {
             <View>
               {postData?.data?.map((posts: any) => (
                 <View
-                  className="flex flex-row gap-4 items-center mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
+                  className=" px-2 py-2 mb-4 bg-white shadow-md shadow-zinc-400 rounded-lg"
                   key={posts.id}
                 >
+                  <View className="flex flex-row gap-4">
                   <Image
                     source={
                       posts.imageUrl && posts.imageUrl.length > 0
@@ -90,10 +91,11 @@ const Message = () => {
                       </Text>
                     </View>
                   </View>
+                  </View>
                   <Link href={`/Forconsumer/showbid/${posts.id}`} asChild>
                     <TouchableOpacity
                       // onPress={handleShowAboutTechnician}
-                      className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
+                      className="bg-[#7A4DFF]/[1.6] shadow-md w-[98%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
                     >
                       <View>
                         <Text
