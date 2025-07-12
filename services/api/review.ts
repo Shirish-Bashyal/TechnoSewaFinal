@@ -8,7 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useRouter } from "expo-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const { CreateReviews } = API_ENDPOINTS;
+const { CreateReviews, GetReviews } = API_ENDPOINTS;
 
 export interface reviewData {
   bookingId: number;
@@ -21,7 +21,9 @@ export interface reviewResponse {
   message: string;
 }
 
-export const createReview = async (formData: reviewData): Promise<reviewResponse> => {
+export const createReview = async (
+  formData: reviewData
+): Promise<reviewResponse> => {
   try {
     console.log("Sending login payload:", formData);
     const response = await axiosInstance.post(CreateReviews, formData);
@@ -76,5 +78,36 @@ export const useCreateReviews = () => {
         placement: "bottom",
       });
     },
+  });
+};
+
+//GetReviews
+
+export interface viewReviewByIdResponse {
+  success: boolean;
+  data?: {
+    averageRating: number;
+    reviews: Array<String>;
+  };
+}
+
+export const viewReviewById = async (
+  TechnicianId: number
+): Promise<viewReviewByIdResponse> => {
+  try {
+    const response = await axiosInstance.get(
+      `${GetReviews}?TechnicianId=${TechnicianId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error response from server:", error.response);
+    throw new Error("Failed view review");
+  }
+};
+
+export const useViewReviews = (TechnicianId: number) => {
+  return useQuery<viewReviewByIdResponse, Error>({
+    queryKey: ["reviewsViewData", TechnicianId],
+    queryFn: () => viewReviewById(TechnicianId),
   });
 };

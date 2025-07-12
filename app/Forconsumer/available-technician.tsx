@@ -57,7 +57,7 @@ const AvailableTechniciansPage = () => {
               <View className="flex flex-row items-center px-4  bg-blue-500/10  rounded-full">
                 <FontAwesome name="star-half-empty" size={18} color="gold" />
                 <Text className="text-xs font-rubik-bold  ml-0.5">
-                  {tech.reviews?.averageRating ?? "N/A"}
+                  {tech.reviews?.averageRating ?? 0}
                 </Text>
               </View>
               <View>

@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -8,6 +8,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useViewProfile } from "@/services/api/profile";
 import { useRouter } from "expo-router";
 import { useLogOut } from "@/services/api/auth";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useViewReviews } from "@/services/api/review";
+import { useShowAllTechnicianData } from "@/services/api/alltechnician";
 
 interface SettingsItemProps {
   icon: any;
@@ -47,19 +50,32 @@ const profile = () => {
   const router = useRouter();
 
   const { data: profileData, isError, isLoading } = useViewProfile();
+  const { data: allTechnicians } = useShowAllTechnicianData();
+
+  // Match phone number and get technicianId
+  const matchedTechnicianId = useMemo(() => {
+    if (!profileData?.data?.phoneNumber || !allTechnicians?.data)
+      return undefined;
+
+    const matchedTech = allTechnicians.data.find(
+      (tech) => tech.phoneNumber === profileData?.data?.phoneNumber
+    );
+    return matchedTech?.technicianId;
+  }, [profileData, allTechnicians]);
+
+  const { data: reviewData } = useViewReviews(matchedTechnicianId || 0);
 
   const handleBecomeConsumer = () => {
     router.push("/Expressproblem/changeRole");
   };
-    const handleBookings = () => {
+  const handleBookings = () => {
     router.push("/Technician/(root)/(tabs)/booking");
   };
 
-     const handlePayments = () => {
+  const handlePayments = () => {
     router.push("/payments/paymentform");
   };
 
-  
   const { mutate } = useLogOut();
   const handleLogout = async () => {
     console.log("ok");
@@ -88,12 +104,22 @@ const profile = () => {
             <TouchableOpacity className="absolute bottom-11 right-2">
               <FontAwesome6 name="edit" size={20} color="black" />
             </TouchableOpacity>
-            <Text
-              className="text-2l font-rubik-bold mt-2"
-              style={{ fontFamily: "rubik-bold" }}
-            >
-              {profileData?.data?.name}
-            </Text>
+            <View className="flex flex-row gap-2">
+              <Text
+                className="text-2l font-rubik-bold mt-2"
+                style={{ fontFamily: "rubik-bold" }}
+              >
+                {profileData?.data?.name}
+              </Text>
+              
+                <View className="flex flex-row items-center mt-2 px-4 bg-blue-500/10 rounded-full">
+                  <FontAwesome name="star-half-empty" size={18} color="gold" />
+                  <Text className="text-xs font-rubik-bold ml-0.5">
+                    {reviewData?.data?.averageRating ?? 0}
+                  </Text>
+                </View>
+              
+            </View>
           </View>
           <View className="mt-14 ">
             <Text
@@ -117,8 +143,16 @@ const profile = () => {
           </View>
         </View>
         <View className="flex flex-col mt-10 ">
-          <SettingsItem icon="calendar" title="My Booking" onPress={handleBookings}/>
-          <SettingsItem icon="credit-card" title="Payments" onPress={handlePayments}/>
+          <SettingsItem
+            icon="calendar"
+            title="My Booking"
+            onPress={handleBookings}
+          />
+          <SettingsItem
+            icon="credit-card"
+            title="Payments"
+            onPress={handlePayments}
+          />
           <SettingsItem
             icon="tools"
             title="Become Consumer"

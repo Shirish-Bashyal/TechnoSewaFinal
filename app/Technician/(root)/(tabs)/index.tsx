@@ -67,7 +67,7 @@ const index = () => {
                     {profileData?.data?.city || "Butwal"}
                   </Text>
                 </TouchableOpacity>
-              </View>{" "}
+              </View>
             </View>
             <View className="flex flex-row items-center mt-5">
               {/* <Image

@@ -17,6 +17,8 @@ export const API_ENDPOINTS={
 
     GetAllBookings:"/api/Booking/all/Technician",
     CompleteBookings:"/api/Booking/completed",
+    GetReviews:"/api/Review/technician",
+    GetAllTechnician:'/api/Technician/all',
 
     //For Consumer
     GetAllPostedProblem:"/api/Post/get/all",

@@ -173,7 +173,7 @@ export default function Index() {
                     {profileData?.data?.city || "Butwal"}
                   </Text>
                 </TouchableOpacity>
-              </View>{" "}
+              </View>
             </View>
 
             <View className="flex flex-row items-center mt-5">

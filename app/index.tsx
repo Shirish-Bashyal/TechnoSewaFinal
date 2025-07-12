@@ -25,7 +25,7 @@ type FormValues = {
   password: string;
 };
 
-const signIn = () => {
+const index = () => {
   const router = useRouter();
   const {
     register,
@@ -218,7 +218,7 @@ const signIn = () => {
   );
 };
 
-export default signIn;
+export default index;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
