@@ -74,7 +74,7 @@ const index = () => {
   };
   return (
     <SafeAreaView className="bg-gray-100 h-full">
-      <ScrollView contentContainerClassName="h-full">
+      <ScrollView contentContainerStyle={{ flexGrow: 1, height: "100%" }}>
         <View className=" w-full flex justify-center items-center">
           <Image
             source={images.logo}

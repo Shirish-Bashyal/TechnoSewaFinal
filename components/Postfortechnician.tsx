@@ -23,7 +23,7 @@ interface Props {
 export const PostForTechnician = ({ onPress }: Props) => {
   const router = useRouter();
   const { data: postData, isError, isLoading } = useViewPostForTechnician();
-  console.log(baseURL);
+  // console.log(baseURL);
   //   const handleServiceDetails = () => {
   //     router.push("/auth/userdetails");
   //   };
@@ -54,7 +54,7 @@ export const PostForTechnician = ({ onPress }: Props) => {
             className="text-base text-red-600 font-bold"
             style={{ fontFamily: "rubik-bold" }}
           >
-            "Wait for admin to verify!!
+            "Wait for Admin to Verify your Account!!
           </Text>
         </View>
       ) : (
