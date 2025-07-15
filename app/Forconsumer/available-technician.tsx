@@ -1,7 +1,13 @@
 // app/available-technicians.tsx
 import { Link, useLocalSearchParams } from "expo-router";
 import { useViewAvailableTechnician } from "@/services/api/availabletechnician";
-import { View, Text, ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
@@ -81,27 +87,30 @@ const AvailableTechniciansPage = () => {
                     ))}
                   </View>
                 ) : (
-                    <View>
-                  <Text></Text>
+                  <View>
+                    <Text></Text>
                   </View>
                 )}
               </View>
             </View>
-            <Link href={`/Forconsumer/subcategorybooking/${tech.technicianId}`} asChild>
-                                <TouchableOpacity
-                                  // onPress={handleShowAboutTechnician}
-                                  className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
-                                >
-                                  <View>
-                                    <Text
-                                      className="text-xs  text-white text-center"
-                                      style={{ fontFamily: "rubik-bold" }}
-                                    >
-                                      Book Now
-                                    </Text>
-                                  </View>
-                                </TouchableOpacity>
-                              </Link>
+            <Link
+              href={`/Forconsumer/subcategorybooking/${tech.technicianId}`}
+              asChild
+            >
+              <TouchableOpacity
+                // onPress={handleShowAboutTechnician}
+                className="bg-[#7A4DFF]/[1.6] shadow-md w-[40%] shadow-zinc-300 rounded-lg  flex justify-center items-center h-12 py-4 mt-1 mr-4 "
+              >
+                <View>
+                  <Text
+                    className="text-xs  text-white text-center"
+                    style={{ fontFamily: "rubik-bold" }}
+                  >
+                    Book Now
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </Link>
           </View>
         ))}
       </ScrollView>

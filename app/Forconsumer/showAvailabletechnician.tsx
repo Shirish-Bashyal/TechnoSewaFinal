@@ -34,17 +34,17 @@ const ShowAvailableTechnician = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const {
-    data: availableTechnician,
-    isLoading,
-    error,
-  } = useViewAvailableTechnician(formdata);
+  // const {
+  //   data: availableTechnician,
+  //   isLoading,
+  //   error,
+  // } = useViewAvailableTechnician(formdata);
 
   const data = [
-    { key: "1", value: "1" },
-    { key: "2", value: "2" },
-    { key: "3", value: "3" },
-    { key: "4", value: "4" },
+    { key: "1", value: "6:00:00am to 9:00:00am" },
+    { key: "2", value: "9:00:00am to 12:00:00pm" },
+    { key: "3", value: "12:00:00pm to 15:00:00pm" },
+    { key: "4", value: "15:00:00pm to 18:00:00pm" },
   ];
 
   React.useEffect(() => {
@@ -125,14 +125,14 @@ setValue("Date", formattedDate);
               )?.value;
               if (selectedCategory) {
                 setSelected(selectedCategory);
-                setValue("TimeFrameEnum", selectedCategory, {
+                setValue("TimeFrameEnum", key, {
                   shouldValidate: true,
                 });
               }
             }}
             data={data}
             boxStyles={{ borderRadius: 8, borderColor: "#ccc" }}
-            defaultOption={{ key: "1", value: "1" }}
+            defaultOption={{ key: "1", value: "6:00:00am to 9:00:00am" }}
           />
         </View>
 
@@ -193,19 +193,19 @@ setValue("Date", formattedDate);
             }}
           />
         </View>
-        {isLoading ? (
+        {/* {isLoading ? (
           <ActivityIndicator
             animating={true}
             color={MD2Colors.red800}
             style={{ marginTop: 8 }}
           />
-        ) : (
+        ) : ( */}
           <Button
             title="Submit"
             onPress={handleSubmit(onSubmit)}
             color="#7A4DFF"
           />
-        )} 
+        {/* )}  */}
 
       
       </ScrollView>

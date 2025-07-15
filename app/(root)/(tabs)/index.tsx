@@ -11,38 +11,44 @@ import { useRouter } from "expo-router";
 import { useViewProfile } from "@/services/api/profile";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useShowNotificationData } from "@/services/api/notification";
+import { useNotificationSetup } from "@/app/Notification/usenotification";
+import { useEffect } from "react";
+import { triggerLocalNotification } from "@/app/Notification/triggernotification";
+import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const SHOWN_NOTIFICATION_IDS = 'SHOWN_NOTIFICATION_IDS';
 
 const cardFeaturedData = [
   {
-    id:1,
+    id: 1,
     image: images.pipe,
     title: "Pipe Repairs",
     price: "4500",
     rating: "4.4",
   },
   {
-    id:2,
+    id: 2,
     image: images.switches,
     title: "Switch Repairs Package",
     price: "5000",
     rating: "4.8",
   },
   {
-    id:3,
+    id: 3,
     image: images.furniture,
     title: "Furniture Package",
     price: "6000",
     rating: "4.6",
   },
   {
-    id:4,
+    id: 4,
     image: images.wire,
     title: "Full Package",
     price: "3000",
     rating: "3.6",
   },
   {
-    id:5,
+    id: 5,
     image: images.tab,
     title: "Full Package",
     price: "2000",
@@ -51,7 +57,7 @@ const cardFeaturedData = [
 ];
 const cardData = [
   {
-    id:1,
+    id: 1,
     image: images.wire,
     title: "Electric wire repair",
     price: "500",
@@ -61,7 +67,7 @@ const cardData = [
     description: "Electrical Appliance Installation",
   },
   {
-    id:2,
+    id: 2,
     image: images.tab,
     title: "Tab repairs",
     price: "200",
@@ -71,7 +77,7 @@ const cardData = [
     description: "Plumber Services",
   },
   {
-    id:3,
+    id: 3,
     image: images.pipe,
     title: "Pipe Repairs",
     price: "650",
@@ -81,7 +87,7 @@ const cardData = [
     description: "Pipe Repairs and Maintenance",
   },
   {
-    id:4,
+    id: 4,
     image: images.switches,
     title: "Switch Repairs Package",
     price: "400",
@@ -91,7 +97,7 @@ const cardData = [
     description: "Switch Installation",
   },
   {
-    id:5,
+    id: 5,
     image: images.furniture,
     title: "Furniture Package",
     price: "600",
@@ -102,16 +108,75 @@ const cardData = [
   },
 ];
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 export default function Index() {
   const router = useRouter();
   const { data: profileData, isError, isLoading } = useViewProfile();
   const { data: notiData } = useShowNotificationData();
+  const { data, error } = useShowNotificationData();
+  useNotificationSetup();
+
+  // useEffect(() => { //Test data
+  //   // Slight delay to ensure permissions and channel setup complete
+  //   const timer = setTimeout(() => {
+  //     triggerLocalNotification(
+  //       "👋 Welcome Back!",
+  //       "Thanks for opening the app!"
+  //     );
+  //   }, 3000);
+
+  //   return () => clearTimeout(timer);
+  // }, []);
+  useEffect(() => {
+    if (data && data.success && data.data && data.data.length > 0) {
+      // Loop through notifications and trigger local notifications
+      data.data.forEach((noti) => {
+        triggerLocalNotification(`🎉 ${noti.title}`, noti.message);
+      });
+    }
+  }, [data]);
+//   useEffect(() => {
+//   const checkAndTriggerNewNotifications = async () => {
+//     if (!data || !data.success || !data.data || data.data.length === 0) return;
+
+//     try {
+//       const shownIdsString = await AsyncStorage.getItem(SHOWN_NOTIFICATION_IDS);
+//       const shownIds: string[] = shownIdsString ? JSON.parse(shownIdsString) : [];
+
+//       const newNotifications = data.data.filter(
+//         (noti) => !shownIds.includes(noti.receivedDate) // assuming receivedDate is unique
+//       );
+
+//       if (newNotifications.length > 0) {
+//         for (const noti of newNotifications) {
+//           await triggerLocalNotification(`🎉 ${noti.title}`, noti.message);
+//         }
+
+//         // Save new shown IDs
+//         const updatedIds = [...shownIds, ...newNotifications.map(n => n.receivedDate)];
+//         await AsyncStorage.setItem(SHOWN_NOTIFICATION_IDS, JSON.stringify(updatedIds));
+//       }
+//     } catch (err) {
+//       console.error('Failed to handle notifications:', err);
+//     }
+//   };
+
+//   checkAndTriggerNewNotifications();
+// }, [data]);
 
   const handleShowNotification = () => {
     router.push("/Bookings/notification");
   };
 
-    const handleShowChatbot= () => {
+  const handleShowChatbot = () => {
     router.push("/chatbot/chats");
   };
 
@@ -252,12 +317,12 @@ export default function Index() {
               </Text>
               <TouchableOpacity>
                 <View>
-                <Text
-                  className="text-xs underline font-rubik-bold text-primary-100"
-                  style={{ fontFamily: "outfit-medium" }}
-                >
-                  View more
-                </Text>
+                  <Text
+                    className="text-xs underline font-rubik-bold text-primary-100"
+                    style={{ fontFamily: "outfit-medium" }}
+                  >
+                    View more
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -272,12 +337,12 @@ export default function Index() {
               </Text>
               <TouchableOpacity>
                 <View>
-                <Text
-                  className="text-xs underline font-rubik-bold text-primary-100"
-                  style={{ fontFamily: "outfit-medium" }}
-                >
-                  View More
-                </Text>
+                  <Text
+                    className="text-xs underline font-rubik-bold text-primary-100"
+                    style={{ fontFamily: "outfit-medium" }}
+                  >
+                    View More
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>

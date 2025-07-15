@@ -12,11 +12,24 @@ import { Technician } from "@/components/services-category";
 import { useViewProfile } from "@/services/api/profile";
 import { PostForTechnician } from "@/components/Postfortechnician";
 import { useShowNotificationData } from "@/services/api/notification";
+import { useNotificationSetup } from "@/app/Notification/usenotification";
+import { useEffect } from "react";
+import { triggerLocalNotification } from "@/app/Notification/triggernotification";
 
 const index = () => {
   const router = useRouter();
   const { data: profileData, isError, isLoading } = useViewProfile();
   const { data: notiData } = useShowNotificationData();
+   const { data, error } = useShowNotificationData();
+    useNotificationSetup();
+     useEffect(() => {
+        if (data && data.success && data.data && data.data.length > 0) {
+          // Loop through notifications and trigger local notifications
+          data.data.forEach((noti) => {
+            triggerLocalNotification(`🎉 ${noti.title}`, noti.message);
+          });
+        }
+      }, [data]);
 
   const handleShowNotification = () => {
     router.push("/Bookings/notification");

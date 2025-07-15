@@ -79,10 +79,10 @@ const subCategoryBooking = () => {
   }, [register]);
 
   const timeframe = [
-    { key: "1", value: "1" },
-    { key: "2", value: "2" },
-    { key: "3", value: "3" },
-    { key: "4", value: "4" },
+    { key: "1", value: "6:00:00am to 9:00:00am" },
+    { key: "2", value: "9:00:00am to 12:00:00pm" },
+    { key: "3", value: "12:00:00pm to 15:00:00pm" },
+    { key: "4", value: "15:00:00pm to 18:00:00pm" },
   ];
 
   const category = [
@@ -101,10 +101,10 @@ const subCategoryBooking = () => {
     }
   }, [id, setValue]);
 
-  const submitBidData = async (data: createBookingSubCategoryData) => {
-    console.log("ok");
-    mutate(data);
-  };
+ const submitBidData = React.useCallback(async (data: createBookingSubCategoryData) => {
+  console.log("ok");
+  mutate(data);
+}, [mutate]);
 
   return (
     <SafeAreaView className="h-full bg-gray-100">
@@ -149,14 +149,14 @@ const subCategoryBooking = () => {
               )?.value;
               if (selectedCategory) {
                 setSelected(selectedCategory);
-                setValue("timeFrame", selectedCategory, {
+                setValue("timeFrame", key, {
                   shouldValidate: true,
                 });
               }
             }}
             data={timeframe}
             boxStyles={{ borderRadius: 8, borderColor: "#ccc" }}
-            defaultOption={{ key: "1", value: "1" }}
+            defaultOption={{ key: "1", value: "6:00:00am to 9:00:00am" }}
           />
         </View>
         <View>

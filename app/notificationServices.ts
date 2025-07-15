@@ -41,7 +41,7 @@ export const startSignalRConnection = async () => {
   const token = await AsyncStorage.getItem("token");
 
   connection = new HubConnectionBuilder()
-    .withUrl("https://9ba67ed405da.ngrok-free.app/notificationhub", {
+    .withUrl("https://b54b36560f04.ngrok-free.app/notificationhub", {
       accessTokenFactory: () => token || "",
     })
     .withAutomaticReconnect()
