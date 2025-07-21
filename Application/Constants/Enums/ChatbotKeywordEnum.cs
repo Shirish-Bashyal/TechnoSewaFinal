@@ -23,7 +23,6 @@ namespace Application.Constants.Enums
             Water,
             Sink,
 
-
             Electric,
             Switch,
             Socket,
@@ -37,7 +36,6 @@ namespace Application.Constants.Enums
             Bulb,
             Voltage,
 
-
             Fridge,
             AC,
             Heater,
@@ -48,16 +46,14 @@ namespace Application.Constants.Enums
             Cooler,
             Motor,
 
-
             Install,
             Repair,
             Fix,
             Replace,
             Maintenance,
-            Service,
+
             Setup,
             Uninstall,
-
 
             Kitchen,
             Bathroom,
@@ -66,8 +62,12 @@ namespace Application.Constants.Enums
             Roof,
             Basement,
             Wall,
-            Floor
+            Floor,
 
+            service,
+
+            WashingMachineInstallation,
+            ToiletUnclogging,
         }
     }
 }

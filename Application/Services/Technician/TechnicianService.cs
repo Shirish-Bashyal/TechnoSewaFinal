@@ -90,7 +90,9 @@ namespace Application.Services.Technician
             }
         }
 
-        public async Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model)
+        public async Task<ServiceResponse<List<GetTechnicianDetailsDTO>>> GetByFilter(
+            GetByFilterDTO model
+        )
         {
             var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
             {
@@ -130,18 +132,14 @@ namespace Application.Services.Technician
                 .Take(10)
                 .ToList(); //order by distance in kilometers
 
-            var reviewTasks = result.Select(async technician =>
+            foreach (var tech in result)
             {
-                var reviewResponse = await _reviewServices.GetForTechnician(
-                    technician.TechnicianId
-                );
+                var reviewResponse = await _reviewServices.GetForTechnician(tech.TechnicianId);
                 if (reviewResponse.Data != null)
                 {
-                    technician.Reviews = reviewResponse.Data;
+                    tech.Reviews = reviewResponse.Data;
                 }
-            });
-
-            await Task.WhenAll(reviewTasks); // Await all in parallel
+            }
 
             //var predictorInput = result
             //    .Select(x =>
@@ -155,7 +153,11 @@ namespace Application.Services.Technician
 
             //var predictorOutput = LightGBMPredictor.Predict(predictorInput);
 
-            return new ServiceResponse<object> { Success = true, Data = result };
+            return new ServiceResponse<List<GetTechnicianDetailsDTO>>
+            {
+                Success = true,
+                Data = result
+            };
         }
     }
 }

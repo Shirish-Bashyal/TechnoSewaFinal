@@ -10,7 +10,6 @@ namespace Application.Constants.Enums
     {
         public enum SubCategoryKeyword
         {
-
             WashingMachineInstallation = 2,
             ToiletUnclogging = 3
         }

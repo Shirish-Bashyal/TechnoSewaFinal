@@ -1,9 +1,9 @@
-﻿using Application.DTO.Chatbot;
+﻿using System.Security.Claims;
+using Application.DTO.Chatbot;
 using Application.Interfaces.Chatbot;
 using Application.Interfaces.LLM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace TechnoSewa.Controllers
 {
@@ -33,15 +33,21 @@ namespace TechnoSewa.Controllers
             if (ModelState.IsValid)
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                //find out the intent of the question
+                if (userId == null)
+                {
+                    return Unauthorized("User Unathorized");
+                }
 
-                //then call respective service
+                var result = await _chatbotService.MainChat(userId, question.Question);
 
-                var result = await _chatbotService.MainChat(userId,question.Question);
-                //return Ok(result);
-               // var result = await _chatbotService.SendMessage(question);
-
-                return Ok(result);
+                if (result.Success)
+                {
+                    return Ok(result.Data);
+                }
+                else
+                {
+                    return StatusCode(500, result.Data);
+                }
             }
             else
             {
@@ -93,8 +99,6 @@ namespace TechnoSewa.Controllers
                 return BadRequest();
             }
         }
-
-
 
         [HttpPost]
         [Route("addKeywordAndResponse")]

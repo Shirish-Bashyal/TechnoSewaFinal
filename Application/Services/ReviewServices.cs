@@ -64,6 +64,10 @@ namespace Application.Services
             {
                 return new ServiceResponse<GetReviewDTO> { Success = false, };
             }
+            if (!reviews.Any())
+            {
+                return new ServiceResponse<GetReviewDTO> { Success = true, Message = "No Reviews" };
+            }
             var result = new GetReviewDTO
             {
                 AverageRating = reviews.Average(x => x.Rating),
