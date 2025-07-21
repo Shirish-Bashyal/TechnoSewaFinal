@@ -8,7 +8,9 @@ using Application.Constants.Enums;
 using Application.DTO.Technician;
 using Application.DTO.User.Consumer;
 using Application.DTO.User.Post;
+using Application.Hubs.Model;
 using Application.Interfaces.Data;
+using Application.Interfaces.Notification;
 using Application.Interfaces.Technician;
 using Application.Response;
 using AutoMapper;
@@ -25,11 +27,17 @@ namespace Application.Services.Technician
     {
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly INotificationSender _notificationSender;
 
-        public BidService(IUnitOfWork uow, UserManager<ApplicationUser> userManager)
+        public BidService(
+            IUnitOfWork uow,
+            UserManager<ApplicationUser> userManager,
+            INotificationSender notificationSender
+        )
         {
             _userManager = userManager;
             _uow = uow;
+            _notificationSender = notificationSender;
         }
 
         public async Task<ServiceResponse<object>> CreateBid(
@@ -50,7 +58,10 @@ namespace Application.Services.Technician
             }
             else
             {
-                Post? post = await _uow.AsyncRepositories<Post>().GetByPrimaryKey(Model.PostId);
+                var includes = new Expression<Func<Post, object>>[] { x => x.User };
+
+                Post? post = await _uow.AsyncRepositories<Post>()
+                    .GetWithIncludeAndFilter(includes, x => x.Id == Model.PostId);
 
                 if (post == null)
                 {
@@ -73,9 +84,17 @@ namespace Application.Services.Technician
                     };
 
                     await _uow.AsyncRepositories<PostBid>().AddAsync(bid);
+
+                    var notification = new NotificationDto
+                    {
+                        Message = $"You received a bid for {post.Title} post",
+                        Title = "New Bid Received"
+                    };
+                    await _notificationSender.AddNotification(notification, post.User.Id);
                     var result = await _uow.Save();
                     if (result > 0)
                     {
+                        await _notificationSender.SendToUserAsync(post.User.Id, notification);
                         return new ServiceResponse<object>
                         {
                             Message = "Bid posted",

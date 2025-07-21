@@ -22,6 +22,10 @@ namespace Application.Interfaces.Bookings
 
         Task<ServiceResponse<object>> GetAllForTechnician(string TechnicianUserId);
 
+        Task<ServiceResponse<object>> GetAll();
+
+        Task<ServiceResponse<object>> MarkBookingCompletion(int BookingId, string UserId);
+
         //get bookings for a user,
     }
 }

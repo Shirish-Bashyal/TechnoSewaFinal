@@ -19,9 +19,24 @@ namespace TechnoSewa.Controllers
         [HttpGet]
         [Route("subcategory")]
         [Authorize]
-        public async Task<IActionResult> Get(int categoryId)
+        public async Task<IActionResult> GetSubgategories(int categoryId)
         {
             var result = await _categoryService.SubCategoriesList(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return StatusCode(500, result);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetCategories()
+        {
+            var result = await _categoryService.AllCategoriesList();
             if (result.Success)
             {
                 return Ok(result);

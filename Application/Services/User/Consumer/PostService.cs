@@ -8,8 +8,10 @@ using Application.Constants.Enums;
 using Application.DTO.User.Post;
 using Application.Helper;
 using Application.Interfaces.Data;
+using Application.Interfaces.Payment;
 using Application.Interfaces.User.Consumer;
 using Application.Response;
+using Application.Services.Payment;
 using Domain.Entities.Application;
 using Domain.Entities.User;
 using Domain.Entities.User.PostDetails;
@@ -22,6 +24,7 @@ namespace Application.Services.User.Consumer
 {
     public class PostService : IPostService
     {
+        private readonly IPaymentServics _paymentService;
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostEnvironment _env;
@@ -31,12 +34,14 @@ namespace Application.Services.User.Consumer
         public PostService(
             IUnitOfWork uow,
             UserManager<ApplicationUser> userManager,
-            IHostEnvironment env
+            IHostEnvironment env,
+            IPaymentServics paymentService
         )
         {
             _uow = uow;
             _userManager = userManager;
             _env = env;
+            _paymentService = paymentService;
         }
 
         public async Task<string> SaveFileAsync(IFormFile imageFile, string[] allowedFileExtensions)
@@ -178,10 +183,11 @@ namespace Application.Services.User.Consumer
 
                 foreach (var pic in post.Photos)
                 {
-                    images.Add($"{BaseUrl}/Resourses/{pic.Path}");
+                    images.Add($"{BaseUrl}/Resources/{pic.Path}");
                 }
                 var result = new PostResponseDTO
                 {
+                    Id = post.Id,
                     Title = post.Title,
                     Description = post.Description,
                     Category = post.Category.Name,
@@ -223,6 +229,7 @@ namespace Application.Services.User.Consumer
             var result = posts
                 .Select(post => new PostResponseDTO
                 {
+                    Id = post.Id,
                     Title = post.Title,
                     Description = post.Description,
                     Category = post.Category.Name,
@@ -255,14 +262,6 @@ namespace Application.Services.User.Consumer
 
         public async Task<ServiceResponse<object>> GetPostsForTechniian(string UserId)
         {
-            //ApplicationUser? technician = await _userManager.FindByIdAsync(UserId);
-            //if (technician == null)
-            //    return new ServiceResponse<object>
-            //    {
-            //        Success = false,
-            //        Message="Error finding the user"
-
-            //    };
             var include = new Expression<Func<Domain.Entities.User.Technician, object>>[]
             {
                 x => x.User,
@@ -270,13 +269,24 @@ namespace Application.Services.User.Consumer
                 x => x.User.Address.City,
             };
             var technician = await _uow.AsyncRepositories<Domain.Entities.User.Technician>()
-                .GetWithIncludeAndFilter(include, x => x.UserId == UserId);
+                .GetWithIncludeAndFilter(include, x => x.UserId == UserId && x.IsVerified == true);
             if (technician == null)
                 return new ServiceResponse<object>
                 {
-                    Success = false,
-                    Message = "Error finding the user"
+                    Success = true,
+                    Message = "Technician not registered"
                 };
+            var isLimitReached = await _paymentService.CheckLimitReached(technician.Id);
+            if (isLimitReached)
+            {
+                return new ServiceResponse<object>
+                {
+                    Success = true,
+                    Message =
+                        "COMMISSION LIMIT IS REACHED. No post will be shown until payment is done."
+                };
+            }
+
             var includes = new Expression<Func<Post, object>>[]
             {
                 s => s.User,
@@ -286,7 +296,9 @@ namespace Application.Services.User.Consumer
             var posts = await _uow.AsyncRepositories<Post>()
                 .GetListWithIncludeAndFilter(
                     includes,
-                    x => x.User.Address.City == technician.User.Address.City
+                    x =>
+                        x.User.Address.City == technician.User.Address.City
+                        && x.Status == (int)PostStatusEnum.Pending
                 );
             if (posts == null)
             {

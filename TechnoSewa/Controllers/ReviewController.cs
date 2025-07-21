@@ -45,7 +45,13 @@ namespace TechnoSewa.Controllers
         [Route("technician")]
         public async Task<IActionResult> TechnicianReviews(int TechnicianId)
         {
-            return Ok();
+            var result = await _reviewServices.GetForTechnician(TechnicianId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+                return StatusCode(500, result);
         }
     }
 }

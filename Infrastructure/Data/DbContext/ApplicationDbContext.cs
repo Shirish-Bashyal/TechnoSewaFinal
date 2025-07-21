@@ -4,9 +4,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Domain.Entities.Application;
 using Domain.Entities.Application.Bookings;
-using Domain.Entities.Base;
+using Domain.Entities.Application.Payment;
 using Domain.Entities.Chatbot;
 using Domain.Entities.User;
 using Domain.Entities.User.AddressDetails;
@@ -33,6 +34,10 @@ namespace Infrastructure.Data.DbContext
 
         public DbSet<QuestionResponse> QuestionResponse { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<CommissionDetail> CommissionDetail { get; set; }
+
+        public DbSet<TransactionDetail> TransactionDetail { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
 
         public DbSet<Post> Posts { get; set; }
@@ -45,6 +50,7 @@ namespace Infrastructure.Data.DbContext
         public DbSet<TimeFrame> TimeFrames { get; set; }
 
         public DbSet<Technician> Technicians { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public DbSet<SubCategoryBooking> SubCategoryBookings { get; set; }
 

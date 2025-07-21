@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application.Bookings;
-using Domain.Entities.Base;
+using Domain.Entities.Entity;
 using Domain.Entities.User.AddressDetails;
 using Domain.Entities.User.PostDetails;
 using Domain.Interfaces.Entity;

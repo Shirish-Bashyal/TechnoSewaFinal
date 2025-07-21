@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Application.Bookings;
-using Domain.Entities.Base;
+using Domain.Entities.Entity;
 using Domain.Interfaces.Entity;
 
 namespace Domain.Entities.User
@@ -21,6 +21,8 @@ namespace Domain.Entities.User
 
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
+
+        public bool IsVerified { get; set; }
 
         public ICollection<SubCategoryBooking>? TechnicianBookings { get; set; }
         public ICollection<PostBid>? PostBids { get; set; }

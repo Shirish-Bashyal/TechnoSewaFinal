@@ -1,3 +1,4 @@
+using Application.Hubs;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -38,7 +39,11 @@ builder.Services.AddCors(options =>
         "AllowAll",
         policy =>
         {
-            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            policy
+                .WithOrigins("http://127.0.0.1:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         }
     );
 });
@@ -46,6 +51,8 @@ builder.Services.AddCors(options =>
 //adding services
 
 builder.Services.AddInternalDependencies(builder.Configuration);
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 var contentPath = app.Environment.ContentRootPath;
 var uploadsPath = Path.Combine(contentPath, "Uploads");
@@ -81,11 +88,11 @@ app.UseStaticFiles(
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowAll");
-
 app.MapControllers();
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();

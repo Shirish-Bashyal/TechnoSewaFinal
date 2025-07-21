@@ -1,18 +1,25 @@
 ﻿using Application.Helpers.LLM;
+using Application.Hubs.InMemoryDB;
 using Application.InMemoryCache;
 using Application.Interfaces;
+using Application.Interfaces.Admin;
 using Application.Interfaces.Bookings;
 using Application.Interfaces.Chatbot;
 using Application.Interfaces.Data;
 using Application.Interfaces.LLM;
+using Application.Interfaces.Notification;
+using Application.Interfaces.Payment;
 using Application.Interfaces.Review;
 using Application.Interfaces.Technician;
 using Application.Interfaces.User.Auth;
 using Application.Interfaces.User.Consumer;
 using Application.Interfaces.User.Role;
 using Application.Services;
+using Application.Services.Admin;
 using Application.Services.Bookings;
 using Application.Services.Chatbot;
+using Application.Services.Notification;
+using Application.Services.Payment;
 using Application.Services.Technician;
 using Application.Services.User.Auth;
 using Application.Services.User.Consumer;
@@ -28,10 +35,19 @@ namespace TechnoSewa.Startup
             IConfiguration configuration
         )
         {
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<INotificationSender, NotificationSender>();
+            services.AddSingleton<UserConnectionDb>();
+            services.AddSingleton<NotificationDb>();
+
             services.AddScoped<IQuestionResponseService, QuestionResponseService>();
             services.AddScoped<ILLMFormatter, LLMFormatter>();
             services.AddScoped<ITextTokenizer, TextTokenizer>();
             services.AddScoped<IChatbotService, ChatbotService>();
+
+            services.AddScoped<IPaymentServics, PaymentService>();
+            services.AddScoped<IConsumerService, ConsumerService>();
+
             services.AddSingleton<UserChatDb>();
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
