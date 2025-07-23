@@ -2,6 +2,7 @@
 using Application.DTO.Chatbot;
 using Application.Interfaces.Chatbot;
 using Application.Interfaces.LLM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ namespace TechnoSewa.Controllers
             _chatbotService = chatbotService;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("postQuestions")]
         public async Task<IActionResult> PostChat([FromBody] MessageDto question)
@@ -42,7 +44,7 @@ namespace TechnoSewa.Controllers
 
                 if (result.Success)
                 {
-                    return Ok(result.Data);
+                    return Ok(result.Message);
                 }
                 else
                 {
@@ -51,7 +53,7 @@ namespace TechnoSewa.Controllers
             }
             else
             {
-                return BadRequest();
+                return BadRequest("not available!");
             }
         }
 

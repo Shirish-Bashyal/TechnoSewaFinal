@@ -14,7 +14,7 @@ namespace Application.Interfaces.Technician
         Task<ServiceResponse<object>> BecomeTechnician(BecomeTechnicianDTO model, string userId);
 
         //
-        Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model);
+        Task<ServiceResponse<List<GetTechnicianDetailsDTO>>> GetByFilter(GetByFilterDTO model);
 
         Task<ServiceResponse<object>> GetById(int TechnicianId);
 

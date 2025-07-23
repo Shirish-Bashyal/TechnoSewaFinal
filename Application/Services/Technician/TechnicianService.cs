@@ -131,7 +131,9 @@ namespace Application.Services.Technician
             return new ServiceResponse<object> { Success = true, Data = result };
         }
 
-        public async Task<ServiceResponse<object>> GetByFilter(GetByFilterDTO model)
+        public async Task<ServiceResponse<List<GetTechnicianDetailsDTO>>> GetByFilter(
+            GetByFilterDTO model
+        )
         {
             var includes = new Expression<Func<Domain.Entities.User.Technician, object>>[]
             {
@@ -205,11 +207,15 @@ namespace Application.Services.Technician
 
                 //var predictorOutput = LightGBMPredictor.Predict(predictorInput);
 
-                return new ServiceResponse<object> { Success = true, Data = result };
+                return new ServiceResponse<List<GetTechnicianDetailsDTO>>
+                {
+                    Success = true,
+                    Data = result
+                };
             }
             else
             {
-                return new ServiceResponse<object>
+                return new ServiceResponse<List<GetTechnicianDetailsDTO>>
                 {
                     Success = true,
                     Message = "No technician available"
