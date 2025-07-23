@@ -1,6 +1,8 @@
-﻿using Application.DTO.Chatbot;
+﻿using System.Security.Claims;
+using Application.DTO.Chatbot;
 using Application.Interfaces.Chatbot;
 using Application.Interfaces.LLM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,25 +27,33 @@ namespace TechnoSewa.Controllers
             _chatbotService = chatbotService;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("postQuestions")]
         public async Task<IActionResult> PostChat([FromBody] MessageDto question)
         {
             if (ModelState.IsValid)
             {
-                //find out the intent of the question
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                {
+                    return Unauthorized("User Unathorized");
+                }
 
-                //then call respective service
+                var result = await _chatbotService.MainChat(userId, question.Question);
 
-                //var result = await _chatbotService.FindIntent(question.Question);
-                //return Ok(result);
-                var result = await _chatbotService.SendMessage(question);
-
-                return Ok(result);
+                if (result.Success)
+                {
+                    return Ok(result.Message);
+                }
+                else
+                {
+                    return StatusCode(500, result.Data);
+                }
             }
             else
             {
-                return BadRequest();
+                return BadRequest("not available!");
             }
         }
 
@@ -91,8 +101,6 @@ namespace TechnoSewa.Controllers
                 return BadRequest();
             }
         }
-
-
 
         [HttpPost]
         [Route("addKeywordAndResponse")]

@@ -1,5 +1,6 @@
 ﻿using Application.Helpers.LLM;
 using Application.Hubs.InMemoryDB;
+using Application.InMemoryCache;
 using Application.Interfaces;
 using Application.Interfaces.Admin;
 using Application.Interfaces.Bookings;
@@ -47,6 +48,7 @@ namespace TechnoSewa.Startup
             services.AddScoped<IPaymentServics, PaymentService>();
             services.AddScoped<IConsumerService, ConsumerService>();
 
+            services.AddSingleton<UserChatDb>();
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IReviewServices, ReviewServices>();
 
