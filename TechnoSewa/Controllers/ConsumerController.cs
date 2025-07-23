@@ -37,7 +37,7 @@ namespace TechnoSewa.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAll()
         {
             var consumers = await _consumer.GetAll();
