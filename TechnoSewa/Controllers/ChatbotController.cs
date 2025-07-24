@@ -48,7 +48,7 @@ namespace TechnoSewa.Controllers
                 }
                 else
                 {
-                    return StatusCode(500, result.Data);
+                    return StatusCode(500, result.Message);
                 }
             }
             else

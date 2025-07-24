@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Load the LightGBM model
-model_path = r"D:\Projects\TechnoSewa\Application\Helpers\MachineLearningModel\lgbm_model1.txt"
+model_path = r"D:\Projects\TechnoSewa\Application\Helpers\MachineLearningModel\lgbm_model3.txt"
 
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model file not found at: {model_path}")

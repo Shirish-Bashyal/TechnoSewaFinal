@@ -283,7 +283,7 @@ namespace Application.Services.Chatbot
                         {
                             Data = result,
                             Success = true,
-                            Message = ""
+                            Message = result
                         };
                     }
                     else
