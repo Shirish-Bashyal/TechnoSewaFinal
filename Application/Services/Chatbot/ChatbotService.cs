@@ -269,7 +269,8 @@ namespace Application.Services.Chatbot
                         return new ServiceResponse<string>()
                         {
                             Success = true,
-                            Data = bookingResponse.ChatbotResponse
+                            Data = bookingResponse.ChatbotResponse,
+                            Message = bookingResponse.ChatbotResponse
                         };
                     }
                     else if (bookingResponse.IsCompleted == true)
