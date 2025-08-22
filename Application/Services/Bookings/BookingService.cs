@@ -561,8 +561,8 @@ namespace Application.Services.Bookings
 
             var commissionAmount =
                 booking.PostBid == null
-                    ? booking.SubCategoryBooking.SubCategory.Price
-                    : booking.PostBid.EstimationPrice;
+                    ? (booking.SubCategoryBooking.SubCategory.Price) * 0.10
+                    : (booking.PostBid.EstimationPrice) * 0.10;
 
             if (commssion == null)
             {
